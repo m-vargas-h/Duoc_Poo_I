@@ -1,7 +1,9 @@
 
 package com.duoc.exp1_s3.modelo;
 
-public class CuentaDigital extends CuentaBancaria {
+import com.duoc.exp1_s3.interfaces.Operaciones;
+
+public class CuentaDigital extends CuentaBancaria implements Operaciones {
 
     public CuentaDigital() {
         super();
@@ -16,7 +18,7 @@ public class CuentaDigital extends CuentaBancaria {
         super(numeroCuenta, saldo);
     }
 
-    // Se asigna el código "01" para identificar a la Cuenta Vista.
+    // Se asigna el código "01" para identificar a la Cuenta Digital.
     @Override
     protected String getTipoCuenta() {
         return "01";
@@ -24,7 +26,7 @@ public class CuentaDigital extends CuentaBancaria {
 
     @Override
     public String getNombreTipoCuenta() {
-        return "Cuenta Vista";
+        return "Cuenta Digital";
     }
 
     
@@ -32,7 +34,7 @@ public class CuentaDigital extends CuentaBancaria {
     public void depositar(int monto) {
         if (monto > 0) {
             saldo += monto;
-            System.out.println("Depósito exitoso en Cuenta Vista. Saldo actual: $" + saldo);
+            System.out.println("Depósito exitoso en Cuenta Digital. Saldo actual: $" + saldo);
         } else {
             System.out.println("El monto debe ser mayor a cero.");
         }
@@ -40,14 +42,14 @@ public class CuentaDigital extends CuentaBancaria {
     
     @Override
     public void girar(int monto) {
-        //? Depuracion para verificar funcionamiento
+        //? Depuración para verificar funcionamiento
         ////System.out.println("Ejecutando giro en (1): " + this.getClass().getSimpleName());
         
         if (monto > 0 && monto <= saldo) {
             saldo -= monto;
-            System.out.println("Giro exitoso en Cuenta Vista. Saldo actual: $" + saldo);
+            System.out.println("Giro exitoso en Cuenta Digital. Saldo actual: $" + saldo);
         } else {
-            System.out.println("Monto inválido o fondos insuficientes en Cuenta Vista.");
+            System.out.println("Monto inválido o fondos insuficientes en Cuenta Digital.");
         }
     }
 }

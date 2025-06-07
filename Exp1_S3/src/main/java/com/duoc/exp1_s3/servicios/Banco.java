@@ -3,6 +3,7 @@ package com.duoc.exp1_s3.servicios;
 
 import com.duoc.exp1_s3.utilidades.Auxiliares;
 import com.duoc.exp1_s3.persistencia.PersistenciaInfo;
+import com.duoc.exp1_s3.interfaces.Operaciones;
 import com.duoc.exp1_s3.modelo.Cliente;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -76,10 +77,10 @@ public class Banco {
     public void realizarDeposito(Scanner sc) {
         Cliente clienteDep = buscarClientePorRut(sc);
         if (clienteDep != null) {
-            System.out.print("Ingrese monto a depositar: ");
+            System.out.print("\nIngrese monto a depositar: ");
             int monto = sc.nextInt();
             sc.nextLine(); // Consumir el salto de línea pendiente
-            clienteDep.getCuenta().depositar(monto);
+            ((Operaciones) clienteDep.getCuenta()).depositar(monto);
             persistencia.guardarSaldoCuenta(clienteDep.getCuenta());
         }
     }
@@ -91,10 +92,10 @@ public class Banco {
             //? Depuración para confirmar el tipo de cuenta
             ////System.out.println("La cuenta del cliente es: " + clienteGir.getCuenta().getClass().getSimpleName());
 
-            System.out.print("Ingrese monto a girar: ");
+            System.out.print("\nIngrese monto a girar: ");
             int monto = sc.nextInt();
             sc.nextLine(); // Consumir el salto de línea pendiente
-            clienteGir.getCuenta().girar(monto);
+            ((Operaciones) clienteGir.getCuenta()).girar(monto);
             persistencia.guardarSaldoCuenta(clienteGir.getCuenta());
         }
     }

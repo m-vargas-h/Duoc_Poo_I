@@ -18,7 +18,7 @@ public class Exp1_S3 {
         persistencia.cargarSaldos(clientes);
 
         // Sincroniza la lista de clientes cargados con el objeto banco
-        banco.setClientes(clientes); // Considera agregar este método en Banco
+        banco.setClientes(clientes);
 
         Scanner sc = new Scanner(System.in);
         int opcion;

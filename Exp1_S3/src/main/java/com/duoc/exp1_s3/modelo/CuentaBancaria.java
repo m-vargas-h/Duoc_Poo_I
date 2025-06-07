@@ -60,10 +60,6 @@ public abstract class CuentaBancaria {
         contadorCuenta = nuevoContador;
     }
     
-    // Métodos abstractos para operaciones de depósito y giro.
-    public abstract void depositar(int monto);
-    public abstract void girar(int monto);
-    
     // Método común para mostrar la información de la cuenta.
     public void mostrarCuenta() {
         System.out.println("Cuenta Nº: " + numeroCuenta);

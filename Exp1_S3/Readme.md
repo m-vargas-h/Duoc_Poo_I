@@ -106,5 +106,6 @@ Clases auxiliares:
 - **Nuevas Funcionalidades**:  
   - Ampliar las restricciones específicas de cada tipo de cuenta (por ejemplo, mayores controles en `CuentaAhorro` o líneas de sobregiro en `CuentaCorriente`).
   - Desarrollar reportes y estadísticas sobre las transacciones.
+  - Crear un método que ademas de calcular el interés generado al deposito, lo sume a la cuenta al pasar determinado tiempo.
 - **Interfaz Gráfica**: Desarrollar una interfaz visual para mejorar la experiencia del usuario.
 ---

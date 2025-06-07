@@ -1,6 +1,13 @@
 # Historial de cambios
 
-## 07/06/2025 - Mejoras en la persistencia e información  
+## 07/06/2025 - Integración de interfaces y ampliación de funciones
+- Se implementaron las siguientes interfaces:
+    - `Interés`: Declara el método `CalcularInteres` para que puedan ser sobrescrito por las subclases que lo necesiten.
+    - `Operaciones`: Declara los métodos `Girar` y `Depositar` para que las subclases puedan utilizarlos.
+- Ahora los depósitos simulan la generación de interés (solo para efectos de calculo, aun no se integran como parte del saldo).
+- Ahora los sobregiro generan un interés en base al monto utilizado el cual es cargado como saldo negativo en la cuenta corriente. 
+
+### 07/06/2025 - Mejoras en la persistencia e información  
 - Se mejoro la lógica de la clase `PersistenciaInfo` generando una carpeta Data dentro del proyecto para almacenar las bases de datos, si la carpeta no existiese el sistema la creara de forma automática.
 - Se mejoro la forma en que se muestra la información en el menu ***2. Ver datos de cliente***, antes se mostraba el código correspondiente al tipo de cuenta, ahora se mostrara el nombre.
 
