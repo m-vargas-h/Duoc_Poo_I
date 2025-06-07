@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.duoc.exp1_s3.modelo;
 
 public class Cliente {
@@ -13,7 +10,7 @@ public class Cliente {
     private String comuna;
     private String telefono;
     private CuentaBancaria cuenta;
-    private String tipoCuenta; //Almacena el tipo de cuenta para funciones de persistencia
+    private String tipoCuenta;
 
     // Constructor
     public Cliente(String rut, String nombre, String apellidoPaterno, String apellidoMaterno,
@@ -26,9 +23,7 @@ public class Cliente {
         this.comuna = comuna;
         this.telefono = telefono;
         this.cuenta = cuenta;
-        if (cuenta != null) {
-            this.tipoCuenta = cuenta.getTipoCuenta();
-        }
+        this.tipoCuenta = cuenta.getNombreTipoCuenta();
 
     }
 
@@ -45,7 +40,7 @@ public class Cliente {
         System.out.println("Teléfono: " + telefono);
         if (cuenta != null) {
             cuenta.mostrarCuenta();
-            System.out.println("Tipo de cuenta: " + tipoCuenta);
+            System.out.println("Tipo de cuenta: " + cuenta.getNombreTipoCuenta());
         } else {
             System.out.println("Cuenta: No asignada");
         }

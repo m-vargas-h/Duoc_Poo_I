@@ -2,7 +2,7 @@
 package com.duoc.exp1_s3.servicios;
 
 import com.duoc.exp1_s3.utilidades.Auxiliares;
-import com.duoc.exp1_s3.modelo.CuentaVista;
+import com.duoc.exp1_s3.modelo.CuentaDigital;
 import com.duoc.exp1_s3.modelo.CuentaBancaria;
 import com.duoc.exp1_s3.modelo.CuentaCorriente;
 import com.duoc.exp1_s3.modelo.Cliente;
@@ -64,7 +64,7 @@ public class ServiciosCliente {
         CuentaBancaria cuenta;
         switch (opcionCuenta) {
             case 1:
-                cuenta = new CuentaVista();
+                cuenta = new CuentaDigital();
                 break;
             case 2:
                 // Se define un límite de giros, por ejemplo 3 giros permitidos.
@@ -75,7 +75,7 @@ public class ServiciosCliente {
                 break;
             default:
                 System.out.println("Opción inválida. Se asigna Cuenta Vista por defecto.");
-                cuenta = new CuentaVista();
+                cuenta = new CuentaDigital();
         }
         
         // Creación del objeto Cliente utilizando la cuenta construida

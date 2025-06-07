@@ -1,21 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.duoc.exp1_s3.modelo;
 
-public class CuentaVista extends CuentaBancaria {
+public class CuentaDigital extends CuentaBancaria {
 
-    public CuentaVista() {
+    public CuentaDigital() {
         super();
     }
     
-    public CuentaVista(int saldoInicial) {
+    public CuentaDigital(int saldoInicial) {
         super(saldoInicial);
     }
 
     // Constructor de restauración: se recibe el número de cuenta guardado.
-    public CuentaVista(String numeroCuenta, int saldo) {
+    public CuentaDigital(String numeroCuenta, int saldo) {
         super(numeroCuenta, saldo);
     }
 
@@ -24,6 +21,12 @@ public class CuentaVista extends CuentaBancaria {
     protected String getTipoCuenta() {
         return "01";
     }
+
+    @Override
+    public String getNombreTipoCuenta() {
+        return "Cuenta Vista";
+    }
+
     
     @Override
     public void depositar(int monto) {

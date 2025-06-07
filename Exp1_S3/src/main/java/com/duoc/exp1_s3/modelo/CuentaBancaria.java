@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.duoc.exp1_s3.modelo;
 
 public abstract class CuentaBancaria {
@@ -38,7 +35,10 @@ public abstract class CuentaBancaria {
     
     // Método abstracto para que cada subclase defina su código de tipo de cuenta.
     protected abstract String getTipoCuenta();
-    
+
+    // Método abstracto para indicar el nombre de cada tipo de cuenta
+    public abstract String getNombreTipoCuenta();
+
     // Getters y setters
     public String getNumeroCuenta() {
         return numeroCuenta;

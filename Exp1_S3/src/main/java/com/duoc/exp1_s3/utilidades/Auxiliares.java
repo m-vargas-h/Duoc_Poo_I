@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.duoc.exp1_s3.utilidades;
 
 /*
@@ -35,7 +32,7 @@ public class Auxiliares {
 
         if (!numero.matches("\\d{8}")) {
             System.out.println("Error: El número debe contener exactamente 8 dígitos.");
-            return null; // Devuelve `null` si el formato es incorrecto
+            return null; // Devuelve null si el formato es incorrecto
         }
 
         return "+569" + numero; // Agrega el prefijo

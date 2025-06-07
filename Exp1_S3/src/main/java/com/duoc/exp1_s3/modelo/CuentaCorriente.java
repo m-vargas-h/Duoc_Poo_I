@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.duoc.exp1_s3.modelo;
 
 public class CuentaCorriente extends CuentaBancaria {
@@ -24,6 +21,11 @@ public class CuentaCorriente extends CuentaBancaria {
     protected String getTipoCuenta() {
         return "03";
     }
+
+    @Override
+    public String getNombreTipoCuenta() {
+        return "Cuenta Corriente";
+    }
     
     @Override
     public void depositar(int monto) {
@@ -38,7 +40,7 @@ public class CuentaCorriente extends CuentaBancaria {
     @Override
     public void girar(int monto) {
         //? Depuracion para verificar el correcto funcionamiento
-        ////System.out.println("Ejecutando giro en (3): " + this.getClass().getSimpleName());
+        ////System.out.println("imprime 03");
         
         if (monto > 0 && (saldo - monto) >= -SOBREGIRO_MAXIMO) {
             saldo -= monto;

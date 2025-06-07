@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 public class Exp1_S3 {
     public static void main(String[] args) {
+
         Banco banco = new Banco();
 
         PersistenciaInfo persistencia = new PersistenciaInfo();  // Instancia de clase
@@ -22,7 +23,7 @@ public class Exp1_S3 {
         Scanner sc = new Scanner(System.in);
         int opcion;
 
-        System.out.println("--- BANK BOSTON ---");
+        System.out.println("------- BANK EUROPE -------");
         System.out.println("Bienvenido a nuestro sistema, para navegar en nuestro sistema");
         System.out.println("seleccione alguna de las opciones disponibles en el menu");
 

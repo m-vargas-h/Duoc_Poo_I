@@ -3,17 +3,34 @@ package com.duoc.exp1_s3.persistencia;
 
 import com.duoc.exp1_s3.modelo.CuentaBancaria;
 import com.duoc.exp1_s3.modelo.CuentaCorriente;
-import com.duoc.exp1_s3.modelo.CuentaVista;
+import com.duoc.exp1_s3.modelo.CuentaDigital;
 import com.duoc.exp1_s3.modelo.Cliente;
 import com.duoc.exp1_s3.modelo.CuentaAhorro;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.io.*;
 import java.util.ArrayList;
 
 public class PersistenciaInfo {
 
-    private static final String ARCHIVO_CLIENTES = "clientes.csv";
-    private static final String ARCHIVO_SALDOS = "saldos.csv";
+    // Se define la ruta donde debe estar la carpeta que almacenara las bases de datos
+    private static final Path rutaBase = Paths.get(System.getProperty("user.dir"), "Exp1_S3", "Data");
+    private static final String ARCHIVO_CLIENTES = rutaBase.resolve("clientes.csv").toString();
+    private static final String ARCHIVO_SALDOS = rutaBase.resolve("saldos.csv").toString();
+
+    // Revisa si la carpeta existe, si no existiera la creara en la ruta indicada
+    static {
+        if (!Files.exists(rutaBase)) {
+            try {
+                Files.createDirectories(rutaBase);
+                System.out.println("Carpeta 'Data' creada exitosamente.");
+            } catch (IOException e) {
+                System.out.println("Error al crear la carpeta 'Data': " + e.getMessage());
+            }
+        }
+    }
 
     // Guarda un cliente en el archivo CSV
     public void guardarCliente(Cliente cliente) {
@@ -79,9 +96,9 @@ public class PersistenciaInfo {
                             cuenta = new CuentaCorriente(numCuentaCSV, 0);
                             break;
                         case "01":
-                            cuenta = new CuentaVista(numCuentaCSV, 0);
+                            cuenta = new CuentaDigital(numCuentaCSV, 0);
                         default:
-                            cuenta = new CuentaVista(numCuentaCSV, 0);
+                            cuenta = new CuentaDigital(numCuentaCSV, 0);
                         break;
                     }
 

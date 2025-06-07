@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.duoc.exp1_s3.modelo;
 
 public class CuentaAhorro extends CuentaBancaria {
@@ -25,9 +22,14 @@ public class CuentaAhorro extends CuentaBancaria {
     @Override
     protected String getTipoCuenta() {
         //? Depuración para confirmar que se ejecuta este método.
-        ////System.out.println("CuentaAhorro.getTipoCuenta() retornando \"02\"");
+        ////System.out.println("imprime 02 porfa");
 
         return "02";
+    }
+
+    @Override
+    public String getNombreTipoCuenta() {
+        return "Cuenta Ahorro";
     }
     
     @Override
