@@ -14,32 +14,41 @@ public class CuentaAhorro extends CuentaBancaria implements Operaciones, Interes
 
     //! Constructor con limite de giros, por ahora el limite es 3 y se reinicia en cada ejecución
     public CuentaAhorro(int limiteGiros) {
+
         super();
         this.girosRestantes = limiteGiros;
         //this.girosRealizados = 0;
+
     }
     
     // Constructor de restauración, en caso de recuperar datos guardados
     public CuentaAhorro(String numeroCuenta, int saldo, int girosRestantes) {
+
         super(numeroCuenta, saldo);
         this.girosRestantes = girosRestantes;
+
     }
     
     @Override
     protected String getTipoCuenta() {
+
         //? Depuración para confirmar que se ejecuta este método.
         ////System.out.println("imprime 02 porfa");
 
         return "02";
+
     }
 
     @Override
     public String getNombreTipoCuenta() {
+
         return "Cuenta Ahorro";
+
     }
     
     @Override
     public void depositar(int monto) {
+
         if(monto > 0) {
             saldo += monto;
             System.out.println("Depósito exitoso en Cuenta Ahorro. Saldo actual: $" + saldo);
@@ -48,12 +57,16 @@ public class CuentaAhorro extends CuentaBancaria implements Operaciones, Interes
             calcularInteres(monto);
     
         } else {
+
             System.out.println("El monto debe ser mayor a cero.");
+
         }
+
     }
     
     @Override
     public void girar(int monto) {
+
         //? Depuración para verificar funcionamiento
         ////System.out.println("Ejecutando giro en (2): " + this.getClass().getSimpleName());
         
@@ -66,27 +79,34 @@ public class CuentaAhorro extends CuentaBancaria implements Operaciones, Interes
                 System.out.println("Giro exitoso en Cuenta Ahorro. Saldo actual: $" + saldo 
                                    + ". Giros restantes: " + girosRestantes);
             } else {
+
                 System.out.println("No tiene giros restantes para efectuar la operación.");
             }
+
         } else {
+
             System.out.println("Monto inválido o saldo insuficiente en Cuenta Ahorro.");
         }
+
     }
 
     @Override
     public double calcularInteres(int monto) {
+
         double tasaDiaria = TASA_ANUAL / 365.0;
         double montoCompuesto = monto * Math.pow(1 + tasaDiaria, 30);
         double interes = montoCompuesto - monto;
 
         System.out.println("Interés generado a 30 días: $" + String.format("%.2f", interes));
         return interes;
+
     }
 
     //? (Opcional, sin uso de momento) Método para consultar la cantidad de giros restantes.
     public int getGirosRestantes() {
+
         return girosRestantes;
+
     }
 
 }
-

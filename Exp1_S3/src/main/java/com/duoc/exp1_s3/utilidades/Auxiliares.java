@@ -9,6 +9,7 @@ package com.duoc.exp1_s3.utilidades;
 public class Auxiliares {
 
     public static void mostrarMenu() {
+
         System.out.println("\n---- Menú Principal ----");
         System.out.println("1. Registrar Cliente");
         System.out.println("2. Ver Datos de Cliente");
@@ -17,17 +18,21 @@ public class Auxiliares {
         System.out.println("5. Consultar Saldo");
         System.out.println("6. Salir");
         System.out.print("Elige una opción: ");
+
     }
 
     public static void menuCuentas() {
+
         System.out.println("\n----- Selección de cuenta -----");
         System.out.println("1. Cuenta Vista");
         System.out.println("2. Cuenta Ahorro");
         System.out.println("3. Cuenta Corriente");
         System.out.println("Seleccione una de las opciones: ");
+
     }
 
     public static String formatearTelefono(String numero) {
+
         numero = numero.replaceAll("[^0-9]", ""); // Eliminamos caracteres no numéricos
 
         if (!numero.matches("\\d{8}")) {
@@ -36,9 +41,11 @@ public class Auxiliares {
         }
 
         return "+569" + numero; // Agrega el prefijo
+
     }
     
     public static String formatearRut(String rut) {
+
         int dashIndex = rut.indexOf('-');
         // Si no encuentra el guion, retorna el RUT tal como está
         if (dashIndex == -1) {
@@ -59,9 +66,22 @@ public class Auxiliares {
             if (contador == 3 && i != 0) {
                 formateado.insert(0, '.');
                 contador = 0;
+
             }
+
         }
         
         return formateado.toString() + digitoVerificador;
+
     }
+
+    public static String convertirMayusculas(String texto) {
+
+        if (texto != null) {
+            return texto.toUpperCase();
+        }
+        return "";
+        
+    }
+
 }

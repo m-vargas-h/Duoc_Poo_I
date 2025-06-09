@@ -2,11 +2,14 @@
 package com.duoc.exp1_s3.modelo;
 
 public class Cliente {
+
     private String rut;
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
-    private String domicilio;
+    private String calle;
+    private String numCalle;
+
     private String comuna;
     private String telefono;
     private CuentaBancaria cuenta;
@@ -14,12 +17,13 @@ public class Cliente {
 
     // Constructor
     public Cliente(String rut, String nombre, String apellidoPaterno, String apellidoMaterno,
-                   String domicilio, String comuna, String telefono, CuentaBancaria cuenta) {
+                   String calle,  String numCalle, String comuna, String telefono, CuentaBancaria cuenta) {
         this.rut = rut;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
-        this.domicilio = domicilio;
+        this.calle = calle;
+        this.numCalle = numCalle;
         this.comuna = comuna;
         this.telefono = telefono;
         this.cuenta = cuenta;
@@ -36,7 +40,7 @@ public class Cliente {
     public void mostrarDatos() {
         System.out.println("\nCliente: " + nombre + " " + apellidoPaterno + " " + apellidoMaterno);
         System.out.println("RUT: " + rut);
-        System.out.println("Domicilio: " + domicilio + ", " + comuna);
+        System.out.println("Domicilio: " + calle +  " #" + numCalle + ", " + comuna);
         System.out.println("Teléfono: " + telefono);
         if (cuenta != null) {
             cuenta.mostrarCuenta();
@@ -72,8 +76,12 @@ public class Cliente {
         return apellidoMaterno;
     }
 
-    public String getDomicilio() {
-        return domicilio;
+    public String getCalle() {
+        return calle;
+    }
+
+    public String getNumCalle(){
+        return numCalle;
     }
 
     public String getComuna() {
@@ -82,6 +90,14 @@ public class Cliente {
 
     public void setCuenta(CuentaBancaria cuenta) {
         this.cuenta = cuenta;
+    }
+
+    public void setCalle(String calle) {
+        this.calle = calle;
+    }
+
+    public void setNumeroCalle(String numCalle) {
+        this.numCalle = numCalle;
     }
 
 }

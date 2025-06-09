@@ -36,19 +36,23 @@ public class PersistenciaInfo {
     public void guardarCliente(Cliente cliente) {
 
         try (PrintWriter pw = new PrintWriter(new FileWriter(ARCHIVO_CLIENTES, true))) {
+
             pw.println(cliente.getRut() + "," +
                        cliente.getNombre() + "," +
                        cliente.getApellidoPaterno() + "," +
                        cliente.getApellidoMaterno() + "," +
-                       cliente.getDomicilio() + "," +
+                       cliente.getCalle() + "," +
+                       cliente.getNumCalle() + "," +
                        cliente.getComuna() + "," +
                        cliente.getTelefono() + "," +
                        cliente.getCuenta().getNumeroCuenta() + "," +
                        cliente.getCuenta().obtenerTipoCuenta());
 
         } catch (IOException e) {
+
             System.out.println("Error al guardar el cliente en el archivo CSV.");
         }
+
     }
 
     // Carga la lista de clientes desde el archivo CSV usando el constructor de restauración.
@@ -57,20 +61,22 @@ public class PersistenciaInfo {
         ArrayList<Cliente> clientes = new ArrayList<>();
         int maxCuenta = 0; // Para almacenar el número máximo de los últimos 5 dígitos.
         try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_CLIENTES))) {
+
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
 
-                if (datos.length >= 9) {
+                if (datos.length >= 10) {
                     String rut = datos[0];
                     String nombre = datos[1];
                     String apellidoPaterno = datos[2];
                     String apellidoMaterno = datos[3];
-                    String domicilio = datos[4];
-                    String comuna = datos[5];
-                    String telefono = datos[6];
-                    String numCuentaCSV = datos[7];
-                    String tipoCuenta = datos[8];
+                    String calle = datos[4];
+                    String numCalle = datos [5];
+                    String comuna = datos[6];
+                    String telefono = datos[7];
+                    String numCuentaCSV = datos[8];
+                    String tipoCuenta = datos[9];
 
                     // Actualizamos el contador global extrayendo los últimos 5 dígitos del número de cuenta.
                     if (numCuentaCSV.length() >= 9) {
@@ -88,6 +94,7 @@ public class PersistenciaInfo {
                     // Instancia la cuenta según el tipo, usando el campo 'tipoCuenta'
                     CuentaBancaria cuenta;
                     switch (tipoCuenta) {
+
                         case "02":
                             // Se deja por defecto 3 giros, los que se reiniciaran en cada ejecución.
                             cuenta = new CuentaAhorro(numCuentaCSV, 0, 3);
@@ -100,33 +107,41 @@ public class PersistenciaInfo {
                         default:
                             cuenta = new CuentaDigital(numCuentaCSV, 0);
                         break;
+
                     }
 
                     // Se crea el cliente usando el constructor que recibe la cuenta.
                     Cliente cliente = new Cliente(rut, nombre, apellidoPaterno, apellidoMaterno,
-                                                  domicilio, comuna, telefono, cuenta);
+                                                  calle, numCalle, comuna, telefono, cuenta);
                     clientes.add(cliente);
+
                 }
+
             }
+
         } catch (IOException e) {
             System.out.println("Error al cargar clientes desde el archivo CSV.");
         }
         // Actualizamos el contador global a maxCuenta + 1
         CuentaBancaria.setContadorCuenta(maxCuenta + 1);
         return clientes;
+
     }
 
     // Guarda el saldo de una cuenta en el archivo CSV
     public void guardarSaldoCuenta(CuentaBancaria cuenta) {
+
         try (PrintWriter pw = new PrintWriter(new FileWriter(ARCHIVO_SALDOS, true))) {
             pw.println(cuenta.getNumeroCuenta() + "," + cuenta.getSaldo());
         } catch (IOException e) {
             System.out.println("Error al guardar el saldo en el archivo CSV.");
         }
+
     }
 
     // Carga saldos desde el archivo CSV y los asigna a las cuentas correspondientes de una lista de clientes.
     public void cargarSaldos(ArrayList<Cliente> clientes) {
+
         java.util.HashMap<String, Integer> saldos = new java.util.HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_SALDOS))) {
             String linea;
@@ -146,6 +161,9 @@ public class PersistenciaInfo {
             if (saldos.containsKey(numCuenta)) {
                 cliente.getCuenta().setSaldo(saldos.get(numCuenta));
             }
+
         }
+
     }
+    
 }

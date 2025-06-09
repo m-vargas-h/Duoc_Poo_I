@@ -35,25 +35,30 @@ public class ServiciosCliente {
         
         // Captura de otros datos personales
         System.out.print("Ingrese Nombre: ");
-        String nombre = sc.nextLine();
+        String nombre = Auxiliares.convertirMayusculas(sc.nextLine());
         
         System.out.print("Ingrese Apellido Paterno: ");
-        String apellidoPaterno = sc.nextLine();
+        String apellidoPaterno = Auxiliares.convertirMayusculas(sc.nextLine());
         
         System.out.print("Ingrese Apellido Materno: ");
-        String apellidoMaterno = sc.nextLine();
+        String apellidoMaterno = Auxiliares.convertirMayusculas(sc.nextLine());
         
-        System.out.print("Ingrese Domicilio: ");
-        String domicilio = sc.nextLine();
+        System.out.print("Ingrese nombre de la calle: ");
+        String calle = Auxiliares.convertirMayusculas(sc.nextLine());
+
+        System.out.print("Ingrese número de la dirección: ");
+        String numCalle = sc.nextLine();
         
         System.out.print("Ingrese Comuna: ");
-        String comuna = sc.nextLine();
+        String comuna = Auxiliares.convertirMayusculas(sc.nextLine());
         
         // Solicitud y validación del teléfono
         String telefono;
         do {
+
             System.out.print("Ingrese teléfono (solo los 8 dígitos): ");
             telefono = Auxiliares.formatearTelefono(sc.nextLine());
+
         } while (telefono == null);
         
         // Seleccionar el tipo de cuenta a crear
@@ -63,6 +68,7 @@ public class ServiciosCliente {
         
         CuentaBancaria cuenta;
         switch (opcionCuenta) {
+
             case 1:
                 cuenta = new CuentaDigital();
                 break;
@@ -76,15 +82,18 @@ public class ServiciosCliente {
             default:
                 System.out.println("Opción inválida. Se asigna Cuenta Vista por defecto.");
                 cuenta = new CuentaDigital();
+
         }
         
         // Creación del objeto Cliente utilizando la cuenta construida
-        Cliente nuevoCliente = new Cliente(rut, nombre, apellidoPaterno, apellidoMaterno, domicilio, comuna, 
+        Cliente nuevoCliente = new Cliente(rut, nombre, apellidoPaterno, apellidoMaterno, calle, numCalle, comuna, 
                                            telefono, cuenta);
         
         System.out.println("Cuenta generada: " + nuevoCliente.getCuenta().getNumeroCuenta());
         System.out.println("\n¡Cliente registrado exitosamente!\n");
         
         return nuevoCliente;
+        
     }
+    
 }

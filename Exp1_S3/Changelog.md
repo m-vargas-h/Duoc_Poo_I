@@ -1,6 +1,10 @@
 # Historial de cambios
 
-## 07/06/2025 - Integración de interfaces y ampliación de funciones
+## 09/06/2025 - Correcciones menores 
+- Se separó la la dirección en calle y numero para mejorar la uniformidad al almacenar la información. Ademas toda la información guardada de tipo texto ahora se almacena en mayúsculas, esto para implementar funciones de búsqueda de forma mas efectiva en posibles actualizaciones.
+- En la carpeta `Data` se proporciona una pequeña base de usuarios y transacciones ya listas para poder hacer pruebas.
+
+### 07/06/2025 - Integración de interfaces y ampliación de funciones
 - Se implementaron las siguientes interfaces:
     - `Interés`: Declara el método `CalcularInteres` para que puedan ser sobrescrito por las subclases que lo necesiten.
     - `Operaciones`: Declara los métodos `Girar` y `Depositar` para que las subclases puedan utilizarlos.

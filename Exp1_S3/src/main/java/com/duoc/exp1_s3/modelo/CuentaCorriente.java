@@ -10,36 +10,48 @@ public class CuentaCorriente extends CuentaBancaria implements Operaciones, Inte
     private static final double TASA_SOBREGIRO = 0.07;  // Tasa de interés para el sobregiro (7%)
 
     public CuentaCorriente() {
+
         super();
+
     }
     
     public CuentaCorriente(int saldoInicial) {
+
         super(saldoInicial);
+
     }
 
     // Constructor de restauración: se recibe el número de cuenta guardado.
     public CuentaCorriente(String numeroCuenta, int saldo) {
+
         super(numeroCuenta, saldo);
+
     }
     
     @Override
     protected String getTipoCuenta() {
+
         return "03";
+
     }
 
     @Override
     public String getNombreTipoCuenta() {
+
         return "Cuenta Corriente";
+
     }
     
     @Override
     public void depositar(int monto) {
+
         if (monto > 0) {
             saldo += monto;
             System.out.println("Depósito exitoso en Cuenta Corriente. Saldo actual: $" + saldo);
         } else {
             System.out.println("El monto debe ser mayor a cero.");
         }
+
     }
 
     @Override
@@ -85,14 +97,14 @@ public class CuentaCorriente extends CuentaBancaria implements Operaciones, Inte
 
     @Override
     public double calcularInteres(int monto) {
+
         if (monto > 0) {
             double interes = monto * TASA_SOBREGIRO;
             return interes;
         }
+
         return 0;
+
     }
-
-
-
 
 }
