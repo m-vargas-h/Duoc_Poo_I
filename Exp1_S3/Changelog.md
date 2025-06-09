@@ -1,6 +1,9 @@
 # Historial de cambios
 
-## 09/06/2025 - Correcciones menores 
+## 09/06/2025 - Actualización fichero Readme
+- Se actualiza el fichero para representar la nueva estructura del proyecto.
+
+### 08/06/2025 - Correcciones menores 
 - Se separó la la dirección en calle y numero para mejorar la uniformidad al almacenar la información. Ademas toda la información guardada de tipo texto ahora se almacena en mayúsculas, esto para implementar funciones de búsqueda de forma mas efectiva en posibles actualizaciones.
 - En la carpeta `Data` se proporciona una pequeña base de usuarios y transacciones ya listas para poder hacer pruebas.
 

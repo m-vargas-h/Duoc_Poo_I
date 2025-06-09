@@ -45,6 +45,11 @@ Este proyecto es una **implementación orientada a objetos de un sistema bancari
 
 El proyecto está organizado en los siguientes paquetes y clases:
 
+### `interfaces`
+Contiene las siguientes interfaces:
+- **Interes.java**: contiene el método abstracto `calcularInteres` el cual es utilizados por las subclases `CuentaAhorro` y `CuentaCorriente` para sus cálculos correspondientes.
+- **Operaciones.java**: Contiene los métodos abstractos `depositar` y `girar` que son implementados por cada subclase del sistema.
+
 ### `modelo`
 Define las entidades clave del sistema:
 - **Cliente.java**: Representa a un cliente bancario, con sus datos personales y una cuenta asociada.
