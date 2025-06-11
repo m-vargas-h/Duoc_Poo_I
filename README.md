@@ -19,9 +19,9 @@ En esta experiencia se aprenderá a desarrollar programas Java utilizando concep
 
 | Semana   | Entrega    | Descripción                                  |
 |----------|------------|----------------------------------------------|
-| Semana 4 |  | 
-| Semana 5 |  | 
-| Semana 6 |  | 
+| Semana 4 | 16/06/2025 | Excepciones try/catch
+| Semana 5 | 23/06/2025 | Colecciones de objetos
+| Semana 6 | 30/06/2025 | Entradas y salidas (I/O) y manejo de archivos
 
 ### 📈 Experiencia 3: Optimizando código con Thread
 En esta experiencia se aprenderá a implementar técnicas avanzadas de programación orientada a objetos (multihilos y sincronización de colecciones) para responder requerimientos específicos.
@@ -42,4 +42,3 @@ En esta experiencia se aprenderá a implementar técnicas avanzadas de programac
 - **Java JDK:** Versión 8 o superior.
 - **Maven:** Para compilar y ejecutar el proyecto.
 - **NetBeans / IDE:** Opcionalmente puedes usar NetBeans, Eclipse u otro IDE compatible.
-
