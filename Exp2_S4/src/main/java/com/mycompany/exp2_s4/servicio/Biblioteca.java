@@ -83,13 +83,20 @@ public class Biblioteca {
     public void prestarLibro(String usuarioId, String titulo)
             throws UsuarioNoEncontradoException,
                    LibroNoEncontradoException,
-                   LibroNoDisponibleException {
-        Usuario  u = buscarUsuario(usuarioId);
-        Libro    l = buscarLibro(titulo);
+                   LibroNoDisponibleException,
+                   MaximoPrestamoException {
+        Usuario u = buscarUsuario(usuarioId);
 
+        // <— nueva validación de tope 3
+        if (u.getLibrosPrestados().size() >= 3) {
+            throw new MaximoPrestamoException("Ha alcanzado el máximo de 3 préstamos. Devuelva uno primero.");
+        }
+
+        Libro l = buscarLibro(titulo);
         l.prestar();           // puede lanzar LibroNoDisponibleException
         u.agregarPrestamo(l);
     }
+
 
     public void devolverLibro(String usuarioId, String titulo)
             throws UsuarioNoEncontradoException,

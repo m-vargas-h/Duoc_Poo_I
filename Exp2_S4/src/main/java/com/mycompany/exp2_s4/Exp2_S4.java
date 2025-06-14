@@ -1,7 +1,6 @@
 
 package com.mycompany.exp2_s4;
 
-import com.mycompany.exp2_s4.persistencia.PersistenciaInfo;
 import com.mycompany.exp2_s4.servicio.ServiciosBiblioteca;
 import com.mycompany.exp2_s4.servicio.Biblioteca;
 import com.mycompany.exp2_s4.ui.*;

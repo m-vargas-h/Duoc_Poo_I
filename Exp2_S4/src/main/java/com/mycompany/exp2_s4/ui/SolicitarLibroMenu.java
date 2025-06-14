@@ -1,10 +1,9 @@
 package com.mycompany.exp2_s4.ui;
 
 import com.mycompany.exp2_s4.servicio.ServiciosBiblioteca;
-import com.mycompany.exp2_s4.excepcion.UsuarioNoEncontradoException;
-import com.mycompany.exp2_s4.excepcion.LibroNoEncontradoException;
-import com.mycompany.exp2_s4.excepcion.LibroNoDisponibleException;
+import com.mycompany.exp2_s4.excepcion.*;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -29,10 +28,15 @@ public class SolicitarLibroMenu {
         try {
             svc.solicitarLibro(usuarioId, titulo);
             System.out.println("Préstamo realizado con éxito.");
+        } catch (MaximoPrestamoException e) {
+            System.err.println("Límite alcanzado: " + e.getMessage());
         } catch (UsuarioNoEncontradoException |
-                 LibroNoEncontradoException |
-                 LibroNoDisponibleException e) {
+                LibroNoEncontradoException |
+                LibroNoDisponibleException e) {
             System.err.println("ERROR: " + e.getMessage());
+        } catch (IOException io) {
+            System.err.println("ERROR I/O: " + io.getMessage());
         }
+
     }
 }

@@ -6,6 +6,7 @@ import com.mycompany.exp2_s4.excepcion.LibroNoEncontradoException;
 import com.mycompany.exp2_s4.excepcion.CopiaInvalidaException;
 import com.mycompany.exp2_s4.excepcion.LibroNoPrestadoException;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -35,6 +36,9 @@ public class DevolverLibroMenu {
                  CopiaInvalidaException |
                  LibroNoPrestadoException e) {
             System.err.println("ERROR: " + e.getMessage());
+        } catch (IOException io) {
+            System.err.println("ERROR de E/S al actualizar stock: " + io.getMessage());
         }
+
     }
 }

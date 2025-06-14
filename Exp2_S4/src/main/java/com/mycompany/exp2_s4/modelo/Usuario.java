@@ -2,7 +2,9 @@
 package com.mycompany.exp2_s4.modelo;
 
 import com.mycompany.exp2_s4.excepcion.LibroNoPrestadoException;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Usuario {
@@ -25,6 +27,7 @@ public class Usuario {
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -51,7 +54,7 @@ public class Usuario {
     }
 
     public List<Libro> getLibrosPrestados() {
-        return new ArrayList<>(librosPrestados);
+        return Collections.unmodifiableList(librosPrestados);
     }
 
     // Registra un préstamo (Biblioteca ya llamó a libro.prestar())
@@ -64,7 +67,8 @@ public class Usuario {
         boolean removed = librosPrestados.remove(libro);
         if (!removed) {
             throw new LibroNoPrestadoException(
-                "Usuario '" + nombre + "' no tiene prestado '" + libro.getNombre() + "'."
+                "Usuario '" + nombre + "' no tiene prestado '" 
+                + libro.getNombre() + "'."
             );
         }
     }
@@ -76,4 +80,5 @@ public class Usuario {
             id, nombre, carrera, sede, librosPrestados.size()
         );
     }
+
 }

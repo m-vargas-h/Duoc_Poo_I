@@ -23,31 +23,45 @@ public class ServiciosBiblioteca {
     public void cargarDatos() throws IOException {
         PersistenciaInfo.cargarLibros(biblioteca);
         PersistenciaInfo.cargarUsuarios(biblioteca);
+        PersistenciaInfo.cargarPrestamos(biblioteca);
+
     }
 
-    // Delegas en Biblioteca las operaciones, lanzando/gestionando excepciones
-    public void registrarUsuario(String id, String nombre,
-                                 String carrera, String sede)
-            throws UsuarioYaExisteException {
+    // ServiciosBiblioteca.java
+    public void registrarUsuario(String id, String nombre, String carrera, String sede) throws UsuarioYaExisteException, IOException {
         if (biblioteca.existeUsuario(id)) {
             throw new UsuarioYaExisteException("Usuario con ID " + id + " ya existe.");
         }
-        biblioteca.agregarUsuario(new Usuario(id, nombre, carrera, sede));
+        Usuario nuevo = new Usuario(id, nombre, carrera, sede);
+        biblioteca.agregarUsuario(nuevo);
+        // aquí añades la persistencia
+        PersistenciaInfo.guardarUsuario(nuevo);
     }
 
     public void solicitarLibro(String usuarioId, String titulo)
             throws UsuarioNoEncontradoException,
                    LibroNoEncontradoException,
-                   LibroNoDisponibleException {
+                   LibroNoDisponibleException,
+                   MaximoPrestamoException,
+                   IOException {
         biblioteca.prestarLibro(usuarioId, titulo);
+        // reescribe libros.csv con las nuevas copias disponibles
+        PersistenciaInfo.guardarLibros(biblioteca.getCatalogo());
+        PersistenciaInfo.guardarPrestamos(biblioteca.getUsuarios());
+
+
     }
 
     public void devolverLibro(String usuarioId, String titulo)
             throws UsuarioNoEncontradoException,
                    LibroNoEncontradoException,
                    CopiaInvalidaException,
-                   LibroNoPrestadoException {
+                   LibroNoPrestadoException,
+                   IOException {
         biblioteca.devolverLibro(usuarioId, titulo);
+        PersistenciaInfo.guardarLibros(biblioteca.getCatalogo());
+        PersistenciaInfo.guardarPrestamos(biblioteca.getUsuarios());
+
     }
 
     public String consultarLibro(String titulo) throws LibroNoEncontradoException {
