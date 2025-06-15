@@ -12,7 +12,7 @@ public class Libro {
     private int totalCopias;
     private int copiasDisponibles;
 
-    // Constructor
+    // Constructor para agregar un nuevo libro
     public Libro(String nombre, String autor, String clasificacion, String editorial, int totalCopias) {
         this.nombre            = nombre;
         this.autor             = autor;
@@ -20,6 +20,18 @@ public class Libro {
         this.editorial         = editorial;
         this.totalCopias       = Math.max(0, totalCopias);
         this.copiasDisponibles = this.totalCopias;
+        this.copiasDisponibles = this.totalCopias; // Inicialmente todas las copias están disponibles
+    }
+
+    // Constructor para cargar un libro desde persistencia, ya con su estado actual
+    public Libro(String nombre, String autor, String clasificacion, String editorial, int totalCopias, int copiasDisponibles) {
+        this.nombre = nombre;
+        this.autor = autor;
+        this.clasificacion = clasificacion;
+        this.editorial = editorial;
+        this.totalCopias = Math.max(0, totalCopias);
+        // Aseguramos que las copiasDisponibles no excedan el total
+        this.copiasDisponibles = (copiasDisponibles <= this.totalCopias) ? copiasDisponibles : this.totalCopias;
     }
 
     // Getters y setters
@@ -54,6 +66,7 @@ public class Libro {
     public int getTotalCopias() {
         return totalCopias;
     }
+
     public void setTotalCopias(int totalCopias) {
         this.totalCopias = Math.max(0, totalCopias);
         // Ajustamos también las disponibles para no exceder el total
@@ -98,5 +111,18 @@ public class Libro {
         return String.format(
             "Libro[nombre='%s', autor='%s', clasificación='%s', editorial='%s', totalCopias=%d, disponibles=%d]",
             nombre, autor, clasificacion, editorial, totalCopias, copiasDisponibles);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Libro otro = (Libro) obj;
+        return this.nombre.equalsIgnoreCase(otro.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return nombre.toLowerCase().hashCode();
     }
 }

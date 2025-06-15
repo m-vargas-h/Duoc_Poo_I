@@ -1,32 +1,62 @@
 package com.mycompany.exp2_s4.ui;
 
+import com.mycompany.exp2_s4.modelo.Libro;
 import com.mycompany.exp2_s4.servicio.ServiciosBiblioteca;
-import com.mycompany.exp2_s4.excepcion.LibroNoEncontradoException;
-
+import java.util.List;
 import java.util.Scanner;
 
-/**
- * Submenú para consultar la disponibilidad de un libro.
- */
 public class ConsultarLibroMenu {
-    private ServiciosBiblioteca svc;
-    private Scanner sc;
+
+    private final Scanner sc;
+    private final ServiciosBiblioteca svc;
 
     public ConsultarLibroMenu(ServiciosBiblioteca svc, Scanner sc) {
         this.svc = svc;
-        this.sc  = sc;
+        this.sc = sc;
     }
 
     public void mostrar() {
         System.out.println("\n--- Consultar Libro ---");
-        System.out.print("Título del libro: ");
-        String titulo = sc.nextLine().trim();
+        System.out.println("1. Buscar libro por nombre");
+        System.out.println("2. Listar todos los libros");
+        System.out.print("Seleccione una opción: ");
+        String opcion = sc.nextLine().trim();
 
+        switch (opcion) {
+            case "1":
+                buscarLibroPorNombre();
+                break;
+            case "2":
+                listarTodosLosLibros();
+                break;
+            default:
+                System.err.println("Opción no válida.");
+        }
+    }
+
+    private void buscarLibroPorNombre() {
+        System.out.print("Ingrese el nombre del libro: ");
+        String nombre = sc.nextLine().trim();
         try {
-            String estado = svc.consultarLibro(titulo);
-            System.out.printf("Estado de '%s': %s%n", titulo, estado);
-        } catch (LibroNoEncontradoException e) {
-            System.err.println("ERROR: " + e.getMessage());
+            // Se utiliza el método de consulta actual, que devuelve un String.
+            String resultado = svc.consultarLibro(nombre);
+            System.out.println("\nResultado de la búsqueda:");
+            System.out.println(resultado);
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    private void listarTodosLosLibros() {
+        System.out.println("\nLista completa de libros:");
+        List<Libro> libros = svc.listarLibros();
+        if (libros.isEmpty()) {
+            System.out.println("No hay libros en el catálogo.");
+        } else {
+            for (Libro libro : libros) {
+                System.out.printf("Nombre: %s, Autor: %s, Disponibles: %d%n",
+                        libro.getNombre(), libro.getAutor(), libro.getCopiasDisponibles());
+            }
         }
     }
 }

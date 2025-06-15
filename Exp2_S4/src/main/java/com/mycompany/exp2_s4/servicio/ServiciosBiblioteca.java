@@ -49,7 +49,6 @@ public class ServiciosBiblioteca {
         PersistenciaInfo.guardarLibros(biblioteca.getCatalogo());
         PersistenciaInfo.guardarPrestamos(biblioteca.getUsuarios());
 
-
     }
 
     public void devolverLibro(String usuarioId, String titulo)
@@ -71,6 +70,10 @@ public class ServiciosBiblioteca {
              : "No disponible";
     }
 
+    public Usuario consultarUsuario(String id) throws UsuarioNoEncontradoException {
+        return biblioteca.buscarUsuario(id);
+    }
+
     // Si en algún punto necesitas pasar la instancia de Biblioteca a PersistenciaInfo...
     public Biblioteca getBiblioteca() {
         return biblioteca;
@@ -80,6 +83,7 @@ public class ServiciosBiblioteca {
     public List<Libro> listarLibros() {
         return biblioteca.getCatalogo();
     }
+
     public Map<String,Usuario> listarUsuarios() {
         return biblioteca.getUsuarios();
     }

@@ -37,29 +37,40 @@ public class PersistenciaInfo {
         }
     }
 
-    private PersistenciaInfo() { /* no instanciable */ }
+    ////private PersistenciaInfo() { /* no instanciable */ }
 
     public static void cargarLibros(Biblioteca bib) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_LIBROS.toFile()))) {
-            String linea = br.readLine(); // salto cabecera
-            if (linea == null) throw new IOException("CSV vacío: " + ARCHIVO_LIBROS);
-
+            String linea = br.readLine(); // Se salta la cabecera
+            if (linea == null) {
+                throw new IOException("CSV vacío: " + ARCHIVO_LIBROS);
+            }
+        
             while ((linea = br.readLine()) != null) {
                 StringTokenizer st = new StringTokenizer(linea, ",");
-                if (st.countTokens() != 5) continue;
+                // Se espera exactamente 6 tokens: nombre, autor, clasificacion, editorial, totalCopias, copiasDisponibles
+                if (st.countTokens() != 6) {
+                    System.out.println("Formato de línea inválido: " + linea);
+                    continue;
+                }
+            
                 String nombre        = st.nextToken().trim();
                 String autor         = st.nextToken().trim();
                 String clasificacion = st.nextToken().trim();
                 String editorial     = st.nextToken().trim();
                 int totalCopias;
+                int copiasDisponibles;
+            
                 try {
                     totalCopias = Integer.parseInt(st.nextToken().trim());
+                    copiasDisponibles = Integer.parseInt(st.nextToken().trim());
                 } catch (NumberFormatException ex) {
+                    System.out.println("Error: no se pudo convertir el valor numérico de la línea: \"" + linea + "\".");
                     continue;
                 }
-                bib.agregarLibro(new Libro(
-                    nombre, autor, clasificacion, editorial, totalCopias
-                ));
+            
+                // Agrega el libro reconstruido con la información completa a la biblioteca
+                bib.agregarLibro(new Libro(nombre, autor, clasificacion, editorial, totalCopias, copiasDisponibles));
             }
         }
     }
@@ -124,20 +135,21 @@ public class PersistenciaInfo {
 
     // PersistenciaInfo.java (al final de la clase)
     public static void guardarLibros(List<Libro> catalogo) throws IOException {
-        // Asegura carpeta y cabecera
         if (Files.notExists(rutaBase)) {
             Files.createDirectories(rutaBase);
         }
         try (PrintWriter pw = new PrintWriter(ARCHIVO_LIBROS.toFile())) {
-            // Cabecera igual que en cargarLibros
-            pw.println("nombre,autor,clasificacion,editorial,totalCopias");
-            // Por cada libro, grabo la copia disponible actual
+            // Actualizamos la cabecera para incluir ambas columnas
+            pw.println("nombre,autor,clasificacion,editorial,totalCopias,copiasDisponibles");
+
+            // Por cada libro, grabamos los datos completos
             for (Libro l : catalogo) {
-                pw.printf("%s,%s,%s,%s,%d%n",
+                pw.printf("%s,%s,%s,%s,%d,%d%n",
                         l.getNombre(),
                         l.getAutor(),
                         l.getClasificacion(),
                         l.getEditorial(),
+                        l.getTotalCopias(),
                         l.getCopiasDisponibles());
             }
         }
@@ -149,8 +161,9 @@ public class PersistenciaInfo {
         try (PrintWriter pw = new PrintWriter(ARCHIVO_PRESTAMOS.toFile())) {
             pw.println("usuarioId,nombreLibro,fechaPrestamo");
             for (Usuario u : usuarios.values()) {
+                // Se asume que u.getLibrosPrestados() contiene únicamente los préstamos activos
                 for (Libro l : u.getLibrosPrestados()) {
-                    String fecha = Instant.now().toString(); // o la que guardes al prestar
+                    String fecha = Instant.now().toString(); // o la fecha original del préstamo
                     pw.printf("%s,%s,%s%n", u.getId(), l.getNombre(), fecha);
                 }
             }
@@ -170,11 +183,11 @@ public class PersistenciaInfo {
                     Usuario u = bib.buscarUsuario(usuarioId);
                     Libro l   = bib.buscarLibro(libroNombre);
                     // Reducir stock sin duplicar la línea en el CSV de libros
-                    l.prestar();
+                    //!l.prestar(); revisar si se debe hacer aquí
                     u.agregarPrestamo(l);
                 } catch (Exception e) {
                     // Si algo falla (usuario o libro no existe), lo ignoramos o lo registramos
-                    System.err.println("WARN al cargar préstamo: " + e.getMessage());
+                    System.err.println("Error al cargar préstamo: " + e.getMessage());
                 }
             }
         }

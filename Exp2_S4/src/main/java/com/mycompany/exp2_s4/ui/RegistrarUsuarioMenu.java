@@ -1,32 +1,65 @@
 package com.mycompany.exp2_s4.ui;
 
-import com.mycompany.exp2_s4.servicio.Biblioteca;
-import com.mycompany.exp2_s4.servicio.ServiciosBiblioteca;
 import com.mycompany.exp2_s4.excepcion.UsuarioYaExisteException;
-
-import java.util.Scanner;
+import com.mycompany.exp2_s4.servicio.ServiciosBiblioteca;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class RegistrarUsuarioMenu {
-    Biblioteca bib = new Biblioteca();  
-    private ServiciosBiblioteca svc;
-    private Scanner sc;
+
+    private final ServiciosBiblioteca svc;
+    private final Scanner sc;
 
     public RegistrarUsuarioMenu(ServiciosBiblioteca svc, Scanner sc) {
         this.svc = svc;
-        this.sc  = sc;
+        this.sc = sc;
     }
 
     public void mostrar() {
         System.out.println("\n--- Registrar Usuario ---");
-        System.out.print("ID: ");
+        System.out.print("Ingrese su ID (RUT, sin puntos y con guion, ej. 19133090-0): ");
         String id = sc.nextLine().trim();
-        System.out.print("Nombre: ");
+
+        System.out.print("Nombre completo: ");
         String nombre = sc.nextLine().trim();
-        System.out.print("Carrera: ");
-        String carrera = sc.nextLine().trim();
-        System.out.print("Sede: ");
-        String sede = sc.nextLine().trim();
+
+        // Lista predefinida de carreras
+        String[] carreras = {
+            "ANALISTA PROGRAMADOR COMPUTACIONAL",
+            "INGENIERIA COMERCIAL",
+            "ADEMINISTRACION DE EMPRESAS",
+            "ADMINISTRACION PUBLICA",
+            "INGENIERIA EN CONSTRUCCION",
+            "INGENIERIA CIVIL INDUSTRIAL",
+        };
+        System.out.println("\nSeleccione su carrera:");
+        for (int i = 0; i < carreras.length; i++) {
+            System.out.println((i + 1) + ". " + carreras[i]);
+        }
+        int seleccionCarrera = Integer.parseInt(sc.nextLine());
+        if(seleccionCarrera < 1 || seleccionCarrera > carreras.length) {
+            System.err.println("Selección inválida para carrera.");
+            return;
+        }
+        String carrera = carreras[seleccionCarrera - 1];
+
+        // Lista predefinida de sedes
+        String[] sedes = {
+            "SEDE MAIPU",
+            "SEDE PUERTO MONTT",
+            "SEDE ALAMEDA",
+            "CAMPUS VIRTUAL",
+        };
+        System.out.println("\nSeleccione la sede:");
+        for (int i = 0; i < sedes.length; i++) {
+            System.out.println((i + 1) + ". " + sedes[i]);
+        }
+        int seleccionSede = Integer.parseInt(sc.nextLine());
+        if(seleccionSede < 1 || seleccionSede > sedes.length) {
+            System.err.println("Selección inválida para sede.");
+            return;
+        }
+        String sede = sedes[seleccionSede - 1];
 
         try {
             svc.registrarUsuario(id, nombre, carrera, sede);

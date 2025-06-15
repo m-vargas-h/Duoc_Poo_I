@@ -23,7 +23,7 @@ public class DevolverLibroMenu {
 
     public void mostrar() {
         System.out.println("\n--- Devolver Libro ---");
-        System.out.print("ID de usuario: ");
+        System.out.print("ID de usuario (Su rut tal como lo registro): ");
         String usuarioId = sc.nextLine().trim();
         System.out.print("Título del libro: ");
         String titulo    = sc.nextLine().trim();

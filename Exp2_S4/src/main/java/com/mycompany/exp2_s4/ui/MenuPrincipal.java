@@ -15,14 +15,15 @@ public class MenuPrincipal {
 
     public void iniciar() {
         int opcion = 0;
-        while (opcion != 5) {
+        while (opcion != 6) {
             // 1) Mostrar menú
             System.out.println("\n===== MENÚ BIBLIOTECA =====");
-            System.out.println("1) Registrar usuario");
-            System.out.println("2) Solicitar libro");
-            System.out.println("3) Devolver libro");
-            System.out.println("4) Consultar libro");
-            System.out.println("5) Salir");
+            System.out.println("1. Registrar usuario");
+            System.out.println("2. Solicitar libro");
+            System.out.println("3. Devolver libro");
+            System.out.println("4. Consultar libro");
+            System.out.println("5. Consultar estado usuario");
+            System.out.println("6. Salir");
             System.out.print("Selecciona opción: ");
 
             // 2) Leer opción
@@ -48,6 +49,9 @@ public class MenuPrincipal {
                     new ConsultarLibroMenu(svc, sc).mostrar();
                     break;
                 case 5:
+                    new ConsultarEstadoUsuarioMenu(svc, sc).mostrar();
+                    break;  
+                case 6:
                     System.out.println("¡Hasta luego!");
                     break;
                 default:

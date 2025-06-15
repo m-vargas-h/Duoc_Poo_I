@@ -106,7 +106,9 @@ public class Biblioteca {
         Usuario  u = buscarUsuario(usuarioId);
         Libro    l = buscarLibro(titulo);
 
+        System.out.println("Antes de devolver, copias disponibles de '" + l.getNombre() + "': " + l.getCopiasDisponibles());
         l.devolver();          // puede lanzar CopiaInvalidaException
+        System.out.println("Después de devolver, copias disponibles de '" + l.getNombre() + "': " + l.getCopiasDisponibles());
         u.devolverPrestamo(l);
     }
 }
