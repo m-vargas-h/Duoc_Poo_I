@@ -1,6 +1,10 @@
 # Historial de cambios
 
-## 15/06/2025 - Correcciones menores en la visualización de información
+## 16/06/2025 - Actualización Readme
+- Actualización fichero `Readme.md` con información sobre la estructura y funcionamiento del programa.
+- Correcciones menores en textos.
+
+### 15/06/2025 - Correcciones menores en la visualización de información
 - Se modifico el método `Mostrar()` de la clase `ConsultarEstadoUsuarioMenu` para que ahora al consultar la información también se despliegue una lista con títulos que tiene en préstamo vigente.
 - Se modifico la devolución de libros en la clase `DevolverLibroMenu` para que ahora al ingresar el Id de usuario le muestre una lista con los títulos que tiene bajo préstamo, de esta forma es mas fácil indicar que libro se quiere devolver y evitamos errores por nombres mal escritos.
 

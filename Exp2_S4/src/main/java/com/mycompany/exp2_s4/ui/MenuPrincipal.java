@@ -17,8 +17,13 @@ public class MenuPrincipal {
         int opcion = 0;
         while (opcion != 6) {
 
+            // Saludo de bienvenida
+            System.out.println("¡Bienvenido a la Biblioteca!");
+            System.out.println("Por favor, selecciona una opción del menú:");
+
+
             // Mostrar menú
-            System.out.println("\n===== MENÚ BIBLIOTECA =====");
+            System.out.println("\n----- MENÚ BIBLIOTECA -----");
             System.out.println("1. Registrar usuario");
             System.out.println("2. Solicitar libro");
             System.out.println("3. Devolver libro");
