@@ -6,6 +6,7 @@ import com.mycompany.exp2_s4.modelo.Usuario;
 import com.mycompany.exp2_s4.servicio.ServiciosBiblioteca;
 import java.util.Scanner;
 
+// Submenu para consultar el estado de un usuario
 public class ConsultarEstadoUsuarioMenu {
 
     private final Scanner sc;
@@ -30,12 +31,16 @@ public class ConsultarEstadoUsuarioMenu {
             System.out.println("Nombre: " + usuario.getNombre());
             System.out.println("Carrera: " + usuario.getCarrera());
             System.out.println("Sede: " + usuario.getSede());
+
             System.out.println("\nLibros actualmente en préstamo:");
+            
+            // Verificamos si el usuario tiene libros prestados
             if (usuario.getLibrosPrestados().isEmpty()) {
                 System.out.println("No tiene libros en préstamo.");
             } else {
+                // Listamos los libros prestados
                 for (Libro libro : usuario.getLibrosPrestados()) {
-                    System.out.println(libro);
+                    System.out.println("- " + libro.getNombre());
                 }
             }
         } catch (UsuarioNoEncontradoException e) {

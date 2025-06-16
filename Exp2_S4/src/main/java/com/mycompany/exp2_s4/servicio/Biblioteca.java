@@ -87,7 +87,7 @@ public class Biblioteca {
                    MaximoPrestamoException {
         Usuario u = buscarUsuario(usuarioId);
 
-        // <— nueva validación de tope 3
+        // Verificar si el usuario ya tiene 3 libros prestados
         if (u.getLibrosPrestados().size() >= 3) {
             throw new MaximoPrestamoException("Ha alcanzado el máximo de 3 préstamos. Devuelva uno primero.");
         }
@@ -106,9 +106,11 @@ public class Biblioteca {
         Usuario  u = buscarUsuario(usuarioId);
         Libro    l = buscarLibro(titulo);
 
-        System.out.println("Antes de devolver, copias disponibles de '" + l.getNombre() + "': " + l.getCopiasDisponibles());
+        //? [DEBUG] Verificar el estado del libro antes de devolver
+        //System.out.println("Antes de devolver, copias disponibles de '" + l.getNombre() + "': " + l.getCopiasDisponibles());
         l.devolver();          // puede lanzar CopiaInvalidaException
-        System.out.println("Después de devolver, copias disponibles de '" + l.getNombre() + "': " + l.getCopiasDisponibles());
+        //? [DEBUG] Verificar el estado del libro después de devolver
+        //System.out.println("Después de devolver, copias disponibles de '" + l.getNombre() + "': " + l.getCopiasDisponibles());
         u.devolverPrestamo(l);
     }
 }

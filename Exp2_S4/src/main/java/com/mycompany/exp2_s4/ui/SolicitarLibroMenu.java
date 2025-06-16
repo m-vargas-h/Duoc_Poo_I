@@ -6,10 +6,9 @@ import com.mycompany.exp2_s4.excepcion.*;
 import java.io.IOException;
 import java.util.Scanner;
 
-/**
- * Submenú para solicitar (prestar) un libro.
- */
+// Submenu para solicitar un libro
 public class SolicitarLibroMenu {
+
     private ServiciosBiblioteca svc;
     private Scanner sc;
 
@@ -19,12 +18,13 @@ public class SolicitarLibroMenu {
     }
 
     public void mostrar() {
-        System.out.println("\n--- Solicitar Libro ---");
+        System.out.println("\n----- Solicitar Libro -----");
         System.out.print("ID de usuario (Su rut tal como lo registro): ");
         String usuarioId = sc.nextLine().trim();
         System.out.print("Título del libro: ");
         String titulo    = sc.nextLine().trim();
 
+        // Intentar solicitar el libro
         try {
             svc.solicitarLibro(usuarioId, titulo);
             System.out.println("Préstamo realizado con éxito.");

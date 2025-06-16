@@ -1,6 +1,10 @@
 # Historial de cambios
 
-## 15/06/2025 - Corrección de persistencia y mejoras en UI
+## 15/06/2025 - Correcciones menores en la visualización de información
+- Se modifico el método `Mostrar()` de la clase `ConsultarEstadoUsuarioMenu` para que ahora al consultar la información también se despliegue una lista con títulos que tiene en préstamo vigente.
+- Se modifico la devolución de libros en la clase `DevolverLibroMenu` para que ahora al ingresar el Id de usuario le muestre una lista con los títulos que tiene bajo préstamo, de esta forma es mas fácil indicar que libro se quiere devolver y evitamos errores por nombres mal escritos.
+
+### 15/06/2025 - Corrección de persistencia y mejoras en UI
 - Se corrige error que descontaba los libros cada vez que se iniciaba la aplicación duplicando el préstamo. Ahora el sistema no actualiza al cargar los prestamos por lo que no duplica información, las existencias se escriben al momento de realizar un préstamo/devolución.
 - Se paso de usar un ID genérico para los usuarios a utilizar el rut, de esta forma no habrá id duplicados y es mas fácil asociar cualquier préstamo/devolución al usuario correspondiente. Ademas el rut es validado para asegurar que cumpla con el formato establecido.
 - Ahora la carrera y sede son elegidas de una lista de opciones, eliminando posibles errores al dejar que el usuario ingrese texto de forma libre.

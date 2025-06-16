@@ -16,7 +16,8 @@ public class MenuPrincipal {
     public void iniciar() {
         int opcion = 0;
         while (opcion != 6) {
-            // 1) Mostrar menú
+
+            // Mostrar menú
             System.out.println("\n===== MENÚ BIBLIOTECA =====");
             System.out.println("1. Registrar usuario");
             System.out.println("2. Solicitar libro");
@@ -26,7 +27,7 @@ public class MenuPrincipal {
             System.out.println("6. Salir");
             System.out.print("Selecciona opción: ");
 
-            // 2) Leer opción
+            // Leer opción
             String linea = sc.nextLine().trim();
             try {
                 opcion = Integer.parseInt(linea);
@@ -34,26 +35,32 @@ public class MenuPrincipal {
                 opcion = -1;
             }
 
-            // 3) Despachar
+            // Procesar opción
             switch (opcion) {
                 case 1:
                     new RegistrarUsuarioMenu(svc, sc).mostrar();
                     break;
+
                 case 2:
                     new SolicitarLibroMenu(svc, sc).mostrar();
                     break;
+
                 case 3:
                     new DevolverLibroMenu(svc, sc).mostrar();
                     break;
+
                 case 4:
                     new ConsultarLibroMenu(svc, sc).mostrar();
                     break;
+
                 case 5:
                     new ConsultarEstadoUsuarioMenu(svc, sc).mostrar();
-                    break;  
+                    break; 
+
                 case 6:
                     System.out.println("¡Hasta luego!");
                     break;
+                    
                 default:
                     System.err.println("Opción inválida, inténtalo de nuevo.");
             }

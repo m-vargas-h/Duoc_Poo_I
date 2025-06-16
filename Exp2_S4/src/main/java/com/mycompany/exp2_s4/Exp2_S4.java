@@ -11,9 +11,11 @@ import java.util.Scanner;
 
 public class Exp2_S4 {
     public static void main(String[] args) {
+        
         Biblioteca bibModel = new Biblioteca();
         ServiciosBiblioteca svc = new ServiciosBiblioteca(bibModel);
-
+        
+        // Cargar datos iniciales
         try {
             svc.cargarDatos();
 
@@ -22,6 +24,9 @@ public class Exp2_S4 {
             return;
         }
 
+        // Iniciar el menú principal
         new MenuPrincipal(svc, new Scanner(System.in)).iniciar();
+        
     }
+
 }

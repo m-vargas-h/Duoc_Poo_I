@@ -5,6 +5,7 @@ import com.mycompany.exp2_s4.servicio.ServiciosBiblioteca;
 import java.util.List;
 import java.util.Scanner;
 
+// Submenu para consultar libros en la biblioteca
 public class ConsultarLibroMenu {
 
     private final Scanner sc;
@@ -15,6 +16,8 @@ public class ConsultarLibroMenu {
         this.sc = sc;
     }
 
+    // Método para mostrar el menú de consulta de libros
+    // Este método permite al usuario buscar un libro por su nombre o listar todos los libros disponibles.
     public void mostrar() {
         System.out.println("\n--- Consultar Libro ---");
         System.out.println("1. Buscar libro por nombre");
@@ -34,6 +37,7 @@ public class ConsultarLibroMenu {
         }
     }
 
+    // Método para buscar un libro por su nombre
     private void buscarLibroPorNombre() {
         System.out.print("Ingrese el nombre del libro: ");
         String nombre = sc.nextLine().trim();
@@ -47,12 +51,13 @@ public class ConsultarLibroMenu {
         }
     }
 
+    // Método para listar todos los libros disponibles en la biblioteca
     private void listarTodosLosLibros() {
         System.out.println("\nLista completa de libros:");
         List<Libro> libros = svc.listarLibros();
         if (libros.isEmpty()) {
             System.out.println("No hay libros en el catálogo.");
-        } else {
+        } else { // Si hay libros, se imprimen sus detalles
             for (Libro libro : libros) {
                 System.out.printf("Nombre: %s, Autor: %s, Disponibles: %d%n",
                         libro.getNombre(), libro.getAutor(), libro.getCopiasDisponibles());

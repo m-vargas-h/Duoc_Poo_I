@@ -8,19 +8,22 @@ import java.util.Collections;
 import java.util.List;
 
 public class Usuario {
-    private String id;                   // Identificador único
+
+    private String id;                   // Identificador único (se usa el rut del usuario)
     private String nombre;               // Nombre completo
-    private String carrera;              // Carrera del usuario
-    private String sede;                 // Sede asignada
+    private String carrera;              // Carrera del usuario (se elige de una lista)
+    private String sede;                 // Sede asignada (se elige de una lista)
     private List<Libro> librosPrestados; // Libros que tiene prestados
 
     // Constructor
     public Usuario(String id, String nombre, String carrera, String sede) {
+
         this.id              = id;
         this.nombre          = nombre;
         this.carrera         = carrera;
         this.sede            = sede;
         this.librosPrestados = new ArrayList<>();
+
     }
 
     // Getters / Setters
@@ -42,6 +45,7 @@ public class Usuario {
     public String getCarrera() {
         return carrera;
     }
+
     public void setCarrera(String carrera) {
         this.carrera = carrera;
     }
@@ -49,6 +53,7 @@ public class Usuario {
     public String getSede() {
         return sede;
     }
+
     public void setSede(String sede) {
         this.sede = sede;
     }
@@ -67,8 +72,7 @@ public class Usuario {
         boolean removed = librosPrestados.remove(libro);
         if (!removed) {
             throw new LibroNoPrestadoException(
-                "Usuario '" + nombre + "' no tiene prestado '" 
-                + libro.getNombre() + "'."
+                "Usuario '" + nombre + "' no tiene prestado '" + libro.getNombre() + "'."
             );
         }
     }

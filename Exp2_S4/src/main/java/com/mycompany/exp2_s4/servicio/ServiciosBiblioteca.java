@@ -19,7 +19,7 @@ public class ServiciosBiblioteca {
 
     }
 
-    // Ejemplo de método para cargar datos
+    // Cargar datos iniciales desde archivos
     public void cargarDatos() throws IOException {
         PersistenciaInfo.cargarLibros(biblioteca);
         PersistenciaInfo.cargarUsuarios(biblioteca);
@@ -27,23 +27,26 @@ public class ServiciosBiblioteca {
 
     }
 
-    // ServiciosBiblioteca.java
-    public void registrarUsuario(String id, String nombre, String carrera, String sede) throws UsuarioYaExisteException, IOException {
+    // Registrar un nuevo usuario
+    public void registrarUsuario(String id, String nombre, String carrera, String sede) 
+            throws UsuarioYaExisteException, IOException {
+
         if (biblioteca.existeUsuario(id)) {
             throw new UsuarioYaExisteException("Usuario con ID " + id + " ya existe.");
         }
         Usuario nuevo = new Usuario(id, nombre, carrera, sede);
         biblioteca.agregarUsuario(nuevo);
-        // aquí añades la persistencia
         PersistenciaInfo.guardarUsuario(nuevo);
     }
 
+    // Pedir un libro
     public void solicitarLibro(String usuarioId, String titulo)
             throws UsuarioNoEncontradoException,
                    LibroNoEncontradoException,
                    LibroNoDisponibleException,
                    MaximoPrestamoException,
                    IOException {
+                    
         biblioteca.prestarLibro(usuarioId, titulo);
         // reescribe libros.csv con las nuevas copias disponibles
         PersistenciaInfo.guardarLibros(biblioteca.getCatalogo());
@@ -51,6 +54,7 @@ public class ServiciosBiblioteca {
 
     }
 
+    // Devolver un libro
     public void devolverLibro(String usuarioId, String titulo)
             throws UsuarioNoEncontradoException,
                    LibroNoEncontradoException,
@@ -63,6 +67,7 @@ public class ServiciosBiblioteca {
 
     }
 
+    // Consultar el estado de un libro
     public String consultarLibro(String titulo) throws LibroNoEncontradoException {
         Libro l = biblioteca.buscarLibro(titulo);
         return l.isDisponible()
@@ -70,16 +75,15 @@ public class ServiciosBiblioteca {
              : "No disponible";
     }
 
+    // Consultar el estado de un usuario
     public Usuario consultarUsuario(String id) throws UsuarioNoEncontradoException {
         return biblioteca.buscarUsuario(id);
     }
 
-    // Si en algún punto necesitas pasar la instancia de Biblioteca a PersistenciaInfo...
     public Biblioteca getBiblioteca() {
         return biblioteca;
     }
 
-    // Métodos para devolver listas o mapas al UI si quieres mostrar todos
     public List<Libro> listarLibros() {
         return biblioteca.getCatalogo();
     }
@@ -87,4 +91,5 @@ public class ServiciosBiblioteca {
     public Map<String,Usuario> listarUsuarios() {
         return biblioteca.getUsuarios();
     }
+    
 }

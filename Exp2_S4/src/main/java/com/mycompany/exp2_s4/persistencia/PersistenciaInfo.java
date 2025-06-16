@@ -19,13 +19,13 @@ import java.util.StringTokenizer;
 
 public class PersistenciaInfo {
 
-    // Ajusta aquí el nombre de tu módulo
+    // Rutas de los archivos CSV
     private static final Path rutaBase = Paths.get(System.getProperty("user.dir"), "Exp2_S4", "Data");
     private static final Path ARCHIVO_LIBROS   = rutaBase.resolve("libros.csv");
     private static final Path ARCHIVO_USUARIOS = rutaBase.resolve("usuarios.csv");
     private static final Path ARCHIVO_PRESTAMOS = rutaBase.resolve("prestamos.csv");
 
-
+    //todo: revisar el funcionamiento de la ruta base
     static {
         try {
             if (Files.notExists(rutaBase)) {
@@ -37,8 +37,6 @@ public class PersistenciaInfo {
         }
     }
 
-    ////private PersistenciaInfo() { /* no instanciable */ }
-
     public static void cargarLibros(Biblioteca bib) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_LIBROS.toFile()))) {
             String linea = br.readLine(); // Se salta la cabecera
@@ -48,7 +46,7 @@ public class PersistenciaInfo {
         
             while ((linea = br.readLine()) != null) {
                 StringTokenizer st = new StringTokenizer(linea, ",");
-                // Se espera exactamente 6 tokens: nombre, autor, clasificacion, editorial, totalCopias, copiasDisponibles
+                // Se espera exactamente 6 campos, de lo contrario lanza la excepción
                 if (st.countTokens() != 6) {
                     System.out.println("Formato de línea inválido: " + linea);
                     continue;
@@ -77,28 +75,28 @@ public class PersistenciaInfo {
 
     public static void cargarUsuarios(Biblioteca bib) throws IOException {
 
-        //? Linea para verificar funcionamiento
-        System.out.println("[DEBUG] Leyendo usuarios en: " + ARCHIVO_USUARIOS.toAbsolutePath());
+        //? [DEBUG] Linea para verificar funcionamiento
+        //System.out.println("[DEBUG] Leyendo usuarios en: " + ARCHIVO_USUARIOS.toAbsolutePath());
 
-        // 1) Si no existe el CSV de usuarios, crearlo con la línea de cabecera
+        // Si no existe el archivo, lo crea con la cabecera
         if (Files.notExists(ARCHIVO_USUARIOS)) {
-            Files.createDirectories(rutaBase);                   // aseguro carpeta Data
+            Files.createDirectories(rutaBase);
             try (PrintWriter pw = new PrintWriter(ARCHIVO_USUARIOS.toFile())) {
                 pw.println("id,nombre,carrera,sede");
             }
-            // no hay usuarios que cargar → retorno
+            
             return;
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_USUARIOS.toFile()))) {
-            // 2) Leer cabecera
+            // Leer cabecera
             String linea = br.readLine();
             if (linea == null) {
                 // CSV existe pero está vacío → retorno sin excepción
                 return;
             }
 
-            // 3) Procesar cada registro
+            // Procesar cada registro
             while ((linea = br.readLine()) != null) {
                 StringTokenizer st = new StringTokenizer(linea, ",");
                 if (st.countTokens() != 4) continue;
@@ -113,8 +111,8 @@ public class PersistenciaInfo {
 
     public static void guardarUsuario(Usuario u) throws IOException {
 
-        //? Linea para verificar funcionamiento
-        System.out.println("[DEBUG] Escribiendo usuario en: " + ARCHIVO_USUARIOS.toAbsolutePath());
+        //? [DEBUG] Linea para verificar funcionamiento
+        //System.out.println("[DEBUG] Escribiendo usuario en: " + ARCHIVO_USUARIOS.toAbsolutePath());
 
         // Asegura carpeta y cabecera la primera vez
         if (Files.notExists(ARCHIVO_USUARIOS)) {
@@ -133,13 +131,12 @@ public class PersistenciaInfo {
         }
     }
 
-    // PersistenciaInfo.java (al final de la clase)
     public static void guardarLibros(List<Libro> catalogo) throws IOException {
         if (Files.notExists(rutaBase)) {
             Files.createDirectories(rutaBase);
         }
         try (PrintWriter pw = new PrintWriter(ARCHIVO_LIBROS.toFile())) {
-            // Actualizamos la cabecera para incluir ambas columnas
+            // cabecera del CSV
             pw.println("nombre,autor,clasificacion,editorial,totalCopias,copiasDisponibles");
 
             // Por cada libro, grabamos los datos completos
@@ -155,13 +152,13 @@ public class PersistenciaInfo {
         }
     }
 
-    /** Volca todo el estado de préstamos a CSV */
+    // Guarda los préstamos activos de los usuarios en un CSV
     public static void guardarPrestamos(Map<String, Usuario> usuarios) throws IOException {
         if (Files.notExists(rutaBase)) Files.createDirectories(rutaBase);
         try (PrintWriter pw = new PrintWriter(ARCHIVO_PRESTAMOS.toFile())) {
             pw.println("usuarioId,nombreLibro,fechaPrestamo");
             for (Usuario u : usuarios.values()) {
-                // Se asume que u.getLibrosPrestados() contiene únicamente los préstamos activos
+                
                 for (Libro l : u.getLibrosPrestados()) {
                     String fecha = Instant.now().toString(); // o la fecha original del préstamo
                     pw.printf("%s,%s,%s%n", u.getId(), l.getNombre(), fecha);
@@ -170,7 +167,7 @@ public class PersistenciaInfo {
         }
     }
 
-    /** Al iniciar, lee los préstamos y los aplica en memoria */
+    // Carga los préstamos desde el CSV y los asigna a los usuarios
     public static void cargarPrestamos(Biblioteca bib) throws IOException {
         if (Files.notExists(ARCHIVO_PRESTAMOS)) return;
         try (BufferedReader br = Files.newBufferedReader(ARCHIVO_PRESTAMOS)) {
@@ -182,8 +179,7 @@ public class PersistenciaInfo {
                 try {
                     Usuario u = bib.buscarUsuario(usuarioId);
                     Libro l   = bib.buscarLibro(libroNombre);
-                    // Reducir stock sin duplicar la línea en el CSV de libros
-                    //!l.prestar(); revisar si se debe hacer aquí
+
                     u.agregarPrestamo(l);
                 } catch (Exception e) {
                     // Si algo falla (usuario o libro no existe), lo ignoramos o lo registramos
