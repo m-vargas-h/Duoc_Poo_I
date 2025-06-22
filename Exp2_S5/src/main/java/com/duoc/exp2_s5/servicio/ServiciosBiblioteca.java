@@ -38,6 +38,40 @@ public class ServiciosBiblioteca {
         PersistenciaInfo.guardarUsuario(nuevo);
     }
 
+    /**
+    * Crea un nuevo usuario con rol ASISTENTE y lo persiste.
+    * @return false si el RUT ya existía; true si se agregó bien.
+    */
+    public boolean agregarAsistente(String rut, String nombre, String password) throws IOException {
+        Map<String, Admin> creds = PersistenciaInfo.cargarAdmin();
+        if (creds.containsKey(rut)) {
+            return false;
+        }
+        Admin asis = new Admin(rut, nombre, password, Admin.Role.ASISTENTE);
+        PersistenciaInfo.guardarAdmin(asis);
+        return true;
+    }
+
+    /*
+    * Elimina un asistente del sistema.
+    * @param rut El RUT del asistente a eliminar.
+    * @return true si se eliminó correctamente, false si el asistente no existía
+    * o no era un asistente.
+    */
+    public boolean eliminarAsistente(String rut) throws IOException {
+        Map<String, Admin> creds = PersistenciaInfo.cargarAdmin();
+
+        Admin target = creds.get(rut);
+        // sólo permitir borrar si existe y es asistente
+        if (target == null || target.getRole() != Admin.Role.ASISTENTE) {
+            return false;
+        }
+
+        creds.remove(rut);
+        PersistenciaInfo.guardarAdmins(creds);
+        return true;
+    }
+
     // Pedir un libro
     public void solicitarLibro(String usuarioId, String titulo)
             throws UsuarioNoEncontradoException,

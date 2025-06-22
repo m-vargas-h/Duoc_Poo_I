@@ -151,6 +151,49 @@ public class PersistenciaInfo {
         }
     }
 
+    public static void guardarAdmin(Admin admin) throws IOException {
+        // Asegura carpeta y cabecera
+        if (Files.notExists(ARCHIVO_ADMIN)) {
+            Files.createDirectories(rutaBase);
+            try (PrintWriter pw = new PrintWriter(ARCHIVO_ADMIN.toFile())) {
+                pw.println("rut,nombre,password,rol");
+            }
+        }
+        // Añade la línea al CSV
+        try (PrintWriter pw = new PrintWriter(
+                new FileWriter(ARCHIVO_ADMIN.toFile(), true))) {
+            pw.printf("%s,%s,%s,%s%n",
+                admin.getRut(),
+                admin.getNombre(),
+                admin.getPassword(),
+                admin.getRole().name()    // escribe "ADMIN" o "ASISTENTE"
+            );
+        }
+    }
+
+    /*
+     *  Guarda todos los administradores en el CSV, sobrescribiendo el archivo.
+     *  Si el archivo no existe, lo crea con la cabecera. Se utiliza para actualizar la lsita de admin y
+     *  asistentes al eliminar o modificar alguno.
+     */
+    public static void guardarAdmins(Map<String, Admin> adminMap) throws IOException {
+        // Asegura carpeta y cabecera
+        if (Files.notExists(ARCHIVO_ADMIN)) {
+            Files.createDirectories(rutaBase);
+        }
+        try (PrintWriter pw = new PrintWriter(ARCHIVO_ADMIN.toFile())) {
+            pw.println("rut,nombre,password,rol");
+            for (Admin a : adminMap.values()) {
+                pw.printf("%s,%s,%s,%s%n",
+                    a.getRut(),
+                    a.getNombre(),
+                    a.getPassword(),
+                    a.getRole().name()
+                );
+            }
+        }
+    }
+
     // ---------- PRESTAMOS ----------
 
     // Guarda los préstamos activos de los usuarios en un CSV

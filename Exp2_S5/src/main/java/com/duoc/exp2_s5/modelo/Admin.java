@@ -26,6 +26,10 @@ public class Admin {
     public Role getRole() { 
         return role; 
     }
+
+    public String getPassword() {
+        return password;
+    }
     
     public boolean checkPassword(String pw) {
         return this.password.equals(pw);

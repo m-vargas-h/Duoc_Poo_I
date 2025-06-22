@@ -26,8 +26,6 @@ public class MenuAdmin {
             System.out.println("3. Agregar libro");
             System.out.println("4. Eliminar libro");
             System.out.println("5. Editar libro");
-            System.out.println("6. Bloquear usuario");
-            System.out.println("7. Desbloquear usuario");
             System.out.println("0. Volver al menú principal");
             System.out.print("Seleccione una opción: ");
             String linea = sc.nextLine().trim();
@@ -40,10 +38,10 @@ public class MenuAdmin {
 
             switch (opcion) {
                 case 1:
-                    System.out.println("→ Aquí irá la lógica para agregar bibliotecarios.");
+                    new AgregarAsistenteMenu(svc, sc).mostrar();
                     break;
                 case 2:
-                    System.out.println("→ Aquí irá la lógica para eliminar bibliotecarios.");
+                    new EliminarAsistenteMenu(svc, sc).mostrar();
                     break;
                 case 3:
                     new AgregarLibroMenu(svc, sc).mostrar();
@@ -54,17 +52,11 @@ public class MenuAdmin {
                 case 5:
                     new ModificarLibroMenu(svc, sc).mostrar();
                     break;
-                case 6:
-                    System.out.println("→ Aquí irá la lógica para bloquear usuarios.");
-                    break;
-                case 7:
-                    System.out.println("→ Aquí irá la lógica para desbloquear usuarios.");
-                    break;
                 case 0:
-                    System.out.println("↩ Volviendo al menú principal...");
+                    System.out.println("Volviendo al menú principal...");
                     break;
                 default:
-                    System.out.println("✗ Opción no válida.");
+                    System.out.println("Opción no válida.");
             }
 
         } while (opcion != 0);
