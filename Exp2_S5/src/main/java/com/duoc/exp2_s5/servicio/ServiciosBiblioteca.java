@@ -66,12 +66,26 @@ public class ServiciosBiblioteca {
 
     }
 
+    // Eliminar un libro
+    public boolean eliminarLibro(Libro libro) {
+        return biblioteca.eliminarLibro(libro);
+    }
+
     // Consultar el estado de un libro
     public String consultarLibro(String titulo) throws LibroNoEncontradoException {
         Libro l = biblioteca.buscarLibro(titulo);
         return l.isDisponible()
              ? "Disponible (" + l.getCopiasDisponibles() + " copias)"
              : "No disponible";
+    }
+
+    public boolean agregarLibro(Libro libro) {
+        return biblioteca.agregarLibro(libro);
+    }
+
+    public void guardarLibros() throws IOException {
+        List<Libro> libros = biblioteca.getLibros();
+        PersistenciaInfo.guardarLibros(libros);
     }
 
     // Consultar el estado de un usuario

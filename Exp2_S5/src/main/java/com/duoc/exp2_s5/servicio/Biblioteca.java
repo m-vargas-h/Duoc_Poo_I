@@ -51,8 +51,13 @@ public class Biblioteca {
 
     // ——— Gestión de libros ———
 
-    public void agregarLibro(Libro libro) {
+    public boolean agregarLibro(Libro libro) {
+        // Verificar si el libro ya existe en el catálogo
+        if (catalogo.contains(libro)) {
+            return false; // El libro ya existe
+        }
         catalogo.add(libro);
+        return true;
     }
 
     public Libro buscarLibro(String nombre) throws LibroNoEncontradoException {
@@ -64,6 +69,10 @@ public class Biblioteca {
         throw new LibroNoEncontradoException("No se encontró el libro: " + nombre);
     }
 
+    public boolean eliminarLibro(Libro libro) {
+        return catalogo.remove(libro);
+    }
+
     public void listarCatalogo() {
         if (catalogo.isEmpty()) {
             System.out.println("El catálogo está vacío.");
@@ -72,9 +81,15 @@ public class Biblioteca {
         catalogo.forEach(System.out::println);
     }
 
+    //todo revisar cuando se usa getCatalogo() y getLibros()
     public List<Libro> getCatalogo() {
         return catalogo;
     }
+
+    public List<Libro> getLibros() {
+        return catalogo;
+    }
+
 
 
     // ——— Préstamo / Devolución ———

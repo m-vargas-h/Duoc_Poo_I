@@ -3,7 +3,6 @@ package com.duoc.exp2_s5.persistencia;
 import com.duoc.exp2_s5.modelo.*;
 import com.duoc.exp2_s5.servicio.Biblioteca;
 
-import java.io.BufferedReader;
 import java.io.*;
 import java.nio.file.*;
 import java.time.Instant;
@@ -15,7 +14,7 @@ import java.util.StringTokenizer;
 public class PersistenciaInfo {
 
     // Rutas de los archivos CSV
-    private static final Path rutaBase = Paths.get(System.getProperty("user.dir"), "Exp2_S4", "Data");
+    private static final Path rutaBase = Paths.get(System.getProperty("user.dir"), "Exp2_S5", "Data");
     private static final Path ARCHIVO_LIBROS   = rutaBase.resolve("libros.csv");
     private static final Path ARCHIVO_USUARIOS = rutaBase.resolve("usuarios.csv");
     private static final Path ARCHIVO_PRESTAMOS = rutaBase.resolve("prestamos.csv");
@@ -194,6 +193,10 @@ public class PersistenciaInfo {
     // ---------- ADMINISTRADORES ----------
 
     public static Map<String,Admin> cargarAdmin() throws IOException {
+
+        //? [DEBUG] Linea para verificar funcionamiento
+        //System.out.println("Ruta del archivo admin.csv: " + ARCHIVO_ADMIN.toAbsolutePath());
+        
         Map<String,Admin> mapa = new HashMap<>();
 
         // Si no existe, creo la carpeta y archivo con cabecera

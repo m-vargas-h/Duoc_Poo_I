@@ -1,12 +1,14 @@
 
 package com.duoc.exp2_s5.ui;
 
-import com.duoc.exp2_s5.ui.usuarios.RegistrarUsuarioMenu;
-import com.duoc.exp2_s5.ui.usuarios.DevolverLibroMenu;
-import com.duoc.exp2_s5.ui.usuarios.ConsultarLibroMenu;
-import com.duoc.exp2_s5.ui.usuarios.SolicitarLibroMenu;
-import com.duoc.exp2_s5.ui.usuarios.ConsultarEstadoUsuarioMenu;
+import com.duoc.exp2_s5.ui.usuarios.*;
+import com.duoc.exp2_s5.ui.admin.*;
+import com.duoc.exp2_s5.modelo.Admin;
+import com.duoc.exp2_s5.persistencia.PersistenciaInfo;
 import com.duoc.exp2_s5.servicio.ServiciosBiblioteca;
+
+import java.io.IOException;
+import java.util.Map;
 import java.util.Scanner;
 
 public class MenuPrincipal {
@@ -49,8 +51,7 @@ public class MenuPrincipal {
             // Procesar opción
             switch (opcion) {
                 case 0:
-                // todo : implementar ingreso administrador
-                    System.out.println("prueba del menu admin");
+                    accesoAdministrativo();
                     break;
                 case 1:
                     new RegistrarUsuarioMenu(svc, sc).mostrar();
@@ -79,6 +80,43 @@ public class MenuPrincipal {
                 default:
                     System.err.println("Opción inválida, inténtalo de nuevo.");
             }
+        }
+    }
+
+    private void accesoAdministrativo() {
+        System.out.println("\n----- ACCESO ADMINISTRATIVO -----");
+        System.out.print("Ingrese su ID (RUT sin puntos y con guion): ");
+        String rut = sc.nextLine().trim().toLowerCase(); // evitamos errores de formato por ingresar k o K
+        System.out.print("Ingrese su clave: ");
+        String clave = sc.nextLine().trim();
+
+        try {
+            Map<String, Admin> credenciales = PersistenciaInfo.cargarAdmin();
+
+            //? [DEBUG] Descomentar para ver las credenciales cargadas
+            //System.out.println("Debug: Credenciales cargadas: " + credenciales);
+        
+            Admin usuario = credenciales.get(rut);
+
+            if (usuario == null || !usuario.checkPassword(clave)) {
+                System.out.println("✗ Credenciales incorrectas.");
+                return;
+            }
+
+            System.out.println("Bienvenido, " + usuario.getNombre());
+            switch (usuario.getRole()) {
+                case ADMIN:
+                    new MenuAdmin(svc, sc).iniciar();      // menú exclusivo para administradores
+                    break;
+                case ASISTENTE:
+                    new MenuAsistente(svc, sc).iniciar();  // menú con permisos limitados
+                    break;
+                default:
+                    System.out.println("Rol no reconocido.");
+            }
+
+        } catch (IOException e) {
+            System.err.println("Error cargando credenciales: " + e.getMessage());
         }
     }
 }

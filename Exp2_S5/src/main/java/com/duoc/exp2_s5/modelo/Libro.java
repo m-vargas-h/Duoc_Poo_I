@@ -86,7 +86,13 @@ public class Libro {
         return copiasDisponibles;
     }
 
-    
+    public void setCopiasDisponibles(int copiasDisponibles) {
+        if (copiasDisponibles < 0 || copiasDisponibles > this.totalCopias) {
+            throw new IllegalArgumentException("El número de copias disponibles no puede ser negativo ni mayor que el total de copias.");
+        }
+        this.copiasDisponibles = copiasDisponibles;
+    }
+
     //Indica si al menos 1 copia está disponible.
     public boolean isDisponible() {
         return copiasDisponibles > 0;
