@@ -1,6 +1,11 @@
 
 package com.duoc.exp2_s5.ui;
 
+import com.duoc.exp2_s5.ui.usuarios.RegistrarUsuarioMenu;
+import com.duoc.exp2_s5.ui.usuarios.DevolverLibroMenu;
+import com.duoc.exp2_s5.ui.usuarios.ConsultarLibroMenu;
+import com.duoc.exp2_s5.ui.usuarios.SolicitarLibroMenu;
+import com.duoc.exp2_s5.ui.usuarios.ConsultarEstadoUsuarioMenu;
 import com.duoc.exp2_s5.servicio.ServiciosBiblioteca;
 import java.util.Scanner;
 
@@ -14,7 +19,7 @@ public class MenuPrincipal {
     }
 
     public void iniciar() {
-        int opcion = 0;
+        int opcion = -1;
         while (opcion != 6) {
 
             // Saludo de bienvenida
@@ -24,6 +29,7 @@ public class MenuPrincipal {
 
             // Mostrar menú
             System.out.println("\n----- MENÚ BIBLIOTECA -----");
+            System.out.println("0. INGRESO ADMINISTRADOR");
             System.out.println("1. Registrar usuario");
             System.out.println("2. Solicitar libro");
             System.out.println("3. Devolver libro");
@@ -42,6 +48,10 @@ public class MenuPrincipal {
 
             // Procesar opción
             switch (opcion) {
+                case 0:
+                // todo : implementar ingreso administrador
+                    System.out.println("prueba del menu admin");
+                    break;
                 case 1:
                     new RegistrarUsuarioMenu(svc, sc).mostrar();
                     break;

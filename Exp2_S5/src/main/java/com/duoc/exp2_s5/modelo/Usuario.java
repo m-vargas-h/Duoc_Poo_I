@@ -13,6 +13,7 @@ public class Usuario {
     private String nombre;               // Nombre completo
     private String carrera;              // Carrera del usuario (se elige de una lista)
     private String sede;                 // Sede asignada (se elige de una lista)
+    private boolean bloqueo;            // Indica si el usuario está bloqueado por tener libros pendientes
     private List<Libro> librosPrestados; // Libros que tiene prestados
 
     // Constructor

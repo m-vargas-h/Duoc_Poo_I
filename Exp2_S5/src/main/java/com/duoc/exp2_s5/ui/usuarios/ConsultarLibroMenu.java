@@ -1,4 +1,4 @@
-package com.duoc.exp2_s5.ui;
+package com.duoc.exp2_s5.ui.usuarios;
 
 import com.duoc.exp2_s5.modelo.Libro;
 import com.duoc.exp2_s5.servicio.ServiciosBiblioteca;

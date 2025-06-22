@@ -4,14 +4,10 @@ import com.duoc.exp2_s5.modelo.*;
 import com.duoc.exp2_s5.servicio.Biblioteca;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
+import java.nio.file.*;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -23,6 +19,7 @@ public class PersistenciaInfo {
     private static final Path ARCHIVO_LIBROS   = rutaBase.resolve("libros.csv");
     private static final Path ARCHIVO_USUARIOS = rutaBase.resolve("usuarios.csv");
     private static final Path ARCHIVO_PRESTAMOS = rutaBase.resolve("prestamos.csv");
+    private static final Path ARCHIVO_ADMIN = rutaBase.resolve("admin.csv");
 
     //todo: revisar el funcionamiento de la ruta base
     static {
@@ -35,6 +32,8 @@ public class PersistenciaInfo {
             throw new ExceptionInInitializerError("No pude crear Data/: " + e);
         }
     }
+
+    // ---------- LIBROS ----------
 
     public static void cargarLibros(Biblioteca bib) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_LIBROS.toFile()))) {
@@ -71,6 +70,29 @@ public class PersistenciaInfo {
             }
         }
     }
+
+    public static void guardarLibros(List<Libro> catalogo) throws IOException {
+        if (Files.notExists(rutaBase)) {
+            Files.createDirectories(rutaBase);
+        }
+        try (PrintWriter pw = new PrintWriter(ARCHIVO_LIBROS.toFile())) {
+            // cabecera del CSV
+            pw.println("nombre,autor,clasificacion,editorial,totalCopias,copiasDisponibles");
+
+            // Por cada libro, grabamos los datos completos
+            for (Libro l : catalogo) {
+                pw.printf("%s,%s,%s,%s,%d,%d%n",
+                        l.getNombre(),
+                        l.getAutor(),
+                        l.getClasificacion(),
+                        l.getEditorial(),
+                        l.getTotalCopias(),
+                        l.getCopiasDisponibles());
+            }
+        }
+    }
+
+    // ---------- USUARIOS ----------
 
     public static void cargarUsuarios(Biblioteca bib) throws IOException {
 
@@ -130,26 +152,7 @@ public class PersistenciaInfo {
         }
     }
 
-    public static void guardarLibros(List<Libro> catalogo) throws IOException {
-        if (Files.notExists(rutaBase)) {
-            Files.createDirectories(rutaBase);
-        }
-        try (PrintWriter pw = new PrintWriter(ARCHIVO_LIBROS.toFile())) {
-            // cabecera del CSV
-            pw.println("nombre,autor,clasificacion,editorial,totalCopias,copiasDisponibles");
-
-            // Por cada libro, grabamos los datos completos
-            for (Libro l : catalogo) {
-                pw.printf("%s,%s,%s,%s,%d,%d%n",
-                        l.getNombre(),
-                        l.getAutor(),
-                        l.getClasificacion(),
-                        l.getEditorial(),
-                        l.getTotalCopias(),
-                        l.getCopiasDisponibles());
-            }
-        }
-    }
+    // ---------- PRESTAMOS ----------
 
     // Guarda los préstamos activos de los usuarios en un CSV
     public static void guardarPrestamos(Map<String, Usuario> usuarios) throws IOException {
@@ -188,5 +191,40 @@ public class PersistenciaInfo {
         }
     }
 
+    // ---------- ADMINISTRADORES ----------
 
+    public static Map<String,Admin> cargarAdmin() throws IOException {
+        Map<String,Admin> mapa = new HashMap<>();
+
+        // Si no existe, creo la carpeta y archivo con cabecera
+        if (Files.notExists(ARCHIVO_ADMIN)) {
+            Files.createDirectories(rutaBase);
+            try (PrintWriter pw = new PrintWriter(ARCHIVO_ADMIN.toFile())) {
+                pw.println("rut,nombre,password,rol");
+            }
+            return mapa;
+        }
+
+        // Abro el CSV y salto la primera línea (cabecera)
+        try (BufferedReader br = Files.newBufferedReader(ARCHIVO_ADMIN)) {
+            String linea = br.readLine();  // cabecera
+            while ((linea = br.readLine()) != null) {
+                String[] cols = linea.split(",", -1);
+                if (cols.length < 4) continue;
+
+                String rut      = cols[0].trim();
+                String nombre   = cols[1].trim();
+                String password = cols[2].trim();
+                String rolStr   = cols[3].trim().toUpperCase();
+
+                Admin.Role rol = rolStr.equals("ADMIN")
+                    ? Admin.Role.ADMIN
+                    : Admin.Role.ASISTENTE;
+
+                mapa.put(rut, new Admin(rut, nombre, password, rol));
+            }
+        }
+
+        return mapa;
+    }
 }
