@@ -81,30 +81,4 @@ public class DevolverLibroMenu {
 
     }
     
-    /*    // Método para mostrar el menú de devolución de libro
-    public void mostrar() {
-        System.out.println("\n--- Devolver Libro ---");
-        System.out.print("ID de usuario (Su rut tal como lo registró): ");
-        String usuarioId = sc.nextLine().trim();
-
-        
-        System.out.print("Título del libro: ");
-        String titulo    = sc.nextLine().trim();
-
-        // Intentar devolver el libro
-        // Se captura la excepción si el usuario no existe, el libro no se encuentra,
-        // la copia es inválida o el libro no está prestado.
-        try {
-            svc.devolverLibro(usuarioId, titulo);
-            System.out.println("Devolución realizada con éxito.");
-        } catch (UsuarioNoEncontradoException |
-                 LibroNoEncontradoException |
-                 CopiaInvalidaException |
-                 LibroNoPrestadoException e) {
-            System.err.println("ERROR: " + e.getMessage());
-        } catch (IOException io) {
-            System.err.println("ERROR de E/S al actualizar stock: " + io.getMessage());
-        }
-
-    } */
 }

@@ -16,6 +16,7 @@ public class MenuAsistente {
         this.sc = sc;
     }
 
+    // Muestra el menú del asistente y maneja las opciones
     public void iniciar() {
         int opcion = -1;
         do {
@@ -25,6 +26,7 @@ public class MenuAsistente {
             System.out.println("0. Volver al menú principal");
             System.out.print("Seleccione una opción: ");
             
+            // Validar entrada y convertir a entero
             try {
                 opcion = Integer.parseInt(sc.nextLine().trim());
             } catch (NumberFormatException e) {
@@ -45,6 +47,7 @@ public class MenuAsistente {
                     System.out.println("Opción no válida.");
                     break;
             }
+            
         } while (opcion != 0);
     }
 }

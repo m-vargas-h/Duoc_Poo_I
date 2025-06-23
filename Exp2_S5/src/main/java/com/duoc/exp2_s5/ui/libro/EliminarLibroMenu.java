@@ -16,6 +16,7 @@ public class EliminarLibroMenu {
         this.sc = sc;
     }
 
+    // Muestra el menú para eliminar un libro
     public void mostrar() {
         System.out.println("\n----- ELIMINAR LIBRO -----");
 
@@ -34,13 +35,15 @@ public class EliminarLibroMenu {
 
         System.out.print("Seleccione el número del libro a eliminar: ");
         int opcion;
+        // Validar entrada y convertir a entero
         try {
             opcion = Integer.parseInt(sc.nextLine().trim());
         } catch (NumberFormatException e) {
             System.out.println("Entrada no válida.");
             return;
         }
-
+        
+        // Validar que la opción esté dentro del rango de libros disponibles
         if (opcion < 1 || opcion > libros.size()) {
             System.out.println("Opción fuera de rango.");
             return;

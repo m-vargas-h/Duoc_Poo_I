@@ -13,7 +13,7 @@ public class Libro {
     private int totalCopias;
     private int copiasDisponibles;
 
-    //! Constructor para agregar un nuevo libro (por ahora no es posible agregar libros por consola)
+    // Constructor para agregar un nuevo libro
     public Libro(String nombre, String autor, String clasificacion, String editorial, int totalCopias) {
 
         this.nombre            = nombre;

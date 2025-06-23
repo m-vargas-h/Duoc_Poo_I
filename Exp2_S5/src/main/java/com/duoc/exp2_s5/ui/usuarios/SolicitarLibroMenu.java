@@ -17,6 +17,7 @@ public class SolicitarLibroMenu {
         this.sc  = sc;
     }
 
+    // Muestra el menú para solicitar un libro y maneja las excepciones
     public void mostrar() {
         System.out.println("\n----- Solicitar Libro -----");
         System.out.print("ID de usuario (Su rut tal como lo registro): ");

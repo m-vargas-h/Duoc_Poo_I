@@ -1,6 +1,5 @@
 package com.duoc.exp2_s5.ui.admin;
 
-import com.duoc.exp2_s5.modelo.Admin;
 import com.duoc.exp2_s5.servicio.ServiciosBiblioteca;
 import java.io.IOException;
 import java.util.Scanner;
@@ -16,11 +15,11 @@ public class AgregarAsistenteMenu {
 
     public void mostrar() {
         System.out.println("\n----- AGREGAR ASISTENTE -----");
-        System.out.print("RUT (sin puntos, con guion): ");
-        String rut = sc.nextLine().trim().toLowerCase();
+        System.out.println("RUT (sin puntos, con guion): ");
+        String rut = sc.nextLine().trim().toLowerCase(); // Convertir a minúsculas para evitar problemas 
         System.out.print("Nombre completo: ");
         String nombre = sc.nextLine().trim();
-        System.out.print("Clave: ");
+        System.out.println("Clave: ");
         String clave = sc.nextLine().trim();
 
         try {

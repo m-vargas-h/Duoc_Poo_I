@@ -38,7 +38,7 @@ public class ServiciosBiblioteca {
         PersistenciaInfo.guardarUsuario(nuevo);
     }
 
-    /**
+    /*
     * Crea un nuevo usuario con rol ASISTENTE y lo persiste.
     * @return false si el RUT ya existía; true si se agregó bien.
     */

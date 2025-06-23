@@ -21,6 +21,7 @@ public class RegistrarUsuarioMenu {
         this.sc = sc;
     }
 
+    // Muestra el menú para registrar un usuario y maneja las opciones
     public void mostrar() {
         System.out.println("\n----- Registrar Usuario -----");
         System.out.print("Ingrese su ID (RUT, sin puntos y con guion, ej. 19133090-0): ");

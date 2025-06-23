@@ -20,6 +20,7 @@ public class MenuPrincipal {
         this.sc  = sc;
     }
 
+    // Muestra el menú principal y maneja las opciones del usuario
     public void iniciar() {
         int opcion = -1;
         while (opcion != 6) {
@@ -83,6 +84,7 @@ public class MenuPrincipal {
         }
     }
 
+    // Método para manejar el acceso administrativo
     private void accesoAdministrativo() {
         System.out.println("\n----- ACCESO ADMINISTRATIVO -----");
         System.out.print("Ingrese su ID (RUT sin puntos y con guion): ");
@@ -98,11 +100,13 @@ public class MenuPrincipal {
         
             Admin usuario = credenciales.get(rut);
 
+            // Verificar si el usuario existe y si la clave es correcta
             if (usuario == null || !usuario.checkPassword(clave)) {
                 System.out.println("✗ Credenciales incorrectas.");
                 return;
             }
 
+            // Si las credenciales son correctas, mostrar el menú correspondiente
             System.out.println("Bienvenido, " + usuario.getNombre());
             switch (usuario.getRole()) {
                 case ADMIN:

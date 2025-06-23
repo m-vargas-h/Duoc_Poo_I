@@ -8,6 +8,7 @@ public class Admin {
     private String password;
     private Role role;
 
+    // Constructor
     public Admin(String rut, String nombre, String password, Role role) {
         this.rut      = rut;
         this.nombre   = nombre;

@@ -17,7 +17,7 @@ public class ModificarCantidadLibroMenu {
     }
 
     public void mostrar() {
-        System.out.println("\n----- MODIFICAR CANTIDAD DE LIBRO (AYUDANTE) -----");
+        System.out.println("\n----- MODIFICAR CANTIDAD DE LIBRO -----");
 
         // Obtener la lista de libros desde la biblioteca
         List<Libro> libros = svc.getBiblioteca().getLibros();
@@ -66,12 +66,14 @@ public class ModificarCantidadLibroMenu {
         System.out.print("Ingrese el nuevo total de copias: ");
         String nuevoTotalStr = sc.nextLine().trim();
 
+        // Validar que se haya ingresado un nuevo valor
         if (nuevoTotalStr.isEmpty()) {
             System.out.println("No se ingresó un nuevo valor. Operación cancelada.");
             return;
         }
 
         int nuevoTotal;
+        // Intentar convertir el nuevo total a un entero
         try {
             nuevoTotal = Integer.parseInt(nuevoTotalStr);
         } catch (NumberFormatException e) {
@@ -79,6 +81,7 @@ public class ModificarCantidadLibroMenu {
             return;
         }
 
+        // Validar que el nuevo total sea al menos 1
         if (nuevoTotal < 1) {
             System.out.println("El total de copias debe ser al menos 1.");
             return;

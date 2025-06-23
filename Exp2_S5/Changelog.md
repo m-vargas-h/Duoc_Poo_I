@@ -1,6 +1,10 @@
 # Historial de cambios
 
-## 22/06/2025 - Creación nuevos asistentes
+## 23/06/2025 - Actualización fichero Readme
+- Se actualiza el fichero `Readme.md` para reflejar las nuevas funciones del sistema
+- Se realizan correcciones menores a textos para mejorar compresión de instrucciones.
+
+### 22/06/2025 - Creación nuevos asistentes
 - Se habilitaron las opciones para que el admin pueda gestionar asistentes en el sistema, actualmente las opciones son:
     - 'AgregarAsistenteMenu': permite la creación de nuevos usuarios con el rol asistente, el sistema verifica que el usuario no este registrado previamente en base al rut.
     - 'EliminarAsistenteMenu': permite eliminar usuarios con el rol asistente mediante una lista con todos los asistentes que estén registrados.

@@ -16,6 +16,7 @@ public class ModificarLibroMenu {
         this.sc = sc;
     }
 
+    // Muestra el menú para modificar un libro y maneja las opciones
     public void mostrar() {
         System.out.println("\n----- MODIFICAR LIBRO -----");
 
@@ -26,7 +27,7 @@ public class ModificarLibroMenu {
             return;
         }
 
-        // Mostrar la lista de libros con ínidce para selección
+        // Mostrar la lista de libros con índice para selección
         for (int i = 0; i < libros.size(); i++) {
             Libro libro = libros.get(i);
             System.out.printf("%d) Título: %s, Autor: %s%n", i + 1, libro.getNombre(), libro.getAutor());
@@ -57,6 +58,7 @@ public class ModificarLibroMenu {
         // Pedir nueva información; se permite dejar el campo vacío para conservar el valor actual.
         System.out.println("Ingrese la nueva información del libro. (Deje vacío para mantener el valor actual)");
 
+        // Recolectar datos del libro
         System.out.printf("Título actual: %s%nNuevo título: ", libroSeleccionado.getNombre());
         String nuevoTitulo = sc.nextLine().trim();
         if (!nuevoTitulo.isEmpty()) {

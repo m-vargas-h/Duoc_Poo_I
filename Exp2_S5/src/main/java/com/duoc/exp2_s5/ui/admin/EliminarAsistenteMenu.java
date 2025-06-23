@@ -20,6 +20,7 @@ public class EliminarAsistenteMenu {
         this.sc  = sc;
     }
 
+    // Muestra el menú para eliminar un asistente
     public void mostrar() {
         System.out.println("\n----- ELIMINAR ASISTENTE -----");
         Map<String, Admin> creds;
@@ -49,6 +50,7 @@ public class EliminarAsistenteMenu {
             System.out.printf("%d) %s - %s%n", i + 1, a.getRut(), a.getNombre());
         }
         System.out.print("Seleccione el número de asistente a eliminar: ");
+        
         int idx;
         try {
             idx = Integer.parseInt(sc.nextLine().trim()) - 1;
@@ -56,11 +58,12 @@ public class EliminarAsistenteMenu {
             System.out.println("Entrada inválida.");
             return;
         }
+        // Validar índice
         if (idx < 0 || idx >= asistentes.size()) {
             System.out.println("Opción fuera de rango.");
             return;
         }
-
+        // Confirmar eliminación
         Admin seleccionado = asistentes.get(idx);
         System.out.printf("¿Confirma eliminar al asistente %s (%s)? [S/N]: ",
             seleccionado.getRut(), seleccionado.getNombre());
@@ -73,9 +76,9 @@ public class EliminarAsistenteMenu {
         try {
             boolean ok = svc.eliminarAsistente(seleccionado.getRut());
             if (ok) {
-                System.out.println("✓ Asistente eliminado exitosamente.");
+                System.out.println("Asistente eliminado exitosamente.");
             } else {
-                System.out.println("✗ No se pudo eliminar (quizá ya no existe).");
+                System.out.println("No se pudo eliminar, contacte a soporte para más información.");
             }
         } catch (IOException e) {
             System.err.println("Error guardando cambios: " + e.getMessage());

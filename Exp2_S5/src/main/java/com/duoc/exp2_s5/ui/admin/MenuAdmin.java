@@ -17,6 +17,7 @@ public class MenuAdmin {
         this.sc = sc;
     }
 
+    // Muestra el menú de administrador y maneja las opciones
     public void iniciar() {
         int opcion;
         do {
@@ -30,6 +31,7 @@ public class MenuAdmin {
             System.out.print("Seleccione una opción: ");
             String linea = sc.nextLine().trim();
 
+            // Validar entrada y convertir a entero
             try {
                 opcion = Integer.parseInt(linea);
             } catch (NumberFormatException e) {

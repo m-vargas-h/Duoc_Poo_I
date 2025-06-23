@@ -15,6 +15,7 @@ public class AgregarLibroMenu {
         this.sc = sc;
     }
 
+    // Muestra el menú para agregar un libro
     public void mostrar() {
         System.out.println("\n----- AGREGAR LIBRO -----");
         
@@ -38,7 +39,7 @@ public class AgregarLibroMenu {
         System.out.print("Ingrese las copias disponibles: ");
         int copiasDisponibles = Integer.parseInt(sc.nextLine().trim());
         
-        // (Opcional) Verificar que las copias disponibles no excedan el total
+        // Verificar que las copias disponibles no excedan el total
         if (copiasDisponibles > totalCopias) {
             System.out.println("Error: Las copias disponibles no pueden exceder el total de copias.");
             return;

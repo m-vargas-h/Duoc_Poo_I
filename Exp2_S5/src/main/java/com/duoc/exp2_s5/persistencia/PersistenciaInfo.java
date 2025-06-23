@@ -112,7 +112,7 @@ public class PersistenciaInfo {
             // Leer cabecera
             String linea = br.readLine();
             if (linea == null) {
-                // CSV existe pero está vacío → retorno sin excepción
+                // CSV existe pero está vacío, retorno sin excepción
                 return;
             }
 

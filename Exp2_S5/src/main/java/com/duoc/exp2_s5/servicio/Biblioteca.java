@@ -45,12 +45,14 @@ public class Biblioteca {
         return usuarios.containsKey(id);
     }
 
+    // Devuelve un mapa de usuarios, útil para pruebas o para acceder a los usuarios directamente.
     public Map<String,Usuario> getUsuarios() {
         return usuarios;
     }
 
     // ——— Gestión de libros ———
 
+    // Agrega un libro al catálogo. Si el libro ya existe, no lo agrega y devuelve false.
     public boolean agregarLibro(Libro libro) {
         // Verificar si el libro ya existe en el catálogo
         if (catalogo.contains(libro)) {
@@ -60,6 +62,7 @@ public class Biblioteca {
         return true;
     }
 
+    // Busca un libro por su nombre. Si no lo encuentra, lanza una excepción.
     public Libro buscarLibro(String nombre) throws LibroNoEncontradoException {
         for (Libro l : catalogo) {
             if (l.getNombre().equalsIgnoreCase(nombre)) {
@@ -69,10 +72,12 @@ public class Biblioteca {
         throw new LibroNoEncontradoException("No se encontró el libro: " + nombre);
     }
 
+    // Elimina un libro del catálogo. Si el libro no está en el catálogo, devuelve false.
     public boolean eliminarLibro(Libro libro) {
         return catalogo.remove(libro);
     }
 
+    // Lista todos los libros en el catálogo. Si el catálogo está vacío, informa al usuario.
     public void listarCatalogo() {
         if (catalogo.isEmpty()) {
             System.out.println("El catálogo está vacío.");
@@ -94,6 +99,7 @@ public class Biblioteca {
 
     // ——— Préstamo / Devolución ———
 
+    // Presta un libro a un usuario. Verifica si el usuario existe, si el libro existe y si está disponible.
     public void prestarLibro(String usuarioId, String titulo)
             throws UsuarioNoEncontradoException,
                    LibroNoEncontradoException,
@@ -111,7 +117,7 @@ public class Biblioteca {
         u.agregarPrestamo(l);
     }
 
-
+    // Devuelve un libro prestado por un usuario. Verifica si el usuario existe, si el libro existe y si está prestado.
     public void devolverLibro(String usuarioId, String titulo)
             throws UsuarioNoEncontradoException,
                    LibroNoEncontradoException,
