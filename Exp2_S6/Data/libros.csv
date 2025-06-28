@@ -1,0 +1,12 @@
+nombre,autor,clasificacion,editorial,totalCopias,copiasDisponibles
+1984,George Orwell,Distopía,Secker & Warburg,5,5
+El Aleph,Jorge Luis Borges,Cuentos,Editorial Sur,3,3
+Harry Potter y el misterio del código,J. K. Rowling,Infantil,Bloomsbury,4,4
+Clean Code,Robert C. Martin,Académico,Prentice Hall,3,3
+Harry Potter y la orden 66,J. K. Rowling,Infantil,Bloomsbury,5,5
+Sapiens: De animales a dioses,Yuval Noah Harari,No ficción,Harper,2,2
+Don Quijote de la Mancha,Miguel de Cervantes,Clásico,Francisco de Robles,3,3
+El Principito,Antoine de Saint-Exupéry,Infantil,Gallimard,4,4
+Cien años de compilar,Gabriel García Márquez,Realismo mágico,Editorial Sudamericana,2,2
+El señor de los bugs,J. R. R. Tolkien,Fantástico,George Allen & Unwin,4,4
+Crónicas de una asignatura reprobada,Gabriel García Márquez,Realismo mágico,Editorial Sudamericana,4,4
