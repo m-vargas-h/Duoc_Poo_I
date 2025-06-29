@@ -1,9 +1,11 @@
 package com.duoc.exp2_s6.ui;
 
+import com.duoc.exp2_s6.servicio.ComicCollectorService;
 import java.util.Scanner;
 
 public class MenuPrincipal {
     public static void main(String[] args) {
+        ComicCollectorService servicio = new ComicCollectorService();
         Scanner scanner = new Scanner(System.in);
         int opcion;
 
@@ -12,11 +14,12 @@ public class MenuPrincipal {
             opcion = leerOpcion(scanner);
             switch (opcion) {
                 case 1:
-                    new MenuAdministrador().mostrar();
+                    // Inyectamos el servicio
+                    new MenuAdministrador(servicio).mostrar();
                     break;
 
                 case 2:
-                    new MenuUsuario().mostrar();
+                    new MenuUsuario(servicio).mostrar();
                     break;
 
                 case 3:
@@ -25,12 +28,9 @@ public class MenuPrincipal {
 
                 default:
                     System.out.println("❌ Opción no válida.");
-                    break;
-
             }
 
         } while (opcion != 3);
-        
     }
 
     private static void imprimirBienvenida() {

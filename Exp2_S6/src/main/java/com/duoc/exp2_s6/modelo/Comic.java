@@ -3,7 +3,9 @@ package com.duoc.exp2_s6.modelo;
 import java.util.Objects;
 import java.util.Optional;
 
+
 public class Comic extends Producto {
+    public static final String COD_TIPO = "001"; // Código del tipo de producto Comic
     private String editorial;
     private Optional<Integer> volumen; // Volumen opcional, vacío si no es parte de una serie
 
@@ -26,6 +28,11 @@ public class Comic extends Producto {
         return "Comic";
     }
 
+    @Override
+    public String getCodigoTipo() {
+        return COD_TIPO;
+    }
+
     public String getEditorial() {
         return editorial;
     }
@@ -38,9 +45,9 @@ public class Comic extends Producto {
     @Override
     public String toString() {
         String base = super.toString() + " | Editorial: " + editorial;
-        // Muestra el volumen sólo si está presente
         return volumen
                 .map(v -> base + " | Vol. " + v)
                 .orElse(base);
     }
+
 }

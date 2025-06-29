@@ -1,18 +1,21 @@
 package com.duoc.exp2_s6.modelo;
 
 import java.util.Objects;
+import com.duoc.exp2_s6.modelo.enums.EstadoProducto;
 
 public abstract class Producto {
     private String id;
     private String titulo;
     private double precio;
     private int stock;
+    private EstadoProducto estado;
 
     protected Producto(String id, String titulo, double precio, int stock) {
         this.id     = Objects.requireNonNull(id);
         this.titulo = Objects.requireNonNull(titulo);
         this.precio = precio;
         this.stock  = stock;
+        this.estado = EstadoProducto.DISPONIBLE; // Estado por defecto
     }
 
     public String getId() { 
@@ -31,6 +34,10 @@ public abstract class Producto {
         return stock; 
     }
 
+    public EstadoProducto getEstado() { 
+        return estado; 
+    }
+
     public void setTitulo(String t) { 
         this.titulo = t; 
     }
@@ -43,8 +50,19 @@ public abstract class Producto {
         this.stock = s; 
     }
 
-    // Cada subclase debe implementar este método
+    public void setEstado(EstadoProducto estado) {
+        this.estado = Objects.requireNonNull(estado, "Estado no puede ser nulo");
+    }
+
+    // ----------------------------- MÉTODOS ABSTRACTOS PARA POLIMORFISMO ----------------------------------------------
+
+    // devuelve el tipo de producto como String
+    // por ejemplo: "Comic", "TCG", etc. 
     public abstract String getTipo();
+
+    // devuelve el código del tipo de producto
+    public abstract String getCodigoTipo();
+
 
     @Override
     public String toString() {

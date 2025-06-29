@@ -2,7 +2,11 @@ package com.duoc.exp2_s6.modelo;
 
 import java.util.Objects;
 
+import com.duoc.exp2_s6.modelo.enums.TipoTCG;
+
 public class TCG extends Producto {
+    public static final String COD_TIPO = "003";
+
     private final String nombreJuego;
     private final int edadRecomendada;
     private final TipoTCG tipoProducto;
@@ -18,6 +22,11 @@ public class TCG extends Producto {
     @Override
     public String getTipo() {
         return "TCG";
+    }
+
+        @Override
+    public String getCodigoTipo() {
+        return COD_TIPO;
     }
 
     public String getNombreJuego() { 

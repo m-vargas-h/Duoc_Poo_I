@@ -3,6 +3,7 @@ package com.duoc.exp2_s6.modelo;
 import java.util.Objects;
 
 public class Coleccionable extends Producto {
+    public static final String COD_TIPO = "004";
     private final String franquicia; // Ej: Marvel, Star Wars, o "Material original"
     private final String edicion;    // Ej: "25 Aniversario", "Comic-Con Exclusive", etc.
 
@@ -15,6 +16,11 @@ public class Coleccionable extends Producto {
     @Override
     public String getTipo() {
         return "Coleccionable";
+    }
+
+        @Override
+    public String getCodigoTipo() {
+        return COD_TIPO;
     }
 
     public String getFranquicia() {

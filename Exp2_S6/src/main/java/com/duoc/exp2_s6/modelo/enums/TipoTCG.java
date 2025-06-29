@@ -1,4 +1,4 @@
-package com.duoc.exp2_s6.modelo;
+package com.duoc.exp2_s6.modelo.enums;
 
 public enum TipoTCG {
     BOOSTER,

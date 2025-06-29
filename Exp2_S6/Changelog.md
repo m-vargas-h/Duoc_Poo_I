@@ -1,12 +1,20 @@
 # Historial de cambios
 
-## 28/06/2025 - Diseño menu navegación
+## 29/06/2025 - Implementación menu
+- Se implementaron métodos a los menus para poder efectuar las operaciones correspondientes:
+    - `MenuAdministrador`: Ahora es posible agregar productos, asi como modificar stock
+    - `MenuUsuario`: Ahora es posible registrarse y comprar productos
+- Se creo un método para asignar ID a los productos de forma automática según su categoría.
+- Se definió el método abstracto `getTipoCodigo` para que cada subclase indique el código correspondiente y poder construir el ID de producto.
+- Se crearon excepciones personalizadas para manejar posible problemas al ingresar información.
+
+### 28/06/2025 - Diseño menu navegación
 Se diseñaron 3 menus para poder interactuar con el sistema:
 - `MenuPrincipal`: En este menu se define si quien esta ingresando es un administrador o un usuario.
     - `MenuAdministrador`: Contiene las opciones disponibles para administradores, como lo es agregar productos, modificar su stock o cambiar su disponibilidad entre otros.
     - `MenuUsuario`: contiene las opciones de registro, compra y búsqueda de productos para usuarios nuevos y ya registrados.
 
-## 28/06/2025 - Carga inicial proyecto semana 6
+### 28/06/2025 - Carga inicial proyecto semana 6
 Se crea la primera base del proyecto **ComicCollectorSystem** con las siguientes clases:
 - `Producto`: Clase abstracta principal que define los atributos base de un producto
     - `Comic`: incorpora los campos editorial y volumen (campo opcional con constructor para cada caso)

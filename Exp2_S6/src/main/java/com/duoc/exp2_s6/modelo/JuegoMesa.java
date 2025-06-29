@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class JuegoMesa extends Producto {
+    public static final String COD_TIPO = "005";
     private final String creador; // Puede ser empresa, autor, colectivo...
     private final int jugadoresMinimo;
     private final Optional<Integer> jugadoresMaximo;
@@ -32,6 +33,11 @@ public class JuegoMesa extends Producto {
     @Override
     public String getTipo() {
         return "JuegoMesa";
+    }
+
+    @Override
+    public String getCodigoTipo() {
+        return COD_TIPO;
     }
 
     public String getCreador() {
