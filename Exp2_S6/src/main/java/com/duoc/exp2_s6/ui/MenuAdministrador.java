@@ -50,7 +50,7 @@ public class MenuAdministrador {
                     break;
 
                 case 6:
-                    verResumenVentas();
+                    verResumenVentasDetallado();
                     break;
 
                 case 7:
@@ -281,10 +281,18 @@ public class MenuAdministrador {
         }
     }
 
-    private void verResumenVentas() {
-        System.out.println("📈 Resumen de ventas:");
-        servicio.generarResumenVentas()
-                .forEach((prod, cnt) ->
-                    System.out.printf("• %s → %d vendidos%n", prod.getTitulo(), cnt));
+    // en MenuAdministrador.java
+    private void verResumenVentasDetallado() {
+        System.out.println("📈 Resumen detallado de ventas:");
+        servicio.generarResumenVentasDetallado()
+                .forEach(rv -> {
+                    Producto p = rv.getProducto();
+                    System.out.printf("• %s | %s → %d unidades → $%.2f total%n",
+                        p.getId(),
+                        p.getTitulo(),
+                        rv.getCantidadTotal(),
+                        rv.getIngresoTotal()
+                    );
+                });
     }
 }

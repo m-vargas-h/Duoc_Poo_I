@@ -1,3 +1,2 @@
 id,tipo,titulo,precio,stock,estado,camposExtra...
-001001001,Comic,spoderman,15000.0,13,DISPONIBLE,yae,1
-001002001,NovelaGrafica,la cochina,16000.0,20,DISPONIBLE,la tola,1998
+001001001,Comic,Spiderman,15990.0,13,PRE_VENTA,marvel,1

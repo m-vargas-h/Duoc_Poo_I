@@ -1,6 +1,11 @@
 # Historial de cambios
 
-## 29/06/2025 - Persistencia de productos
+## 29/06/2025 - Persistencia información
+- Se creo la clase `PersistenciaReservas` y `PersistenciaVentas` para poder guardar la información de ventas y reservas de productos, estas clases permiten la lectura y escritura de todas las transacciones hechas en el sistema por los usuarios.
+- Se creo la clase `PersistenciaUsuarios` para guardar la información de cada cliente registrado en la tienda.
+
+
+### 29/06/2025 - Persistencia de productos
 - Se creo la clase `PersistenciaProductos` que se encarga de la lectura y escritura de información de todos los productos del sistema.
 - Ahora la Clase `ComicCollectorService` carga el archivo de persistencia al iniciar el programa, y lo escribe tras cada cambios detectado.
 - Se creo la interface `CovertirCsv` con sus métodos respectivos para que cada subclase pueda definir los datos que debe guardar en el fichero **productos.csv**
