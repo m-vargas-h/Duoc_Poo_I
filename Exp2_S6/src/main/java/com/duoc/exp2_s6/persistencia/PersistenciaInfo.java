@@ -6,21 +6,27 @@ import com.duoc.exp2_s6.servicio.Biblioteca;
 import java.io.*;
 import java.nio.file.*;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.util.function.BiConsumer;
 
 public class PersistenciaInfo {
 
     // Rutas de los archivos CSV
-    private static final Path rutaBase = Paths.get(System.getProperty("user.dir"), "Exp2_S5", "Data");
+    private static final Path rutaBase       = Paths.get(System.getProperty("user.dir"), "Exp2_S6", "Data");
     private static final Path ARCHIVO_LIBROS   = rutaBase.resolve("libros.csv");
     private static final Path ARCHIVO_USUARIOS = rutaBase.resolve("usuarios.csv");
-    private static final Path ARCHIVO_PRESTAMOS = rutaBase.resolve("prestamos.csv");
-    private static final Path ARCHIVO_ADMIN = rutaBase.resolve("admin.csv");
+    private static final Path ARCHIVO_PRESTAMOS= rutaBase.resolve("prestamos.csv");
+    private static final Path ARCHIVO_ADMIN    = rutaBase.resolve("admin.csv");
 
-    //todo: revisar el funcionamiento de la ruta base
+    // Cabeceras de los archivos CSV
+    private static final String LIBROS_HEADER    = "nombre,autor,clasificacion,editorial,totalCopias,copiasDisponibles";
+    private static final String USUARIOS_HEADER  = "id,nombre,carrera,sede";
+    private static final String PRESTAMOS_HEADER = "usuarioId,nombreLibro,fechaPrestamo";
+    private static final String ADMIN_HEADER     = "rut,nombre,password,rol";
+
+    // ---------------------------------- INICIALIZACIÓN ESTÁTICA ----------------------------------
+
+    // Crea la carpeta "Data" si no existe al iniciar la clase.
     static {
         try {
             if (Files.notExists(rutaBase)) {
@@ -32,245 +38,200 @@ public class PersistenciaInfo {
         }
     }
 
-    // ---------- LIBROS ----------
+    // ----------------------------------- MÉTODOS AUXILIARES --------------------------------------
 
-    public static void cargarLibros(Biblioteca bib) throws IOException {
-        try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_LIBROS.toFile()))) {
-            String linea = br.readLine(); // Se salta la cabecera
-            if (linea == null) {
-                throw new IOException("CSV vacío: " + ARCHIVO_LIBROS);
-            }
-        
-            while ((linea = br.readLine()) != null) {
-                StringTokenizer st = new StringTokenizer(linea, ",");
-                // Se espera exactamente 6 campos, de lo contrario lanza la excepción
-                if (st.countTokens() != 6) {
-                    System.out.println("Formato de línea inválido: " + linea);
-                    continue;
-                }
-            
-                String nombre        = st.nextToken().trim();
-                String autor         = st.nextToken().trim();
-                String clasificacion = st.nextToken().trim();
-                String editorial     = st.nextToken().trim();
-                int totalCopias;
-                int copiasDisponibles;
-            
-                try {
-                    totalCopias = Integer.parseInt(st.nextToken().trim());
-                    copiasDisponibles = Integer.parseInt(st.nextToken().trim());
-                } catch (NumberFormatException ex) {
-                    System.out.println("Error: no se pudo convertir el valor numérico de la línea: \"" + linea + "\".");
-                    continue;
-                }
-            
-                // Agrega el libro reconstruido con la información completa a la biblioteca
-                bib.agregarLibro(new Libro(nombre, autor, clasificacion, editorial, totalCopias, copiasDisponibles));
+    // Asegura que el archivo CSV exista, creando su directorio y escribiendo la cabecera si no existe.
+    private static void asegurarCsv(Path file, String header) throws IOException {
+        Path parent = file.getParent();
+        if (Files.notExists(parent)) {
+            Files.createDirectories(parent);
+        }
+        if (Files.notExists(file)) {
+            try (PrintWriter pw = new PrintWriter(file.toFile())) {
+                pw.println(header);
             }
         }
     }
 
-    public static void guardarLibros(List<Libro> catalogo) throws IOException {
-        if (Files.notExists(rutaBase)) {
-            Files.createDirectories(rutaBase);
+    // Lee el CSV completo, saltando la cabecera y filtrando filas con menos de minColumns columnas.
+    private static List<String[]> leerTodo(Path file, int minColumns) throws IOException {
+        if (Files.notExists(file)) {
+            return Collections.emptyList();
         }
-        try (PrintWriter pw = new PrintWriter(ARCHIVO_LIBROS.toFile())) {
-            // cabecera del CSV
-            pw.println("nombre,autor,clasificacion,editorial,totalCopias,copiasDisponibles");
-
-            // Por cada libro, grabamos los datos completos
-            for (Libro l : catalogo) {
-                pw.printf("%s,%s,%s,%s,%d,%d%n",
-                        l.getNombre(),
-                        l.getAutor(),
-                        l.getClasificacion(),
-                        l.getEditorial(),
-                        l.getTotalCopias(),
-                        l.getCopiasDisponibles());
-            }
-        }
-    }
-
-    // ---------- USUARIOS ----------
-
-    public static void cargarUsuarios(Biblioteca bib) throws IOException {
-
-        //? [DEBUG] Linea para verificar funcionamiento
-        //System.out.println("[DEBUG] Leyendo usuarios en: " + ARCHIVO_USUARIOS.toAbsolutePath());
-
-        // Si no existe el archivo, lo crea con la cabecera
-        if (Files.notExists(ARCHIVO_USUARIOS)) {
-            Files.createDirectories(rutaBase);
-            try (PrintWriter pw = new PrintWriter(ARCHIVO_USUARIOS.toFile())) {
-                pw.println("id,nombre,carrera,sede");
-            }
-            
-            return;
-        }
-
-        try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_USUARIOS.toFile()))) {
-            // Leer cabecera
-            String linea = br.readLine();
-            if (linea == null) {
-                // CSV existe pero está vacío, retorno sin excepción
-                return;
-            }
-
-            // Procesar cada registro
-            while ((linea = br.readLine()) != null) {
-                StringTokenizer st = new StringTokenizer(linea, ",");
-                if (st.countTokens() != 4) continue;
-                String id       = st.nextToken().trim();
-                String nombre   = st.nextToken().trim();
-                String carrera  = st.nextToken().trim();
-                String sede     = st.nextToken().trim();
-                bib.agregarUsuario(new Usuario(id, nombre, carrera, sede));
-            }
-        }
-    }
-
-    public static void guardarUsuario(Usuario u) throws IOException {
-
-        //? [DEBUG] Linea para verificar funcionamiento
-        //System.out.println("[DEBUG] Escribiendo usuario en: " + ARCHIVO_USUARIOS.toAbsolutePath());
-
-        // Asegura carpeta y cabecera la primera vez
-        if (Files.notExists(ARCHIVO_USUARIOS)) {
-            Files.createDirectories(rutaBase);
-            try (PrintWriter pw = new PrintWriter(ARCHIVO_USUARIOS.toFile())) {
-                pw.println("id,nombre,carrera,sede");
-            }
-        }
-        // Escribe una línea al final del CSV
-        try (PrintWriter pw = new PrintWriter(new FileWriter(ARCHIVO_USUARIOS.toFile(), true))) {
-            pw.printf("%s,%s,%s,%s%n",
-                      u.getId(),
-                      u.getNombre(),
-                      u.getCarrera(),
-                      u.getSede());
-        }
-    }
-
-    public static void guardarAdmin(Admin admin) throws IOException {
-        // Asegura carpeta y cabecera
-        if (Files.notExists(ARCHIVO_ADMIN)) {
-            Files.createDirectories(rutaBase);
-            try (PrintWriter pw = new PrintWriter(ARCHIVO_ADMIN.toFile())) {
-                pw.println("rut,nombre,password,rol");
-            }
-        }
-        // Añade la línea al CSV
-        try (PrintWriter pw = new PrintWriter(
-                new FileWriter(ARCHIVO_ADMIN.toFile(), true))) {
-            pw.printf("%s,%s,%s,%s%n",
-                admin.getRut(),
-                admin.getNombre(),
-                admin.getPassword(),
-                admin.getRole().name()    // escribe "ADMIN" o "ASISTENTE"
-            );
-        }
-    }
-
-    /*
-     *  Guarda todos los administradores en el CSV, sobrescribiendo el archivo.
-     *  Si el archivo no existe, lo crea con la cabecera. Se utiliza para actualizar la lsita de admin y
-     *  asistentes al eliminar o modificar alguno.
-     */
-    public static void guardarAdmins(Map<String, Admin> adminMap) throws IOException {
-        // Asegura carpeta y cabecera
-        if (Files.notExists(ARCHIVO_ADMIN)) {
-            Files.createDirectories(rutaBase);
-        }
-        try (PrintWriter pw = new PrintWriter(ARCHIVO_ADMIN.toFile())) {
-            pw.println("rut,nombre,password,rol");
-            for (Admin a : adminMap.values()) {
-                pw.printf("%s,%s,%s,%s%n",
-                    a.getRut(),
-                    a.getNombre(),
-                    a.getPassword(),
-                    a.getRole().name()
-                );
-            }
-        }
-    }
-
-    // ---------- PRESTAMOS ----------
-
-    // Guarda los préstamos activos de los usuarios en un CSV
-    public static void guardarPrestamos(Map<String, Usuario> usuarios) throws IOException {
-        if (Files.notExists(rutaBase)) Files.createDirectories(rutaBase);
-        try (PrintWriter pw = new PrintWriter(ARCHIVO_PRESTAMOS.toFile())) {
-            pw.println("usuarioId,nombreLibro,fechaPrestamo");
-            for (Usuario u : usuarios.values()) {
-                
-                for (Libro l : u.getLibrosPrestados()) {
-                    String fecha = Instant.now().toString(); // o la fecha original del préstamo
-                    pw.printf("%s,%s,%s%n", u.getId(), l.getNombre(), fecha);
-                }
-            }
-        }
-    }
-
-    // Carga los préstamos desde el CSV y los asigna a los usuarios
-    public static void cargarPrestamos(Biblioteca bib) throws IOException {
-        if (Files.notExists(ARCHIVO_PRESTAMOS)) return;
-        try (BufferedReader br = Files.newBufferedReader(ARCHIVO_PRESTAMOS)) {
-            String line = br.readLine(); // cabecera
+        List<String[]> rows = new ArrayList<>();
+        try (BufferedReader br = Files.newBufferedReader(file)) {
+            String line = br.readLine();            // salto cabecera
             while ((line = br.readLine()) != null) {
-                String[] f = line.split(",", 3);
-                String usuarioId  = f[0].trim();
-                String libroNombre= f[1].trim();
-                try {
-                    Usuario u = bib.buscarUsuario(usuarioId);
-                    Libro l   = bib.buscarLibro(libroNombre);
+                String[] cols = line.split(",", -1);
+                if (cols.length >= minColumns) {
+                    rows.add(cols);
+                }
+            }
+        }
+        return rows;
+    }
 
-                    u.agregarPrestamo(l);
-                } catch (Exception e) {
-                    // Si algo falla (usuario o libro no existe), lo ignoramos o lo registramos
-                    System.err.println("Error al cargar préstamo: " + e.getMessage());
+    // Recibe un archivo CSV y una cabecera, y escribe todas las filas de items en el CSV.
+    // Si el archivo no existe, lo crea con la cabecera.
+    private static <T> void escribirTodo(Path file, String header, List<T> items,
+                                     BiConsumer<PrintWriter,T> rowWriter) throws IOException {
+        asegurarCsv(file, header);
+        try (PrintWriter pw = new PrintWriter(file.toFile())) {
+            pw.println(header);
+            for (T item : items) {
+                rowWriter.accept(pw, item);
+            }
+        }
+    }
+
+    // Recibe un archivo CSV, una cabecera y un único item, y lo agrega al final del CSV.
+    // Si el archivo no existe, lo crea con la cabecera.
+    private static <T> void agregar(Path file, String header, T item,
+                                      BiConsumer<PrintWriter,T> rowWriter) throws IOException {
+        asegurarCsv(file, header);
+        try (PrintWriter pw = new PrintWriter(new FileWriter(file.toFile(), true))) {
+            rowWriter.accept(pw, item);
+        }
+    }
+
+    // ------------------------------------------- LIBROS ------------------------------------------
+
+    // Carga los libros desde el archivo CSV y los agrega a la biblioteca.
+    public static void cargarLibros(Biblioteca bib) throws IOException {
+        List<String[]> rows = leerTodo(ARCHIVO_LIBROS, 6);
+        for (String[] c : rows) {
+            try {
+                String nombre        = c[0].trim();
+                String autor         = c[1].trim();
+                String clasificacion = c[2].trim();
+                String editorial     = c[3].trim();
+                int totalCopias       = Integer.parseInt(c[4].trim());
+                int copiasDisponibles = Integer.parseInt(c[5].trim());
+                bib.agregarLibro(new Libro(
+                    nombre, autor, clasificacion, editorial,
+                    totalCopias, copiasDisponibles));
+            } catch (NumberFormatException ex) {
+                System.err.println("Error conversión numérica en línea: " + Arrays.toString(c));
+            }
+        }
+    }
+
+    // Guarda una lista de libros en el archivo CSV, sobrescribiendo el contenido.
+    public static void guardarLibros(List<Libro> catalogo) throws IOException {
+        escribirTodo(ARCHIVO_LIBROS, LIBROS_HEADER, catalogo, (pw, l) ->
+            pw.printf("%s,%s,%s,%s,%d,%d%n",
+                l.getNombre(),
+                l.getAutor(),
+                l.getClasificacion(),
+                l.getEditorial(),
+                l.getTotalCopias(),
+                l.getCopiasDisponibles()
+            )
+        );
+    }
+
+    // ------------------------------------------ USUARIOS -----------------------------------------
+
+    // Carga los usuarios desde el archivo CSV y los agrega a la biblioteca.
+    public static void cargarUsuarios(Biblioteca bib) throws IOException {
+        List<String[]> rows = leerTodo(ARCHIVO_USUARIOS, 4);
+        for (String[] c : rows) {
+            Usuario u = new Usuario(
+                c[0].trim(),
+                c[1].trim(),
+                c[2].trim(),
+                c[3].trim()
+            );
+            bib.agregarUsuario(u);
+        }
+    }
+
+    // Guarda un único usuario en el archivo CSV, agregándolo al final.
+    public static void guardarUsuario(Usuario u) throws IOException {
+        agregar(ARCHIVO_USUARIOS, USUARIOS_HEADER, u, (pw, usr) ->
+            pw.printf("%s,%s,%s,%s%n",
+                usr.getId(),
+                usr.getNombre(),
+                usr.getCarrera(),
+                usr.getSede()
+            )
+        );
+    }
+
+    // ---------------------------------------- PRÉSTAMOS ------------------------------------------
+
+    // Carga los préstamos desde el archivo CSV y los asigna a los usuarios correspondientes.
+    public static void cargarPrestamos(Biblioteca bib) throws IOException {
+        List<String[]> rows = leerTodo(ARCHIVO_PRESTAMOS, 3);
+        for (String[] c : rows) {
+            String usuarioId  = c[0].trim();
+            String libroNombre= c[1].trim();
+            String fechaStr   = c[2].trim();
+            try {
+                Usuario u = bib.buscarUsuario(usuarioId);
+                Libro   l = bib.buscarLibro(libroNombre);
+                u.agregarPrestamo(l);
+            } catch (Exception ex) {
+                System.err.println("Error al cargar préstamo: " + Arrays.toString(c) + " → " + ex.getMessage());
+            }
+        }
+    }
+
+    // Guarda los préstamos actuales de todos los usuarios en el archivo CSV, sobrescribiendo el contenido.
+    public static void guardarPrestamos(Map<String,Usuario> usuarios) throws IOException {
+        asegurarCsv(ARCHIVO_PRESTAMOS, PRESTAMOS_HEADER);
+        try (PrintWriter pw = new PrintWriter(ARCHIVO_PRESTAMOS.toFile())) {
+            pw.println(PRESTAMOS_HEADER);
+            for (Usuario u : usuarios.values()) {
+                for (Libro l : u.getLibrosPrestados()) {
+                    String fecha = Instant.now().toString();
+                    pw.printf("%s,%s,%s%n",
+                        u.getId(),
+                        l.getNombre(),
+                        fecha
+                    );
                 }
             }
         }
     }
 
-    // ---------- ADMINISTRADORES ----------
+    // -------------------------------------- ADMINISTRADORES --------------------------------------
 
+    // Carga los administradores desde el archivo CSV y los devuelve en un mapa.
     public static Map<String,Admin> cargarAdmin() throws IOException {
-
-        //? [DEBUG] Linea para verificar funcionamiento
-        //System.out.println("Ruta del archivo admin.csv: " + ARCHIVO_ADMIN.toAbsolutePath());
-        
         Map<String,Admin> mapa = new HashMap<>();
-
-        // Si no existe, creo la carpeta y archivo con cabecera
-        if (Files.notExists(ARCHIVO_ADMIN)) {
-            Files.createDirectories(rutaBase);
-            try (PrintWriter pw = new PrintWriter(ARCHIVO_ADMIN.toFile())) {
-                pw.println("rut,nombre,password,rol");
-            }
-            return mapa;
+        List<String[]> rows = leerTodo(ARCHIVO_ADMIN, 4);
+        for (String[] c : rows) {
+            String rut      = c[0].trim();
+            String nombre   = c[1].trim();
+            String pwd      = c[2].trim();
+            Admin.Role rol  = Admin.Role.valueOf(c[3].trim().toUpperCase());
+            mapa.put(rut, new Admin(rut, nombre, pwd, rol));
         }
-
-        // Abro el CSV y salto la primera línea (cabecera)
-        try (BufferedReader br = Files.newBufferedReader(ARCHIVO_ADMIN)) {
-            String linea = br.readLine();  // cabecera
-            while ((linea = br.readLine()) != null) {
-                String[] cols = linea.split(",", -1);
-                if (cols.length < 4) continue;
-
-                String rut      = cols[0].trim();
-                String nombre   = cols[1].trim();
-                String password = cols[2].trim();
-                String rolStr   = cols[3].trim().toUpperCase();
-
-                Admin.Role rol = rolStr.equals("ADMIN")
-                    ? Admin.Role.ADMIN
-                    : Admin.Role.ASISTENTE;
-
-                mapa.put(rut, new Admin(rut, nombre, password, rol));
-            }
-        }
-
         return mapa;
+    }
+
+    // Guarda un único administrador en el archivo CSV, agregándolo al final.
+    public static void guardarAdmin(Admin a) throws IOException {
+        agregar(ARCHIVO_ADMIN, ADMIN_HEADER, a, (pw, adm) ->
+            pw.printf("%s,%s,%s,%s%n",
+                adm.getRut(),
+                adm.getNombre(),
+                adm.getPassword(),
+                adm.getRole().name()
+            )
+        );
+    }
+
+    // Guarda una colección de administradores en el archivo CSV, sobrescribiendo el contenido.
+    public static void guardarAdmins(Collection<Admin> admins) throws IOException {
+        escribirTodo(ARCHIVO_ADMIN, ADMIN_HEADER, new ArrayList<>(admins), (pw, adm) ->
+            pw.printf("%s,%s,%s,%s%n",
+                adm.getRut(),
+                adm.getNombre(),
+                adm.getPassword(),
+                adm.getRole().name()
+            )
+        );
     }
 }

@@ -62,13 +62,13 @@ public class ServiciosBiblioteca {
         Map<String, Admin> creds = PersistenciaInfo.cargarAdmin();
 
         Admin target = creds.get(rut);
-        // sólo permitir borrar si existe y es asistente
         if (target == null || target.getRole() != Admin.Role.ASISTENTE) {
             return false;
         }
 
         creds.remove(rut);
-        PersistenciaInfo.guardarAdmins(creds);
+        // en lugar de pasar todo el map, pasamos solo la Collection<Admin>
+        PersistenciaInfo.guardarAdmins(creds.values());
         return true;
     }
 
