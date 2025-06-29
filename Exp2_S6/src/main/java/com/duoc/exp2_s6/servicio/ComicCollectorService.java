@@ -3,12 +3,18 @@ package com.duoc.exp2_s6.servicio;
 import com.duoc.exp2_s6.excepciones.*;
 import com.duoc.exp2_s6.modelo.*;
 import com.duoc.exp2_s6.modelo.enums.*;
-import java.util.stream.Collectors;
+import com.duoc.exp2_s6.persistencia.PersistenciaProductos;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
+
 
 public class ComicCollectorService {
     private static final String STORE_CODE = "001"; // Código de la tienda
+
+    private final PersistenciaProductos persistencia = new PersistenciaProductos(); // Persistencia de productos
 
     private final Map<String, Integer> secuencias = new HashMap<>();    // Secuencias para IDs de productos por tipo
     private final Map<String, Producto> inventario = new HashMap<>();   // Inventario de productos
@@ -16,19 +22,37 @@ public class ComicCollectorService {
     private final List<Venta> ventas               = new ArrayList<>(); // Ventas realizadas
     private final Map<String, Reserva> reservas    = new HashMap<>();   // Reservas pendientes
 
+    public ComicCollectorService() {
+        // 1) Cargar productos del CSV
+        try {
+            List<Producto> cargados = persistencia.cargarTodos();
+            for (Producto p : cargados) {
+                inventario.put(p.getId(), p);
+                // ajustar secuencia: extraigo los últimos 3 dígitos del ID
+                String tipo = p.getCodigoTipo();
+                int seq = Integer.parseInt(p.getId().substring(6)); // XXXYYYZZZ → ZZZ en pos 6–8
+                secuencias.merge(tipo, seq, Math::max);
+            }
+        } catch (IOException e) {
+            System.err.println("⚠️ No se pudo leer productos.csv — inventario vacío");
+        }
+    }
 
     // 1. Agregar producto
     public void agregarProducto(Producto p) {
         if (inventario.containsKey(p.getId()))
-        throw new EntidadDuplicadaException("Producto", p.getId());
+            throw new EntidadDuplicadaException("Producto", p.getId());
         inventario.put(p.getId(), p);
+        persistirProductos();
     }
 
     // 2. Eliminar producto
     public void eliminarProducto(String id) {
         if (inventario.remove(id) == null)
-        throw new EntidadNoEncontradaException("Producto", id);
+            throw new EntidadNoEncontradaException("Producto", id);
+        persistirProductos();
     }
+
 
     // 3. Listar usuarios
     public Collection<Usuario> listarUsuarios() {
@@ -42,19 +66,22 @@ public class ComicCollectorService {
         int nuevo = p.getStock() + delta;
         if (nuevo < 0) throw new IllegalArgumentException("Stock no puede ser negativo");
         p.setStock(nuevo);
+        persistirProductos();
     }
+
 
     // 5. Cambiar estado
     public void cambiarEstadoProducto(String id, EstadoProducto nuevoEstado) {
         Producto p = Optional.ofNullable(inventario.get(id))
                              .orElseThrow(() -> new EntidadNoEncontradaException("Producto", id));
         p.setEstado(nuevoEstado);
+        persistirProductos();
     }
+
 
     // 6. Generar resumen de ventas
     public Map<Producto, Long> generarResumenVentas() {
-        return ventas.stream()
-        .collect(Collectors.groupingBy(Venta::getProducto, Collectors.counting()));
+        return ventas.stream().collect(Collectors.groupingBy(Venta::getProducto, Collectors.counting()));
     }
 
     // 7. Registrar usuario
@@ -80,25 +107,25 @@ public class ComicCollectorService {
         if (p.getStock() < cantidad) {
             throw new StockInsuficienteException(productoId, p.getStock(), cantidad);
         }
-        // Reducir stock
         p.setStock(p.getStock() - cantidad);
-
-        // Registrar venta
         Venta v = new Venta(u, p, cantidad, LocalDateTime.now());
         ventas.add(v);
+        persistirProductos();
     }
 
-    // 10. Reservar producto cuando no hay stock
+
+    // 10. Reservar producto
     public String reservarProducto(String usuarioId, String productoId, int cantidad) {
         Usuario u = Optional.ofNullable(usuarios.get(usuarioId))
                             .orElseThrow(() -> new EntidadNoEncontradaException("Usuario", usuarioId));
         Producto p = buscarProducto(productoId);
 
-        // No bloqueamos stock en la reserva; es un “pedido pendiente”
         Reserva r = new Reserva(u, p, cantidad);
         reservas.put(r.getId(), r);
+        persistirProductos();
         return r.getId();
     }
+
 
     // 11. Consultar estado de reserva
     public Reserva.Estado consultarEstadoReserva(String reservaId) {
@@ -115,6 +142,12 @@ public class ComicCollectorService {
         return STORE_CODE + tipo + zzz;
     }
 
-
+    private void persistirProductos() {
+        try {
+            persistencia.guardarTodos(inventario.values());
+        } catch (IOException e) {
+            throw new RuntimeException("Error guardando productos en CSV", e);
+        }
+    }
 
 }

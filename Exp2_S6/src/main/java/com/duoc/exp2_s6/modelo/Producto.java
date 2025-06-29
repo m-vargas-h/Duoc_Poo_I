@@ -2,8 +2,9 @@ package com.duoc.exp2_s6.modelo;
 
 import java.util.Objects;
 import com.duoc.exp2_s6.modelo.enums.EstadoProducto;
+import com.duoc.exp2_s6.interfaces.ConvertirCsv;
 
-public abstract class Producto {
+public abstract class Producto implements ConvertirCsv {
     private String id;
     private String titulo;
     private double precio;
@@ -69,4 +70,18 @@ public abstract class Producto {
         return String.format("[%s] %s (%s) $%.2f | Stock: %d",
             id, titulo, getTipo(), precio, stock);
     }
+
+    /** Primera parte de la línea CSV: id,tipo,titulo,precio,stock,estado */
+    @Override
+    public String toCsvLine() {
+        return String.join(",",
+            getId(),
+            getTipo(),
+            getTitulo(),
+            String.valueOf(getPrecio()),
+            String.valueOf(getStock()),
+            getEstado().name()
+        );
+    }
+
 }

@@ -1,10 +1,14 @@
 package com.duoc.exp2_s6.modelo;
 
-import java.util.Objects;
-
+import com.duoc.exp2_s6.interfaces.ConvertirCsv;
+import com.duoc.exp2_s6.modelo.enums.EstadoProducto;
 import com.duoc.exp2_s6.modelo.enums.TipoTCG;
 
-public class TCG extends Producto {
+import java.util.Objects;
+
+
+
+public class TCG extends Producto implements ConvertirCsv {
     public static final String COD_TIPO = "003";
 
     private final String nombreJuego;
@@ -48,4 +52,29 @@ public class TCG extends Producto {
             nombreJuego, tipoProducto, edadRecomendada
         );
     }
+
+    @Override
+    public String toCsvLine() {
+        return super.toCsvLine()
+             + "," + nombreJuego
+             + "," + edadRecomendada
+             + "," + tipoProducto.name();
+    }
+
+    public static TCG fromCsvTokens(String[] tokens) {
+        String id     = tokens[0];
+        String titulo = tokens[2];
+        double precio = Double.parseDouble(tokens[3]);
+        int stock     = Integer.parseInt(tokens[4]);
+        EstadoProducto est = EstadoProducto.valueOf(tokens[5]);
+        String nombreJuego = tokens[6];
+        int edadRec = Integer.parseInt(tokens[7]);
+        TipoTCG tipo = TipoTCG.valueOf(tokens[8]);
+
+        TCG tcg = new TCG(id, titulo, precio, stock, nombreJuego, edadRec, tipo);
+        tcg.setEstado(est);
+        return tcg;
+    }
+
+
 }

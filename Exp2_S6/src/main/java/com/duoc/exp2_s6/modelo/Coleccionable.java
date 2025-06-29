@@ -1,8 +1,10 @@
 package com.duoc.exp2_s6.modelo;
 
 import java.util.Objects;
+import com.duoc.exp2_s6.interfaces.ConvertirCsv;
+import com.duoc.exp2_s6.modelo.enums.EstadoProducto;
 
-public class Coleccionable extends Producto {
+public class Coleccionable extends Producto implements ConvertirCsv {
     public static final String COD_TIPO = "004";
     private final String franquicia; // Ej: Marvel, Star Wars, o "Material original"
     private final String edicion;    // Ej: "25 Aniversario", "Comic-Con Exclusive", etc.
@@ -36,4 +38,27 @@ public class Coleccionable extends Producto {
         return super.toString() +
                String.format(" | Franquicia: %s | Edición: %s", getFranquicia(), edicion);
     }
+
+    @Override
+    public String toCsvLine() {
+        // super.toCsvLine() → "id,tipo,titulo,precio,stock,estado"
+        return super.toCsvLine()
+             + "," + getFranquicia()
+             + "," + edicion;
+    }
+
+    public static Coleccionable fromCsvTokens(String[] tokens) {
+        String id          = tokens[0];
+        String titulo      = tokens[2];
+        double precio      = Double.parseDouble(tokens[3]);
+        int stock          = Integer.parseInt(tokens[4]);
+        EstadoProducto est = EstadoProducto.valueOf(tokens[5]);
+        String franq       = tokens.length > 6 ? tokens[6] : "";
+        String edic        = tokens.length > 7 ? tokens[7] : "";
+
+        Coleccionable c = new Coleccionable(id, titulo, precio, stock, franq, edic);
+        c.setEstado(est);
+        return c;
+    }
+
 }
