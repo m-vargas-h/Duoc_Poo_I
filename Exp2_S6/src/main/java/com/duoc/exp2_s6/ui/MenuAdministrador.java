@@ -230,7 +230,7 @@ public class MenuAdministrador {
 
                 case 5 -> {
                     // TCG
-                    System.out.print("Nombre de Juego: ");
+                    System.out.print("Nombre de Franquicia: ");
                     String nombreJuego = scanner.nextLine().trim();
                     System.out.print("Edad recomendada: ");
                     int edadRec = Integer.parseInt(scanner.nextLine().trim());

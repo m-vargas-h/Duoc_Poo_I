@@ -1,6 +1,10 @@
 # Historial de cambios
 
-## 30/06/2025 - Actualización Readme
+## 30/06/2025 - Corrección errores menu administrador
+- Se corrige texto del menu administrador que solicitaba erróneamente el nombre del TCG 2 veces, cuando debería pedir el nombre del juego, y nombre de la franquicia a la que pertenece.
+- Se agrega base de datos con un stock inicial de productos para todas las categorías para facilitar pruebas de funcionamiento.
+
+### 30/06/2025 - Actualización Readme
 - Se actualiza el fichero Readme del proyecto.
 - Cambios menores en textos y comentarios para facilitar lectura del código.
 

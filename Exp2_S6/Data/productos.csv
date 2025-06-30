@@ -1,0 +1,12 @@
+id,tipo,titulo,precio,stock,estado,camposExtra...
+001001001,Comic,The Walking Dead,19990.0,5,DISPONIBLE,Skybound Entertainment,1
+001001002,Comic,The Batman Who Laughs,24990.0,7,DISPONIBLE,DC Comics,1
+001002001,NovelaGrafica,Watchmen,27990.0,10,DISPONIBLE,Alan Moore & Dave Gibbons,1986
+001002002,NovelaGrafica,Maus,22990.0,8,DISPONIBLE,Art Spiegelman,1986
+001004001,Coleccionable,Funko Pop! - Spider-Man (Miles Morales),12990.0,21,DISPONIBLE,Marvel,MCU
+001004002,Coleccionable,Tamagotchi Original - Edici�n 1997,19990.0,12,DISPONIBLE,Bandai,Tamagotchi Reedicion especial
+001004003,Coleccionable,Varita Coleccionable - Harry Potter (Albus Dumbledore),34990.0,6,DISPONIBLE,Harry Potter,Wizarding World
+001005002,JuegoMesa,Catan,32990.0,14,DISPONIBLE,Devir,2,4,10
+001005003,JuegoMesa,Pandemic - Edici�n Cl�sica,34990.0,10,DISPONIBLE,Z-Man Games,2,4,8
+001003001,TCG,Magic: the Gathering - Starter Kit 2025,19990.0,34,DISPONIBLE,Magic: The Gathering,13,DECK
+001003002,TCG,Magic: The Gathering - March of the Machine,7990.0,33,DISPONIBLE,Magic: The Gathering,13,BOOSTER

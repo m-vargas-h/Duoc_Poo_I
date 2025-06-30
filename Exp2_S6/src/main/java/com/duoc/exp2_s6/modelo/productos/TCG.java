@@ -11,14 +11,14 @@ import java.util.Objects;
 public class TCG extends Producto implements ConvertirCsv {
     public static final String COD_TIPO = "003";
 
-    private final String nombreJuego;
+    private final String nombreFranquicia;
     private final int edadRecomendada;
     private final TipoTCG tipoProducto;
 
-    public TCG(String id, String titulo, double precio, int stock, String nombreJuego, int edadRecomendada,
+    public TCG(String id, String titulo, double precio, int stock, String nombreFranquicia, int edadRecomendada,
                TipoTCG tipoProducto) {
         super(id, titulo, precio, stock);
-        this.nombreJuego = Objects.requireNonNull(nombreJuego).trim();
+        this.nombreFranquicia = Objects.requireNonNull(nombreFranquicia).trim();
         this.edadRecomendada = edadRecomendada;
         this.tipoProducto = Objects.requireNonNull(tipoProducto);
     }
@@ -33,8 +33,8 @@ public class TCG extends Producto implements ConvertirCsv {
         return COD_TIPO;
     }
 
-    public String getNombreJuego() { 
-        return nombreJuego; 
+    public String getNombreFranquicia() { 
+        return nombreFranquicia; 
     }
 
     public int getEdadRecomendada() { 
@@ -49,14 +49,14 @@ public class TCG extends Producto implements ConvertirCsv {
     public String toString() {
         return super.toString() + String.format(
             " | Juego: %s | Tipo: %s | Edad: %d+",
-            nombreJuego, tipoProducto, edadRecomendada
+            nombreFranquicia, tipoProducto, edadRecomendada
         );
     }
 
     @Override
     public String toCsvLine() {
         return super.toCsvLine()
-             + "," + nombreJuego
+             + "," + nombreFranquicia
              + "," + edadRecomendada
              + "," + tipoProducto.name();
     }
@@ -67,11 +67,11 @@ public class TCG extends Producto implements ConvertirCsv {
         double precio = Double.parseDouble(tokens[3]);
         int stock     = Integer.parseInt(tokens[4]);
         EstadoProducto est = EstadoProducto.valueOf(tokens[5]);
-        String nombreJuego = tokens[6];
+        String nombreFranquicia = tokens[6];
         int edadRec = Integer.parseInt(tokens[7]);
         TipoTCG tipo = TipoTCG.valueOf(tokens[8]);
 
-        TCG tcg = new TCG(id, titulo, precio, stock, nombreJuego, edadRec, tipo);
+        TCG tcg = new TCG(id, titulo, precio, stock, nombreFranquicia, edadRec, tipo);
         tcg.setEstado(est);
         return tcg;
     }
