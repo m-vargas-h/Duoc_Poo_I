@@ -1,14 +1,16 @@
 package com.duoc.exp2_s6.servicio;
 
 import com.duoc.exp2_s6.excepciones.*;
-import com.duoc.exp2_s6.modelo.*;
+import com.duoc.exp2_s6.modelo.base.Producto;
+import com.duoc.exp2_s6.modelo.base.Usuario;
 import com.duoc.exp2_s6.modelo.enums.*;
+import com.duoc.exp2_s6.modelo.ventas.ResumenVenta;
+import com.duoc.exp2_s6.modelo.ventas.Venta;
 import com.duoc.exp2_s6.persistencia.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class ComicCollectorService {
@@ -18,15 +20,12 @@ public class ComicCollectorService {
     private final PersistenciaProductos persistenciaProd = new PersistenciaProductos();
     private final PersistenciaUsuarios  persistenciaUsr  = new PersistenciaUsuarios();
     private final PersistenciaVentas persistenciaVentas = new PersistenciaVentas();
-    private final PersistenciaReservas persistenciaRes = new PersistenciaReservas();
 
     private final Map<String,Integer> secuencias  = new HashMap<>();
     private final Map<String,Producto> inventario = new LinkedHashMap<>();
     private final Map<String,Usuario>  usuarios   = new LinkedHashMap<>();
     private final List<Venta> ventas              = new ArrayList<>();
-    private final Map<String,Reserva> reservas        = new LinkedHashMap<>();
-    
-    private int reservaSeq = 0;  // para generar IDs de reserva
+
 
     public ComicCollectorService() {
         // 1) Cargo productos
@@ -58,17 +57,6 @@ public class ComicCollectorService {
                               .forEach(ventas::add);
         } catch (IOException e) {
             System.err.println("⚠️ No se pudo leer ventas.csv — historial vacío");
-        }
-
-        // 4) cargar reservas
-        try {
-            for (Reserva r : persistenciaRes.cargarTodos()) {
-                reservas.put(r.getId(), r);
-                // extraer secuencia numérica final de r.getId() si tu ID es numérico
-                // e.g. "RSV000123" → seq=123 → reservaSeq = max(reservaSeq, seq)
-            }
-        } catch(IOException e){
-            System.err.println("⚠️ No se pudo leer reservas.csv — sin reservas");
         }
 
     }
@@ -105,33 +93,12 @@ public class ComicCollectorService {
         persistirProductos();
     }
 
-
-    /** 5. Cambiar estado de producto 
-     *  Si pasa de PRE_VENTA→DISPONIBLE dispara las ventas para todas las reservas PENDIENTE
-     */
+    // 5. Cambiar estado de producto
     public void cambiarEstadoProducto(String id, EstadoProducto nuevoEstado) {
         Producto p = Optional.ofNullable(inventario.get(id))
                              .orElseThrow(() -> new EntidadNoEncontradaException("Producto", id));
-        EstadoProducto old = p.getEstado();
         p.setEstado(nuevoEstado);
         persistirProductos();
-
-        // Si liberamos preventas, convertir en ventas
-        if (old == EstadoProducto.PRE_VENTA
-         && nuevoEstado == EstadoProducto.DISPONIBLE) {
-            for (Reserva r : reservas.values()) {
-                if (r.getProductoId().equals(id)
-                 && r.getEstado() == Reserva.Estado.PENDIENTE) {
-                    // crear venta SIN descontar stock de nuevo
-                    Usuario u = usuarios.get(r.getUsuarioId());
-                    Venta v = new Venta(u, p, r.getCantidad(), r.getFechaHora());
-                    ventas.add(v);
-                    r.setEstado(Reserva.Estado.COMPLETADA);
-                }
-            }
-            persistirVentas();
-            persistirReservas();
-        }
     }
 
     // 6. Generar resumen de ventas
@@ -195,38 +162,38 @@ public class ComicCollectorService {
         persistirVentas();
     }
 
-    // 10. Reservar producto
-    public String reservarProducto(String usuarioId, String productoId, int cantidad) {
-        Usuario u = Optional.ofNullable(usuarios.get(usuarioId))
-                            .orElseThrow(() -> new EntidadNoEncontradaException("Usuario", usuarioId));
-        Producto p = buscarProducto(productoId);
-        if (p.getEstado() != EstadoProducto.PRE_VENTA) {
-            throw new IllegalStateException("Producto no está en PRE_VENTA");
-        }
-        if (p.getStock() < cantidad) {
-            throw new StockInsuficienteException(productoId, p.getStock(), cantidad);
-        }
-        // 1) descuenta stock en preventa
-        p.setStock(p.getStock() - cantidad);
-        persistirProductos();
+    //! 10. Reservar producto, no utilizado en el momento actual
+    //public String reservarProducto(String usuarioId, String productoId, int cantidad) {
+    //    Usuario u = Optional.ofNullable(usuarios.get(usuarioId))
+    //                        .orElseThrow(() -> new EntidadNoEncontradaException("Usuario", usuarioId));
+    //    Producto p = buscarProducto(productoId);
+    //    if (p.getEstado() != EstadoProducto.PRE_VENTA) {
+    //        throw new IllegalStateException("Producto no está en PRE_VENTA");
+    //    }
+    //    if (p.getStock() < cantidad) {
+    //        throw new StockInsuficienteException(productoId, p.getStock(), cantidad);
+    //    }
+    //    // 1) descuenta stock en preventa
+    //    p.setStock(p.getStock() - cantidad);
+    //    persistirProductos();
 
-        // 2) genera ID de reserva
-        String resId = String.format("RSV%06d", ++reservaSeq);
-        Reserva r = new Reserva(resId, u, p, cantidad);
-        reservas.put(r.getId(), r);
+    //    // 2) genera ID de reserva
+    //    String resId = String.format("RSV%06d", ++reservaSeq);
+    //    Reserva r = new Reserva(resId, u, p, cantidad);
+    //    reservas.put(r.getId(), r);
 
-        // 3) persiste reservas
-        persistirReservas();
-        return r.getId();
-    }
+    //    // 3) persiste reservas
+    //    persistirReservas();
+    //    return r.getId();
+    //}
 
 
-    // 11. Consultar estado de reserva
-    public Reserva.Estado consultarEstadoReserva(String reservaId) {
-        Reserva r = Optional.ofNullable(reservas.get(reservaId))
-                            .orElseThrow(() -> new EntidadNoEncontradaException("Reserva", reservaId));
-        return r.getEstado();
-    }
+    //! 11. Consultar estado de reserva, no utilizado en el momento actual
+    //public Reserva.Estado consultarEstadoReserva(String reservaId) {
+    //    Reserva r = Optional.ofNullable(reservas.get(reservaId))
+    //                        .orElseThrow(() -> new EntidadNoEncontradaException("Reserva", reservaId));
+    //    return r.getEstado();
+    //}
 
     public String generarIdProducto(Producto plantilla) {
         String tipo = plantilla.getCodigoTipo();
@@ -235,6 +202,9 @@ public class ComicCollectorService {
         return STORE_CODE + tipo + String.format("%03d", next);
     }
 
+    public Collection<Producto> listarProductos() {
+        return Collections.unmodifiableCollection(inventario.values());
+    }
 
     //  ————— Persistencia interna —————
 
@@ -262,12 +232,13 @@ public class ComicCollectorService {
         }
     }
 
-    private void persistirReservas() {
-        try {
-            persistenciaRes.guardarTodos(reservas.values());
-        } catch (IOException e) {
-            throw new RuntimeException("Error guardando reservas en CSV", e);
-        }
-    }
+    //! Persistir reservas, sistema en proceso, no utilizado en el momento actual
+    //private void persistirReservas() {
+    //    try {
+    //        persistenciaRes.guardarTodos(reservas.values());
+    //    } catch (IOException e) {
+    //        throw new RuntimeException("Error guardando reservas en CSV", e);
+    //    }
+    //}
 
 }

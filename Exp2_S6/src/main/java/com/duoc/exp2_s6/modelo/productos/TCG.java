@@ -1,6 +1,7 @@
-package com.duoc.exp2_s6.modelo;
+package com.duoc.exp2_s6.modelo.productos;
 
 import com.duoc.exp2_s6.interfaces.ConvertirCsv;
+import com.duoc.exp2_s6.modelo.base.Producto;
 import com.duoc.exp2_s6.modelo.enums.EstadoProducto;
 import com.duoc.exp2_s6.modelo.enums.TipoTCG;
 

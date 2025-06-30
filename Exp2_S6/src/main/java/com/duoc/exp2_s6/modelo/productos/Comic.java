@@ -1,8 +1,9 @@
-package com.duoc.exp2_s6.modelo;
+package com.duoc.exp2_s6.modelo.productos;
 
 import java.util.Objects;
 import java.util.Optional;
 import com.duoc.exp2_s6.interfaces.ConvertirCsv;
+import com.duoc.exp2_s6.modelo.base.Producto;
 
 
 public class Comic extends Producto implements ConvertirCsv {

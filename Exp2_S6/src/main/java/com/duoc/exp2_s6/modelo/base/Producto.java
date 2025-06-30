@@ -1,4 +1,4 @@
-package com.duoc.exp2_s6.modelo;
+package com.duoc.exp2_s6.modelo.base;
 
 import java.util.Objects;
 import com.duoc.exp2_s6.modelo.enums.EstadoProducto;

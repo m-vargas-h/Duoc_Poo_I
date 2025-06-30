@@ -1,4 +1,6 @@
-package com.duoc.exp2_s6.modelo;
+package com.duoc.exp2_s6.modelo.ventas;
+
+import com.duoc.exp2_s6.modelo.base.Producto;
 
 public class ResumenVenta {
     private final Producto producto;

@@ -1,11 +1,11 @@
 
 package com.duoc.exp2_s6.persistencia;
 
-import com.duoc.exp2_s6.modelo.Usuario;
-
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
+
+import com.duoc.exp2_s6.modelo.base.Usuario;
 
 public class PersistenciaUsuarios {
     private static final Path RUTA_BASE = Paths.get(System.getProperty("user.dir"), "Exp2_S6", "Data");

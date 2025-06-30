@@ -1,6 +1,12 @@
 package com.duoc.exp2_s6.persistencia;
 
-import com.duoc.exp2_s6.modelo.*;
+import com.duoc.exp2_s6.modelo.base.Producto;
+import com.duoc.exp2_s6.modelo.productos.Coleccionable;
+import com.duoc.exp2_s6.modelo.productos.Comic;
+import com.duoc.exp2_s6.modelo.productos.JuegoMesa;
+import com.duoc.exp2_s6.modelo.productos.NovelaGrafica;
+import com.duoc.exp2_s6.modelo.productos.TCG;
+
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;

@@ -4,9 +4,16 @@ import com.duoc.exp2_s6.servicio.ComicCollectorService;
 import java.util.Scanner;
 
 public class MenuPrincipal {
-    public static void main(String[] args) {
-        ComicCollectorService servicio = new ComicCollectorService();
-        Scanner scanner = new Scanner(System.in);
+
+    private final ComicCollectorService servicio;
+    private final Scanner scanner;
+
+    public MenuPrincipal(Scanner scanner, ComicCollectorService servicio) {
+        this.scanner = scanner;
+        this.servicio = servicio;
+    }
+
+    public void mostrar() {
         int opcion;
 
         do {
@@ -14,8 +21,7 @@ public class MenuPrincipal {
             opcion = leerOpcion(scanner);
             switch (opcion) {
                 case 1:
-                    // Inyectamos el servicio
-                    new MenuAdministrador(servicio).mostrar();
+                    new MenuAdministrador(scanner, servicio).login();
                     break;
 
                 case 2:
@@ -23,30 +29,31 @@ public class MenuPrincipal {
                     break;
 
                 case 3:
-                    System.out.println("👋 Cerrando sistema. ¡Hasta pronto!");
+                    System.out.println("Cerrando sistema. ¡Hasta pronto!");
                     break;
 
                 default:
-                    System.out.println("❌ Opción no válida.");
+                    System.out.println("Opción no válida.");
+                    break;
             }
-
         } while (opcion != 3);
     }
 
-    private static void imprimirBienvenida() {
+    private void imprimirBienvenida() {
         System.out.println("""
-        ========== COMIC COLLECTOR SYSTEM ==========
-        1. Ingresar como Administrador
-        2. Ingresar como Usuario
-        3. Salir del sistema
-        ============================================
-        """);
+            ========== COMIC COLLECTOR SYSTEM ==========
+            1. Ingresar como Administrador
+            2. Ingresar como Usuario
+            3. Salir del sistema
+            ===========================================
+            """);
     }
 
-    private static int leerOpcion(Scanner scanner) {
+    private int leerOpcion(Scanner scanner) {
+        System.out.print("Seleccione su rol: ");
+        String linea = scanner.nextLine().trim();
         try {
-            System.out.print("Seleccione su rol: ");
-            return Integer.parseInt(scanner.nextLine());
+            return Integer.parseInt(linea);
         } catch (NumberFormatException e) {
             return -1;
         }

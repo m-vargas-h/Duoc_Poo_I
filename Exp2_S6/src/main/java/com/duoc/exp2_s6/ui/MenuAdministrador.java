@@ -1,26 +1,42 @@
 package com.duoc.exp2_s6.ui;
 
 import com.duoc.exp2_s6.servicio.ComicCollectorService;
-import com.duoc.exp2_s6.modelo.Coleccionable;
-import com.duoc.exp2_s6.modelo.Comic;
-import com.duoc.exp2_s6.modelo.JuegoMesa;
-import com.duoc.exp2_s6.modelo.NovelaGrafica;
-import com.duoc.exp2_s6.modelo.Producto;
-import com.duoc.exp2_s6.modelo.TCG;
+import com.duoc.exp2_s6.modelo.base.Producto;
 import com.duoc.exp2_s6.modelo.enums.EstadoProducto;
 import com.duoc.exp2_s6.modelo.enums.TipoTCG;
+import com.duoc.exp2_s6.modelo.productos.*;
 import com.duoc.exp2_s6.excepciones.*;
 
-import java.time.LocalDate;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class MenuAdministrador {
-    private final Scanner scanner = new Scanner(System.in);
+    // Credenciales de administrador 
+    private static final String ADMIN_USER = "admin";
+    private static final String ADMIN_PASS = "password";
+
+    private final Scanner scanner;
     private final ComicCollectorService servicio;
 
-    public MenuAdministrador(ComicCollectorService servicio) {
+    public MenuAdministrador(Scanner scanner, ComicCollectorService servicio) {
+        this.scanner = scanner;
         this.servicio = servicio;
+    }
+
+    /** Entrada al menú administrador con login */
+    public void login() {
+        System.out.println("\n=== LOGIN ADMINISTRADOR ===");
+        System.out.print("Usuario: ");
+        String user = scanner.nextLine().trim();
+        System.out.print("Contraseña: ");
+        String pass = scanner.nextLine().trim();
+
+        if (!ADMIN_USER.equals(user) || !ADMIN_PASS.equals(pass)) {
+            System.out.println("Credenciales incorrectas. Volviendo al menú principal.");
+            return;
+        }
+
+        System.out.println("Bienvenido, administrador.\n");
+        mostrar();
     }
 
     public void mostrar() {
@@ -54,11 +70,11 @@ public class MenuAdministrador {
                     break;
 
                 case 7:
-                    System.out.println("🔙 Volviendo al menú principal...");
+                    System.out.println("Volviendo al menú principal...");
                     break;
 
                 default:
-                    System.out.println("❌ Opción no válida.");
+                    System.out.println("Opción no válida.");
                     break;
             }
 

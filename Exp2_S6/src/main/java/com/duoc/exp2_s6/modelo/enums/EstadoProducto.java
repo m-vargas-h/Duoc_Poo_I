@@ -7,6 +7,5 @@ public enum EstadoProducto {
     DISPONIBLE,
     NO_DISPONIBLE,
     AGOTADO,
-    PRE_VENTA,
     OCULTO
 }
