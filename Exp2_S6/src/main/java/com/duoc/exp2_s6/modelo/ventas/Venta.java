@@ -8,10 +8,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-/**
- * Registra la venta de una cierta cantidad de un producto a un usuario,
- * guardando snapshot del precio unitario y total.
- */
+// Representa una venta de un producto a un usuario en un momento específico.
+// Implementa ConvertirCsv para serializar y deserializar a CSV.
 public class Venta implements ConvertirCsv {
     private static final DateTimeFormatter FMT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
@@ -45,9 +43,7 @@ public class Venta implements ConvertirCsv {
         this.total          = this.precioUnitario * this.cantidad;
     }
 
-    /**
-     * Constructor interno para deserializar desde CSV.
-     */
+    // Constructor privado para crear una venta a partir de datos ya procesados.
     private Venta(String usuarioId, String productoId, int cantidad, LocalDateTime fechaHora, double precioUnitario,
                   double total) {
         this.usuarioId      = Objects.requireNonNull(usuarioId, "usuarioId no puede ser null");
@@ -58,7 +54,7 @@ public class Venta implements ConvertirCsv {
         this.total          = total;
     }
 
-    // — Getters —
+    // —-------------------------------------------- Getters —-----------------------------------------
 
     public String getUsuarioId() {
         return usuarioId;
@@ -84,12 +80,9 @@ public class Venta implements ConvertirCsv {
         return total;
     }
 
-    // — ConvertirCsv —
+    // —--------------------------------------------- ConvertirCsv —---------------------------------------------
 
-    /**
-     * Serializa esta venta a CSV:
-     * usuarioId,productoId,cantidad,fechaHora,precioUnitario,total
-     */
+    // Convierte el objeto Venta a una línea CSV.
     @Override
     public String toCsvLine() {
         return String.join(",",

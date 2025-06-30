@@ -19,11 +19,7 @@ public class PersistenciaVentas {
         }
     }
 
-    /**
-     * Sobrescribe el CSV con todas las ventas:
-     * Formato de cabecera:
-     * usuarioId,productoId,cantidad,fechaHora,precioUnitario,total
-     */
+    // Guarda una colección de ventas en el archivo CSV.
     public void guardarTodos(Collection<Venta> ventas) throws IOException {
         try (BufferedWriter w = Files.newBufferedWriter(ARCHIVO_VENTAS)) {
             w.write("usuarioId,productoId,cantidad,fechaHora,precioUnitario,total");
@@ -35,10 +31,8 @@ public class PersistenciaVentas {
         }
     }
 
-    /**
-     * Carga todas las ventas desde ventas.csv,
-     * deserializando cada línea con Venta.fromCsvTokens(...)
-     */
+    // Carga todas las ventas desde el archivo CSV.
+    // Si el archivo no existe, devuelve una lista vacía.
     public List<Venta> cargarTodos() throws IOException {
         List<Venta> lista = new ArrayList<>();
         if (!Files.exists(ARCHIVO_VENTAS)) return lista;

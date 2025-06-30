@@ -42,7 +42,8 @@ public class Coleccionable extends Producto implements ConvertirCsv {
 
     @Override
     public String toCsvLine() {
-        // super.toCsvLine() → "id,tipo,titulo,precio,stock,estado"
+        // Convierte el objeto a una línea CSV
+        // Formato: id,tipo,titulo,precio,stock,estado,franquicia,edicion
         return super.toCsvLine()
              + "," + getFranquicia()
              + "," + edicion;

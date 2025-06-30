@@ -7,8 +7,7 @@ import com.duoc.exp2_s6.modelo.enums.TipoTCG;
 
 import java.util.Objects;
 
-
-
+// Representa un producto de tipo TCG (Trading Card Game).
 public class TCG extends Producto implements ConvertirCsv {
     public static final String COD_TIPO = "003";
 

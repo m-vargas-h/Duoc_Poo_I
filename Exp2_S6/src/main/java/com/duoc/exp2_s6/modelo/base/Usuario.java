@@ -60,7 +60,7 @@ public class Usuario implements ConvertirCsv {
         return Objects.hash(id);
     }
 
-    // --- Métodos CSV ---
+    // --------------------------------- Métodos CSV -------------------------------------------------
 
     // Convierte el objeto Usuario a una línea CSV:
     @Override
@@ -81,7 +81,6 @@ public class Usuario implements ConvertirCsv {
         return new Usuario(id, nombre, email);
     }
 
-    // Escapa un campo CSV:
     private static String escape(String campo) {
         String limpio = campo.replace("\"", "\"\"");
         if (limpio.contains(",") || limpio.contains("\"") || limpio.contains("\n")) {

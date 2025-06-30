@@ -63,7 +63,7 @@ public class Comic extends Producto implements ConvertirCsv {
     }
 
 
-    /** Fábrica que crea un Comic a partir de tokens CSV */
+    // Método estático para crear un Comic a partir de un array de tokens CSV
     public static Comic fromCsvTokens(String[] t) {
         // t[0]=id, t[1]=tipo, t[2]=titulo, t[3]=precio, t[4]=stock, t[5]=estado,
         // t[6]=editorial, t[7]=volumen (opcional)

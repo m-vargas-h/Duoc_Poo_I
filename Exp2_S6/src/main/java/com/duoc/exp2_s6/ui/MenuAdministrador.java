@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class MenuAdministrador {
     // Credenciales de administrador 
     private static final String ADMIN_USER = "admin";
-    private static final String ADMIN_PASS = "password";
+    private static final String ADMIN_PASS = "password"; // La clave mas segura del mundo mundial
 
     private final Scanner scanner;
     private final ComicCollectorService servicio;
@@ -22,7 +22,8 @@ public class MenuAdministrador {
         this.servicio = servicio;
     }
 
-    /** Entrada al menú administrador con login */
+    // Inicia el menú de administrador, solicitando credenciales.
+    // Si las credenciales son correctas, muestra el menú de administrador.
     public void login() {
         System.out.println("\n=== LOGIN ADMINISTRADOR ===");
         System.out.print("Usuario: ");
@@ -126,7 +127,7 @@ public class MenuAdministrador {
             case 4 -> plantilla = new JuegoMesa("", "", 0.0, 0, "", 0, 0);
             case 5 -> plantilla = new TCG("", "", 0, 0, "", 0, TipoTCG.OTRO);
             default -> {
-                System.out.println("❌ Opción inválida.");
+                System.out.println("Opción inválida.");
                 return;
             }
         }
@@ -241,10 +242,10 @@ public class MenuAdministrador {
 
             // Agregar al inventario
             servicio.agregarProducto(real);
-            System.out.println("✅ Producto agregado con ID: " + id);
+            System.out.println("Producto agregado con ID: " + id);
 
         } catch (Exception e) {
-            System.err.println("⚠️ Error al crear producto: " + e.getMessage());
+            System.err.println("Error al crear producto: " + e.getMessage());
         }
     }   
     
@@ -253,9 +254,9 @@ public class MenuAdministrador {
         String id = scanner.nextLine().trim();
         try {
             servicio.eliminarProducto(id);
-            System.out.println("✅ Producto eliminado.");
+            System.out.println("Producto eliminado.");
         } catch (EntidadNoEncontradaException e) {
-            System.err.println("⚠️ " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         }
     }
 
@@ -273,11 +274,11 @@ public class MenuAdministrador {
         try {
             delta = Integer.parseInt(scanner.nextLine());
             servicio.ajustarStock(id, delta);
-            System.out.println("✅ Stock modificado.");
+            System.out.println("Stock modificado.");
         } catch (NumberFormatException e) {
-            System.err.println("⚠️ Cantidad inválida.");
+            System.err.println("Cantidad inválida.");
         } catch (EntidadNoEncontradaException | IllegalArgumentException e) {
-            System.err.println("⚠️ " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         }
     }
 
@@ -289,17 +290,17 @@ public class MenuAdministrador {
         try {
             EstadoProducto estado = EstadoProducto.valueOf(raw);
             servicio.cambiarEstadoProducto(id, estado);
-            System.out.println("✅ Estado actualizado.");
+            System.out.println("Estado actualizado.");
         } catch (IllegalArgumentException e) {
-            System.err.println("⚠️ Estado inválido.");
+            System.err.println("Estado inválido.");
         } catch (EntidadNoEncontradaException e) {
-            System.err.println("⚠️ " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         }
     }
 
     // en MenuAdministrador.java
     private void verResumenVentasDetallado() {
-        System.out.println("📈 Resumen detallado de ventas:");
+        System.out.println("Resumen detallado de ventas:");
         servicio.generarResumenVentasDetallado()
                 .forEach(rv -> {
                     Producto p = rv.getProducto();

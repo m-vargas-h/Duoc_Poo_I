@@ -1,11 +1,9 @@
 package com.duoc.exp2_s6.servicio;
 
 import com.duoc.exp2_s6.excepciones.*;
-import com.duoc.exp2_s6.modelo.base.Producto;
-import com.duoc.exp2_s6.modelo.base.Usuario;
+import com.duoc.exp2_s6.modelo.base.*;
 import com.duoc.exp2_s6.modelo.enums.*;
-import com.duoc.exp2_s6.modelo.ventas.ResumenVenta;
-import com.duoc.exp2_s6.modelo.ventas.Venta;
+import com.duoc.exp2_s6.modelo.ventas.*;
 import com.duoc.exp2_s6.persistencia.*;
 
 import java.io.IOException;
@@ -28,7 +26,7 @@ public class ComicCollectorService {
 
 
     public ComicCollectorService() {
-        // 1) Cargo productos
+        // 1) Cargar inventario de productos
         try {
             List<Producto> listP = persistenciaProd.cargarTodos();
             for (Producto p : listP) {
@@ -41,7 +39,7 @@ public class ComicCollectorService {
             System.err.println("⚠️ No se pudo leer productos.csv — inventario vacío");
         }
 
-        // 2) Cargo usuarios
+        // 2) Cargar usuarios:
         try {
             List<Usuario> listU = persistenciaUsr.cargarTodos();
             for (Usuario u : listU) {
@@ -76,7 +74,6 @@ public class ComicCollectorService {
             throw new EntidadNoEncontradaException("Producto", id);
         persistirProductos();
     }
-
 
     // 3. Listar usuarios
     public Collection<Usuario> listarUsuarios() {
@@ -206,7 +203,7 @@ public class ComicCollectorService {
         return Collections.unmodifiableCollection(inventario.values());
     }
 
-    //  ————— Persistencia interna —————
+    // ----------------------------------------- Persistencia interna -----------------------------------------------
 
     private void persistirProductos() {
         try {

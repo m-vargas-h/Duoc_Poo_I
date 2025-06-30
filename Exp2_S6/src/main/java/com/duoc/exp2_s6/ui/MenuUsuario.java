@@ -2,8 +2,7 @@ package com.duoc.exp2_s6.ui;
 
 import com.duoc.exp2_s6.servicio.ComicCollectorService;
 import com.duoc.exp2_s6.util.Utilidades;
-import com.duoc.exp2_s6.modelo.base.Producto;
-import com.duoc.exp2_s6.modelo.base.Usuario;
+import com.duoc.exp2_s6.modelo.base.*;
 import com.duoc.exp2_s6.modelo.productos.*;
 import com.duoc.exp2_s6.excepciones.*;
 
@@ -44,10 +43,10 @@ public class MenuUsuario {
                     //! consultarEstadoReserva();
                     break;
                 case 6:
-                    System.out.println("👋 Cerrando sesión de usuario...");
+                    System.out.println("Cerrando sesión de usuario...");
                     break;
                 default:
-                    System.out.println("❌ Opción no válida.");
+                    System.out.println("Opción no válida.");
             }
         } while (opcion != 6);
     }
@@ -89,7 +88,7 @@ public class MenuUsuario {
         System.out.print("Email: ");
         String email = scanner.nextLine().trim();
         if (!Utilidades.validarEmail(email)) {
-            System.err.println("Email inválido. Debe tener formato user@dominio.tld");
+            System.err.println("Email inválido. Debe tener formato usuario@dominio.tld");
             return;
         }
 
@@ -108,10 +107,10 @@ public class MenuUsuario {
 
     private void comprarConCarrito() {
         // 1. Validar RUT
-        System.out.print("Tu RUT de usuario (sin puntos, con guion): ");
+        System.out.print("Ingrese su RUT (sin puntos, con guion): ");
         String userId = scanner.nextLine().trim();
         if (!Utilidades.validarFormatoRut(userId)) {
-            System.err.println("❌ Formato inválido. Usa NNNNNNNN-X");
+            System.err.println("Formato inválido. Usa NNNNNNNN-X");
             return;
         }
 
@@ -130,11 +129,11 @@ public class MenuUsuario {
             try {
                 seleccion = Integer.parseInt(scanner.nextLine().trim()) - 1;
                 if (seleccion < 0 || seleccion >= lista.size()) {
-                    System.out.println("❌ Selección fuera de rango.");
+                    System.out.println("Selección fuera de rango.");
                     continue;
                 }
             } catch (NumberFormatException e) {
-                System.out.println("❌ Entrada inválida.");
+                System.out.println("Entrada inválida.");
                 continue;
             }
 
@@ -168,11 +167,11 @@ public class MenuUsuario {
 
         // 3. Pantalla de pago
         if (carrito.isEmpty()) {
-            System.out.println("🛒 No se seleccionaron productos.");
+            System.out.println("No se seleccionaron productos.");
             return;
         }
 
-        System.out.println("\n=== RESUMEN DE COMPRA ===");
+        System.out.println("\n---- RESUMEN DE COMPRA ----");
         double total = 0.0;
 
         for (var entry : carrito.entrySet()) {
@@ -183,7 +182,7 @@ public class MenuUsuario {
             System.out.printf("• %s x%d = $%.0f%n", p.getTitulo(), cantidad, subtotal);
         }
 
-        System.out.printf("💰 Total a pagar: $%.0f%n", total);
+        System.out.printf("Total a pagar: $%.0f%n", total);
         System.out.print("Medio de pago: Débito (presione Enter para confirmar): ");
         scanner.nextLine();
 
@@ -192,9 +191,9 @@ public class MenuUsuario {
             for (var entry : carrito.entrySet()) {
                 servicio.comprarProducto(userId, entry.getKey(), entry.getValue());
             }
-            System.out.println("✅ Pago aceptado. Compra realizada con éxito.");
+            System.out.println("Pago aceptado. Compra realizada con éxito.");
         } catch (Exception e) {
-            System.err.println("❌ Error al procesar la compra: " + e.getMessage());
+            System.err.println("Error al procesar la compra: " + e.getMessage());
         }
     }
 
@@ -210,15 +209,15 @@ public class MenuUsuario {
     //    try {
     //        cantidad = Integer.parseInt(scanner.nextLine());
     //    } catch (NumberFormatException e) {
-    //        System.err.println("⚠️ Cantidad inválida.");
+    //        System.err.println("Cantidad inválida.");
     //        return;
     //    }
 
     //    try {
     //        String reservaId = servicio.reservarProducto(userId, prodId, cantidad);
-    //        System.out.println("✅ Reserva creada (ID: " + reservaId + ").");
+    //        System.out.println("Reserva creada (ID: " + reservaId + ").");
     //    } catch (EntidadNoEncontradaException e) {
-    //        System.err.println("⚠️ " + e.getMessage());
+    //        System.err.println("Error: " + e.getMessage());
     //    }
     //}
 
@@ -229,9 +228,9 @@ public class MenuUsuario {
 
     //    try {
     //        Reserva.Estado estado = servicio.consultarEstadoReserva(reservaId);
-    //        System.out.println("🔎 Estado de reserva: " + estado);
+    //        System.out.println("Estado de reserva: " + estado);
     //    } catch (EntidadNoEncontradaException e) {
-    //        System.err.println("⚠️ " + e.getMessage());
+    //        System.err.println("Error: " + e.getMessage());
     //    }
     //}
 
@@ -264,7 +263,7 @@ public class MenuUsuario {
             .filter(p -> tipo.isInstance(p))
             .toList();
 
-        System.out.printf("📦 Mostrando productos de tipo %s:%n", tipo.getSimpleName());
+        System.out.printf("Mostrando productos de tipo %s:%n", tipo.getSimpleName());
         System.out.println("ID         | Título                  | Vol | Estado       | Stock | Precio");
         System.out.println("-----------+-------------------------+------+--------------+--------+--------");
 

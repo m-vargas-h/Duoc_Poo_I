@@ -1,6 +1,10 @@
 # Historial de cambios
 
-## 30/06/2025 - Puesta en marcha sistema final
+## 30/06/2025 - Actualización Readme
+- Se actualiza el fichero Readme del proyecto.
+- Cambios menores en textos y comentarios para facilitar lectura del código.
+
+### 30/06/2025 - Puesta en marcha sistema final
 - Implementación de un carrito de compras que permite:
     - Agregar múltiples productos en una misma sesión.
     - Revisión previa y confirmación de pago.

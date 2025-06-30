@@ -1,11 +1,7 @@
 package com.duoc.exp2_s6.persistencia;
 
 import com.duoc.exp2_s6.modelo.base.Producto;
-import com.duoc.exp2_s6.modelo.productos.Coleccionable;
-import com.duoc.exp2_s6.modelo.productos.Comic;
-import com.duoc.exp2_s6.modelo.productos.JuegoMesa;
-import com.duoc.exp2_s6.modelo.productos.NovelaGrafica;
-import com.duoc.exp2_s6.modelo.productos.TCG;
+import com.duoc.exp2_s6.modelo.productos.*;
 
 import java.io.*;
 import java.nio.file.*;
@@ -28,7 +24,6 @@ public class PersistenciaProductos {
     );
 
     public PersistenciaProductos() {
-        // Asegúrate de que exista la carpeta Data
         try {
             Files.createDirectories(RUTA_BASE);
         } catch (IOException e) {
@@ -36,6 +31,7 @@ public class PersistenciaProductos {
         }
     }
 
+    // Guarda una colección de productos en el archivo CSV.
     public void guardarTodos(Collection<Producto> productos) throws IOException {
         try (BufferedWriter w = Files.newBufferedWriter(ARCHIVO_PRODUCTOS)) {
             w.write("id,tipo,titulo,precio,stock,estado,camposExtra...");
@@ -47,6 +43,7 @@ public class PersistenciaProductos {
         }
     }
 
+    // Carga todos los productos desde el archivo CSV.
     public List<Producto> cargarTodos() throws IOException {
         List<Producto> lista = new ArrayList<>();
         if (!Files.exists(ARCHIVO_PRODUCTOS)) return lista;

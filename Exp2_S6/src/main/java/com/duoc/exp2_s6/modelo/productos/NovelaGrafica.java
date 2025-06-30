@@ -48,6 +48,8 @@ public class NovelaGrafica extends Producto implements ConvertirCsv {
              + "," + fechaPublicacion;
     }
 
+    // Metodo estático para crear una Novela Gráfica a partir de un array de tokens CSV
+    // El formato será: id,tipo,titulo,precio,stock,estado,autor
     public static NovelaGrafica fromCsvTokens(String[] tokens) {
         String id       = tokens[0];
         String titulo   = tokens[2];

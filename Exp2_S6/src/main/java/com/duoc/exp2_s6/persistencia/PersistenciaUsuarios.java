@@ -19,10 +19,7 @@ public class PersistenciaUsuarios {
         }
     }
 
-    /**
-     * Guarda (sobrescribe) todos los usuarios en usuarios.csv.
-     * Formato de cabecera: id,nombre,email
-     */
+    // Guarda una colección de usuarios en el archivo CSV.
     public void guardarTodos(Collection<Usuario> usuarios) throws IOException {
         try (BufferedWriter w = Files.newBufferedWriter(ARCHIVO_USUARIOS)) {
             // cabecera opcional
@@ -35,10 +32,7 @@ public class PersistenciaUsuarios {
         }
     }
 
-    /**
-     * Carga todos los usuarios desde usuarios.csv,
-     * saltando la cabecera y deserializando cada línea.
-     */
+    // Carga todos los usuarios desde el archivo CSV.
     public List<Usuario> cargarTodos() throws IOException {
         List<Usuario> lista = new ArrayList<>();
         if (!Files.exists(ARCHIVO_USUARIOS)) return lista;
