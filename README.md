@@ -28,14 +28,14 @@ En esta experiencia se aprenderá a implementar técnicas avanzadas de programac
 
 | Semana   | Entrega    | Descripción                                  |
 |----------|------------|----------------------------------------------|
-| Semana 7 |  | 
-| Semana 8 |  | 
+| Semana 7 | 07/07/2025 | Programando por Hilos: Thread
+| Semana 8 | 14/07/2025 | Colecciones Sincronizadas, Queue y Topic
 
 ### Evaluación final transversal
 
 | Semana   | Entrega    | Descripción                                  |
 |----------|------------|----------------------------------------------|
-| Semana 9 |  | 
+| Semana 9 | 20/07/2025 | Evaluación Final Transversal
 
 ## 📋 Requisitos
 
