@@ -1,6 +1,23 @@
 # Historial de cambios
 
-## - 03/07/2025 - Reestructuración general
+## - Mejoras del flujo de trabajo
+- Mejora en el flujo concurrente
+    -**Conteo de primos ejecutado en segundo plano** usando `HiloConteoPrimos`, permitiendo navegación libre por el menú mientras se procesa.
+    -**Notificación automática al finalizar conteo** mediante callback `Runnable`, sin bloquear la entrada del usuario.
+- Guardado asíncrono optimizado
+    - El guardado de archivos `.txt` se realiza en un **hilo dedicado**, sin bloquear el flujo principal.
+    - Se centralizó la ruta de salida (`/Data`) y se generaron nombres dinámicos según el rango: `primos_inicio-fin.txt`.
+- Experiencia de usuario mejorada
+    - Se estableció un **límite máximo configurable** de 2.000.000.000 números para prevenir lentitud y errores.
+    - Se eliminó `Scanner.nextLine()` dentro de hilos para evitar excepciones por lectura simultánea (`IndexOutOfBoundsException`).
+    - **Se integró una cola de mensajes pendientes** para imprimir, de forma ordenada, cualquier salida generada por hilos en ejecución.
+    - Se muestran mensajes como:
+        - Conteo en curso…
+        - Conteo finalizado: ...
+        - Archivo guardado en: ...
+
+
+### - 03/07/2025 - Reestructuración general
 - Se modularizó todo el sistema en componentes separados, organizados por responsabilidad funcional:
     - `ListaPrimos`: Subclase de **ArrayList<Integer>** que verifica y almacena solo números primos.
     - `TrabajoPrimos`: Hilo individual encargado de verificar y agregar primos dentro de un rango.
