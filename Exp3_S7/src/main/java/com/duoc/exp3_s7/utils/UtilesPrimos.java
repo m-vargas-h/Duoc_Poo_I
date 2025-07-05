@@ -24,13 +24,16 @@ public class UtilesPrimos {
 
         List<TrabajoPrimos> trabajos = new ArrayList<>();
 
+        // Validar que el rango sea válido, es decir, que inicio sea menor o igual a fin
         for (int i = 0; i < cantidadHilos; i++) {
             int inicioBloque = inicio + i * bloque;
             int finBloque = (i == cantidadHilos - 1) ? fin : (inicioBloque + bloque - 1);
 
+            // Asegurar que el bloque no se salga del rango
             trabajos.add(new TrabajoPrimos(inicioBloque, finBloque, lista));
         }
 
+        // Iniciar todos los hilos
         for (TrabajoPrimos t : trabajos) t.start();
         for (TrabajoPrimos t : trabajos) t.join();
 

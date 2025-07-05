@@ -7,6 +7,7 @@ public class TrabajoPrimos extends Thread {
     private final int fin;
     private final ListaPrimos listaCompartida;
 
+    // Constructor que recibe el rango de números a evaluar y la lista compartida
     public TrabajoPrimos(int inicio, int fin, ListaPrimos listaCompartida) {
         this.inicio = inicio;
         this.fin = fin;

@@ -1,6 +1,13 @@
 # Historial de cambios
 
-## - Mejoras del flujo de trabajo
+## 05/07/2025 - Refinamiento visual y de experiencia
+
+- Se integraron prefijos de origen en mensajes automáticos para evitar confusiones entre mensajes automáticos y mensajes propios de la utilización del menu:
+    - `[SISTEMA]` para identificar mensajes automáticos del sistema, de mensajes propios del menu.
+    - `[VALIDACIÓN]` para informar sobre errores al manejar datos.
+- Se consolidó la salida en consola para mostrar sólo etiquetas en procesos automáticos, manteniendo legibilidad sin sobrecargar la interfaz.
+
+### 04/07/2025 - Mejoras del flujo de trabajo
 - Mejora en el flujo concurrente
     -**Conteo de primos ejecutado en segundo plano** usando `HiloConteoPrimos`, permitiendo navegación libre por el menú mientras se procesa.
     -**Notificación automática al finalizar conteo** mediante callback `Runnable`, sin bloquear la entrada del usuario.
@@ -17,7 +24,7 @@
         - Archivo guardado en: ...
 
 
-### - 03/07/2025 - Reestructuración general
+### 03/07/2025 - Reestructuración general
 - Se modularizó todo el sistema en componentes separados, organizados por responsabilidad funcional:
     - `ListaPrimos`: Subclase de **ArrayList<Integer>** que verifica y almacena solo números primos.
     - `TrabajoPrimos`: Hilo individual encargado de verificar y agregar primos dentro de un rango.

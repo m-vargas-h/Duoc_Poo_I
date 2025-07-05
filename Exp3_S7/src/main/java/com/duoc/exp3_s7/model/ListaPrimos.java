@@ -3,7 +3,6 @@ package com.duoc.exp3_s7.model;
 import java.util.ArrayList;
 
 public class ListaPrimos extends ArrayList<Integer> {
-    private static final long serialVersionUID = 1L;
 
     /**
      * Verifica si un número es primo.
@@ -35,9 +34,7 @@ public class ListaPrimos extends ArrayList<Integer> {
         return super.remove(objeto);
     }
 
-    /**
-     * @return Cantidad de primos almacenados actualmente
-     */
+    // Retorna la cantidad de números primos en la lista.
     public int contarPrimos() {
         return this.size();
     }
