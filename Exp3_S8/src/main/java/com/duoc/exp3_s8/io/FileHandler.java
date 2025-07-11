@@ -4,81 +4,94 @@ import com.duoc.exp3_s8.model.PrimeList;
 
 import java.io.*;
 import java.nio.file.*;
-import java.text.MessageFormat;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 
 public class FileHandler {
 
-    private static final Path BASE_PATH =
-        Paths.get(System.getProperty("user.dir"), "Exp3_S8", "Data");
+    private static final Path RUTA_BASE = Paths.get(System.getProperty("user.dir"), "Exp3_S8", "Data");
 
     /**
-     * Carga números primos desde un CSV, linea a linea.
+     * Carga la lista de primos desde un archivo CSV ubicado en /Data.
+     * Soporta formato vertical, horizontal (comas) e ignora encabezados informativos.
      */
-    public static void loadPrimesFromCsv(String csvPath, PrimeList list)
+    public static void loadPrimesFromCsv(String csvFileName, PrimeList list)
             throws IOException {
-        Path path = Paths.get(csvPath);
+        Path path = RUTA_BASE.resolve(csvFileName);
+
         if (!Files.exists(path)) {
-            System.out.println("[WARN] CSV not found at " + path.toAbsolutePath()
-                            + " — se omite carga desde archivo.");
+            System.out.println("[ADVERTENCIA] Archivo CSV no encontrado en "
+                    + path.toAbsolutePath() + " — se omite carga desde archivo.");
             return;
         }
+
         try (BufferedReader br = Files.newBufferedReader(path)) {
             String line;
             while ((line = br.readLine()) != null) {
-                int n = Integer.parseInt(line.trim());
-                list.add(n);
+                line = line.trim();
+                if (line.isEmpty()) continue;
+                if (line.startsWith("Se han encontrado")) continue;
+                if (line.matches(".*[a-zA-Z].*")) continue;
+
+                try {
+                    String[] tokens = line.split(",");
+                    for (String token : tokens) {
+                        int n = Integer.parseInt(token.trim());
+                        list.add(n);
+                    }
+                } catch (NumberFormatException ex) {
+                    System.out.println("[OMITIDO] Entrada inválida: " + line);
+                }
             }
         }
     }
 
     /**
-     * Escribe mensajes encriptados junto con el conteo de primos actual.
-     */
-    public static void writeEncryptedMessages(String outPath,
-                                              List<String> messages,
-                                              PrimeList list)
-            throws IOException {
-        try (FileWriter fw = new FileWriter(outPath)) {
-            for (String msg : messages) {
-                // Por ahora, no ciframos; solo contextualizamos
-                fw.write(msg + " -> " + list.getPrimesCount());
-                fw.write(System.lineSeparator());
-            }
-        }
-    }
-
-    /**
-     * Guarda la lista de primos de un rango en un archivo de texto.
+     * Guarda la lista de primos en formato CSV dentro de /Data,
+     * con encabezado informativo compatible con la carga.
      */
     public static String savePrimeListRange(PrimeList list,
                                             int start,
-                                            int end)
-            throws IOException {
-        if (!Files.exists(BASE_PATH)) {
-            Files.createDirectories(BASE_PATH);
-        }
+                                            int end) throws IOException {
+        Files.createDirectories(RUTA_BASE);
 
-        String fileName = MessageFormat.format("primes_{0}-{1}.txt",
-                                               start, end);
-        Path filePath = BASE_PATH.resolve(fileName);
+        String fileName = "primos_" + start + "_a_" + end + ".csv";
+        Path output = RUTA_BASE.resolve(fileName);
 
-        try (BufferedWriter writer = Files.newBufferedWriter(
-                 filePath,
-                 StandardOpenOption.CREATE,
-                 StandardOpenOption.TRUNCATE_EXISTING)) {
-
-            writer.write("Primes found: " + list.getPrimesCount());
+        try (BufferedWriter writer = Files.newBufferedWriter(output)) {
+            int count = list.getPrimesCount();
+            writer.write("Se han encontrado " + count + " números primos, el detalle es:");
             writer.newLine();
-            writer.write("Detail of primes:");
-            writer.newLine();
-            for (Integer prime : list) {
-                writer.write(prime.toString());
+
+            for (int prime : list) {
+                writer.write(Integer.toString(prime));
                 writer.newLine();
             }
         }
 
-        return filePath.toAbsolutePath().toString();
+        return output.toAbsolutePath().toString();
+    }
+
+    /**
+     * Guarda mensajes cifrados en un archivo dentro de /Data.
+     * Aplica cifrado básico para propósitos de demostración.
+     */
+    public static void writeEncryptedMessages(String fileName,
+                                              List<String> messages,
+                                              PrimeList primeList) throws IOException {
+        Files.createDirectories(RUTA_BASE);
+
+        Path path = RUTA_BASE.resolve(fileName);
+        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+            for (String message : messages) {
+                int offset = primeList.getPrimesCount();
+                String encrypted = new StringBuilder(message)
+                        .reverse()
+                        .append("#")
+                        .append(offset)
+                        .toString();
+                writer.write(encrypted);
+                writer.newLine();
+            }
+        }
     }
 }
