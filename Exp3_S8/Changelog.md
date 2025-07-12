@@ -1,6 +1,18 @@
 # Historial de cambios
 
-## 11/07/2025 - Mejoras en generación de listas y carga/lectura de archivos
+## 11/07/2025 - Refinamiento flujo de trabajo
+- Se agregó cálculo y presentación del tiempo de ejecución en:
+    - handleGenerateRange() para mostrar cuánto tarda generar los primos.
+    - handleSavePrimeList() para mostrar cuánto tarda guardar el archivo CSV.
+- En handleGenerateRange() se añadió validación para evitar lanzar una nueva tarea si ya hay una en curso.
+- El sistema ahora solicita confirmación al usuario para abortar la tarea activa y reemplazarla.
+- Visualización compacta de progreso
+    - En RangePrimeProducer se cambió println(...) por print("\r...") para que el progreso se actualice en la misma línea de consola.
+    - Se agregó flush() y salto de línea final para mantener la salida limpia y no interrumpir mensajes posteriores.
+- En FileHandler.savePrimeListRange(...), el nombre del archivo generado incluye una marca de tiempo con formato ddMMMyy_HHmm, permitiendo identificar fácilmente cuándo se creó y evitar sobrescrituras.
+- Se corrigieron textos en pantalla para facilitar la comprensión de los mensajes.
+
+### 11/07/2025 - Mejoras en generación de listas y carga/lectura de archivos
 - Lógica de generación de primos
     - Se elimino la limitación de tiempo al esperar el cierre de productores y consumidores con awaitTermination(...), permitiendo tareas indefinidas en rangos enormes.
     - Se agregó barra de progreso local por hilo en RangePrimeProducer, mostrando porcentajes solo si se activa manualmente.

@@ -11,17 +11,12 @@ public class PrimeUtils {
     private static final int DEFAULT_PRODUCERS = 2;
     private static final int DEFAULT_CONSUMERS = 2;
 
-    public static PrimeList generatePrimeList(int start, int end)
-            throws InterruptedException {
+    public static PrimeList generatePrimeList(int start, int end) throws InterruptedException {
         return generatePrimeList(start, end, DEFAULT_PRODUCERS, DEFAULT_CONSUMERS, false);
     }
 
-    public static PrimeList generatePrimeList(int start,
-                                              int end,
-                                              int numProducers,
-                                              int numConsumers,
-                                              boolean mostrarProgreso)
-            throws InterruptedException {
+    public static PrimeList generatePrimeList(int start, int end, int numProducers, int numConsumers,
+                                             boolean mostrarProgreso) throws InterruptedException {
         PrimeList primeList = new PrimeList();
         BlockingQueue<Integer> queue = new LinkedBlockingQueue<>();
 
@@ -38,7 +33,7 @@ public class PrimeUtils {
         prodExec.shutdown();
         while (!prodExec.awaitTermination(5, TimeUnit.SECONDS)) {
             if (mostrarProgreso) {
-                System.out.println("⌛ Esperando a que los productores terminen...");
+                System.out.println("[SISTEMA] Esperando a que los productores terminen...");
             }
         }
 
@@ -54,7 +49,7 @@ public class PrimeUtils {
         consExec.shutdown();
         while (!consExec.awaitTermination(5, TimeUnit.SECONDS)) {
             if (mostrarProgreso) {
-                System.out.println("⌛ Esperando a que los consumidores terminen...");
+                System.out.println("[SISTEMA] Esperando a que los consumidores terminen...");
             }
         }
 

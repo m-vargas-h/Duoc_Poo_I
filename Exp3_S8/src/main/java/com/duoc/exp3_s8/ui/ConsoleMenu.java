@@ -18,7 +18,7 @@ public class ConsoleMenu {
 
     public void show() {
         while (true) {
-            System.out.println("\n=== Menú de SafeVoteSystem ===");
+            System.out.println("\n-------- Menú de SafeVoteSystem --------");
             System.out.println("1. Cargar números primos desde CSV");
             System.out.println("2. Generar primos en un rango (en segundo plano)");
             System.out.println("3. Mostrar total de primos");
@@ -28,14 +28,27 @@ public class ConsoleMenu {
 
             int option = safeNextInt();
             switch (option) {
-                case 1: handleLoadCsv();       break;
-                case 2: handleGenerateRange(); break;
-                case 3: handleShowCount();     break;
-                case 4: handleSavePrimeList(); break;
+                case 1: 
+                    handleLoadCsv();       
+                    break;
+
+                case 2: 
+                    handleGenerateRange(); 
+                    break;
+
+                case 3: 
+                    handleShowCount();     
+                    break;
+
+                case 4:  
+                    handleSavePrimeList(); 
+                    break;
+
                 case 5:
                     System.out.println("Saliendo del sistema.");
                     bgExecutor.shutdownNow();
                     return;
+
                 default:
                     System.out.println("Opción no válida.");
             }
@@ -90,72 +103,96 @@ public class ConsoleMenu {
         System.out.print("Fin del rango: ");
         lastRangeEnd = safeNextInt();
 
+        // Si hay una tarea en curso, pedir confirmación antes de reemplazarla
         if (generationTask != null && !generationTask.isDone()) {
-            System.out.println("⚠️ Aún hay una tarea de generación en curso. Mostrando progreso:");
+            System.out.print("[ADVERTENCIA] Aún hay una generación en curso. ¿Deseas reemplazarla? (S/N): ");
+            String respuesta = scanner.nextLine().trim().toUpperCase();
+            if (!respuesta.equals("S")) {
+                System.out.println("Generación actual preservada.");
+                return;
+            }
+
+            System.out.println("Iniciando nueva generación con seguimiento de progreso...");
+            long inicio = System.nanoTime();
+
             generationTask = bgExecutor.submit(() -> {
-                return PrimeUtils.generatePrimeList(
+                PrimeList lista = PrimeUtils.generatePrimeList(
                     lastRangeStart,
                     lastRangeEnd,
                     2, 2,
-                    true // muestra progreso si ya había una en curso
+                    true // progreso visible
                 );
+                long fin = System.nanoTime();
+                System.out.printf("%n Generación completada en %.2f segundos.%n", (fin - inicio) / 1e9);
+                return lista;
             });
+
             return;
         }
 
+        // Nueva generación en segundo plano sin progreso
+        long inicio = System.nanoTime();
+
         generationTask = bgExecutor.submit(() -> {
-            return PrimeUtils.generatePrimeList(
+            PrimeList lista = PrimeUtils.generatePrimeList(
                 lastRangeStart,
                 lastRangeEnd,
                 2, 2,
-                false // generación normal sin imprimir progreso
+                false // sin progreso visible
             );
+            long fin = System.nanoTime();
+            System.out.printf("%n [SISTEMA] Generación completada en %.2f segundos.%n", (fin - inicio) / 1e9);
+            return lista;
         });
 
-        System.out.println("Generación iniciada en segundo plano.");
+        System.out.println("[SISTEMA] Generación iniciada en segundo plano.");
     }
 
     private void handleShowCount() {
         if (generationTask != null && !generationTask.isDone()) {
-            System.out.println("Generando... primos actuales: "
-                               + primeList.getPrimesCount());
+            System.out.println("Generando... primos actuales: " + primeList.getPrimesCount());
         } else {
-            System.out.println("Total de primos: "
-                               + primeList.getPrimesCount());
+            System.out.println("Total de primos: " + primeList.getPrimesCount());
         }
     }
 
     private void handleSavePrimeList() {
         if (lastRangeEnd <= lastRangeStart) {
-            System.out.println("No se ha generado un rango válido aún.");
+            System.out.println("[ADVERTENCIA] No se ha generado un rango válido aún.");
             return;
         }
 
         // Mostrar progreso si generación sigue activa
         if (generationTask != null && !generationTask.isDone()) {
-            System.out.println("⚠️ La generación aún está en curso. Mostrando progreso:");
+            System.out.println("[ADVERTENCIA] La generación aún está en curso. Mostrando progreso:");
             generationTask = bgExecutor.submit(() -> {
-                return PrimeUtils.generatePrimeList(
+                PrimeList lista = PrimeUtils.generatePrimeList(
                     lastRangeStart,
                     lastRangeEnd,
                     2, 2,
                     true // activa progreso visible
                 );
+                System.out.println(); // salto visual al finalizar
+                return lista;
             });
             return;
         }
 
         try {
             if (generationTask != null) {
-                primeList = generationTask.get();
+                primeList = generationTask.get(); // espera resultado
             }
 
+            long inicio = System.nanoTime();
             String file = FileHandler.savePrimeListRange(
                 primeList, lastRangeStart, lastRangeEnd
             );
-            System.out.println("Lista de primos guardada en: " + file);
+            long fin = System.nanoTime();
+
+            System.out.println("[SISTEMA] Lista de primos guardada en: " + file);
+            System.out.printf(" Guardado completado en %.2f segundos.%n", (fin - inicio) / 1e9);
         } catch (Exception e) {
-            System.out.println("Error al guardar archivo: " + e.getMessage());
+            System.out.println("[ERROR] Error al guardar archivo: " + e.getMessage());
         }
     }
 }

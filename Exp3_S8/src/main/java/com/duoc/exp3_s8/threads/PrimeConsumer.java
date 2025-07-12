@@ -8,8 +8,7 @@ public class PrimeConsumer implements Runnable {
     private final BlockingQueue<Integer> queue;
     private final PrimeList primeList;
 
-    public PrimeConsumer(BlockingQueue<Integer> queue,
-                         PrimeList primeList) {
+    public PrimeConsumer(BlockingQueue<Integer> queue, PrimeList primeList) {
         this.queue     = queue;
         this.primeList = primeList;
     }

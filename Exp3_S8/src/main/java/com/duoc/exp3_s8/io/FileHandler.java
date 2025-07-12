@@ -5,17 +5,17 @@ import com.duoc.exp3_s8.model.PrimeList;
 import java.io.*;
 import java.nio.file.*;
 import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class FileHandler {
 
     private static final Path RUTA_BASE = Paths.get(System.getProperty("user.dir"), "Exp3_S8", "Data");
 
-    /**
-     * Carga la lista de primos desde un archivo CSV ubicado en /Data.
-     * Soporta formato vertical, horizontal (comas) e ignora encabezados informativos.
-     */
-    public static void loadPrimesFromCsv(String csvFileName, PrimeList list)
-            throws IOException {
+
+    //Carga la lista de primos desde un archivo CSV ubicado en /Data.
+    //Soporta formato vertical, horizontal (comas) e ignora encabezados informativos.
+    public static void loadPrimesFromCsv(String csvFileName, PrimeList list) throws IOException {
         Path path = RUTA_BASE.resolve(csvFileName);
 
         if (!Files.exists(path)) {
@@ -45,16 +45,15 @@ public class FileHandler {
         }
     }
 
-    /**
-     * Guarda la lista de primos en formato CSV dentro de /Data,
-     * con encabezado informativo compatible con la carga.
-     */
-    public static String savePrimeListRange(PrimeList list,
-                                            int start,
-                                            int end) throws IOException {
+
+    //Guarda la lista de primos en formato CSV dentro de /Data,
+    //con encabezado informativo compatible con la carga.
+    public static String savePrimeListRange(PrimeList list, int start, int end) throws IOException {
         Files.createDirectories(RUTA_BASE);
 
-        String fileName = "primos_" + start + "_a_" + end + ".csv";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMMyy_HHmm");
+        String timestamp = LocalDateTime.now().format(formatter);
+        String fileName = String.format("primos_%d_a_%d_%s.csv", start, end, timestamp);
         Path output = RUTA_BASE.resolve(fileName);
 
         try (BufferedWriter writer = Files.newBufferedWriter(output)) {
@@ -71,13 +70,10 @@ public class FileHandler {
         return output.toAbsolutePath().toString();
     }
 
-    /**
-     * Guarda mensajes cifrados en un archivo dentro de /Data.
-     * Aplica cifrado básico para propósitos de demostración.
-     */
-    public static void writeEncryptedMessages(String fileName,
-                                              List<String> messages,
-                                              PrimeList primeList) throws IOException {
+    // Guarda mensajes cifrados en un archivo dentro de /Data.
+    // Aplica cifrado básico para propósitos de demostración.
+    public static void writeEncryptedMessages(String fileName, List<String> messages,
+                                             PrimeList primeList) throws IOException {
         Files.createDirectories(RUTA_BASE);
 
         Path path = RUTA_BASE.resolve(fileName);

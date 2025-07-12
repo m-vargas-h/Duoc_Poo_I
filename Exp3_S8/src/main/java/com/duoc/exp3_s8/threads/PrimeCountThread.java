@@ -8,10 +8,7 @@ public class PrimeCountThread implements Runnable {
     private final PrimeList primeList;
     private final Runnable onComplete;
 
-    public PrimeCountThread(int startRange,
-                            int endRange,
-                            PrimeList primeList,
-                            Runnable onComplete) {
+    public PrimeCountThread(int startRange, int endRange, PrimeList primeList, Runnable onComplete) {
         this.startRange = startRange;
         this.endRange   = endRange;
         this.primeList  = primeList;
