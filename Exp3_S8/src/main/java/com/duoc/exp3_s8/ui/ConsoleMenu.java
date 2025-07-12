@@ -20,7 +20,7 @@ public class ConsoleMenu {
         while (true) {
             System.out.println("\n-------- Menú de SafeVoteSystem --------");
             System.out.println("1. Cargar números primos desde CSV");
-            System.out.println("2. Generar primos en un rango (en segundo plano)");
+            System.out.println("2. Generar primos en un rango");
             System.out.println("3. Mostrar total de primos");
             System.out.println("4. Guardar lista de primos en archivo");
             System.out.println("5. Salir");

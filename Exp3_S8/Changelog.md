@@ -1,6 +1,9 @@
 # Historial de cambios
 
-## 11/07/2025 - Refinamiento flujo de trabajo
+## 12/07/2025 - Actualización fichero Readme
+- Se agrega fichero Readme con información sobre el funcionamiento del sistema
+
+### 11/07/2025 - Refinamiento flujo de trabajo
 - Se agregó cálculo y presentación del tiempo de ejecución en:
     - handleGenerateRange() para mostrar cuánto tarda generar los primos.
     - handleSavePrimeList() para mostrar cuánto tarda guardar el archivo CSV.
