@@ -1,4 +1,4 @@
-package com.duoc.eft_s9.interfaz;
+package com.duoc.eft_s9.service;
 
 public class GestorVehiculos {
 
