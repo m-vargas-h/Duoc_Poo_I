@@ -10,6 +10,7 @@ public enum TipoVehiculo {
     JAULA(Categoria.CARGA),
     PLATAFORMA(Categoria.CARGA),
     CAMA_BAJA(Categoria.CARGA),
+    CAMION(Categoria.CARGA),
 
     // Pasajeros
     SUV(Categoria.PASAJEROS),

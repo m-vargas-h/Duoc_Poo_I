@@ -2,10 +2,10 @@ package com.duoc.eft_s9.model;
 
 import com.duoc.eft_s9.enums.TipoVehiculo;
 
-public class VehiculoPasajero extends Vehiculo {
+public class VehiculoPasajeros extends Vehiculo {
     private int capacidadMaxima;
 
-    public VehiculoPasajero(String patente, String marca, int anio, double precioBase,
+    public VehiculoPasajeros(String patente, String marca, int anio, int precioBase,
                              TipoVehiculo tipoVehiculo, int capacidadMaxima) {
         super(patente, marca, anio, precioBase, tipoVehiculo);
         if (tipoVehiculo.getCategoria() != TipoVehiculo.Categoria.PASAJEROS) {
@@ -15,8 +15,8 @@ public class VehiculoPasajero extends Vehiculo {
     }
 
     @Override
-    public double calcularPrecioFinal() {
-        double extra = capacidadMaxima * 8000;
+    public int calcularPrecioFinal() {
+        int extra = capacidadMaxima * 8000;
         return precioBase + extra;
     }
 

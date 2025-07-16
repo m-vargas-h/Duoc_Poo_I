@@ -1,6 +1,9 @@
 package com.duoc.eft_s9.service;
 
 import com.duoc.eft_s9.model.Vehiculo;
+import com.duoc.eft_s9.model.VehiculoCarga;
+import com.duoc.eft_s9.model.VehiculoPasajeros;
+import com.duoc.eft_s9.utils.ArchivoVehiculoManager;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,6 +23,23 @@ public class GestorVehiculos {
             return true;
         }
         return false;
+    }
+
+    public void cargarVehiculosDesdeArchivos() {
+        List<VehiculoCarga> carga = ArchivoVehiculoManager.cargarVehiculosCarga();
+        List<VehiculoPasajeros> pasajeros = ArchivoVehiculoManager.cargarVehiculosPasajeros();
+
+        for (Vehiculo v : carga) {
+            agregarVehiculo(v); // usa validación de duplicados
+        }
+        for (Vehiculo v : pasajeros) {
+            agregarVehiculo(v);
+        }
+    }
+
+    // Método para verificar si un vehículo existe por patente
+    public boolean existeVehiculo(String patente) {
+        return vehiculos.containsKey(patente);
     }
 
     /**

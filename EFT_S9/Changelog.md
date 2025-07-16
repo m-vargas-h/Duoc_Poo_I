@@ -1,6 +1,19 @@
 # Historial de cambios
 
-## 15/07/2025 - Implementación menu principal
+## 16/07/2025 - Creación métodos y clases de persistencia
+- Se creo la clase `ArchivoVehiculoManager` con los metodos correspondientes para poder ejecutar operaciones de lectura/escritura de archivos externos.
+  - Se definió la ruta para los archivos mediante la clase auxiliar `RutaArchivo`, de esta forma es posible indicar la ruta especifica de cara archivo necesario para el funcionamiento del sistema.
+  - Se definieron métodos para la creación de vehículos de carga y pasajeros en el sistema.
+- Cambio de tipos de atributo en modelo base `Vehiculo`: `precioBase` ahora es `int`.
+- Ajuste de retorno en `getPrecioBase()` y `getCapacidadToneladas()` para alinearlos con tipos enteros.
+- Redefinición del método `calcularPrecioFinal()` para retornar `int`, con ajuste también en clase base.
+- Confirmación de lectura y escritura de vehículos desde archivo con campos enteros sin conflictos.
+- Revisión de `filtrarPorTipo()` asegurando que funcione correctamente con los vehículos cargados desde archivo.
+- Integración de método `gestor.cargarVehiculosDesdeArchivos()` al inicio del sistema para poblar la memoria automáticamente.
+- Ajuste de ingreso de datos para evitar conflictos al agregar vehículos en tiempo real.
+
+
+### 15/07/2025 - Implementación menu principal
 - Creación de la clase `MenuPrincipal` en el paquete `ui` como punto de entrada al sistema
 - Diseño de ciclo de menú con opciones interactivas:
   - Agregar vehículo de carga
@@ -14,7 +27,7 @@
 - Implementación del método `obtenerVehiculosEnArriendo()` para recuperar detalles completos desde las patentes
 - Mejora de encapsulación y preparación para filtros por duración en sesiones futuras
 
-## 14/07/2025 - Implementación clase Vehículo y subclases
+### 14/07/2025 - Implementación clase Vehículo y subclases
 - Definición de clase abstracta `Vehiculo` con encapsulamiento completo.
     - Actualización de `VehiculoCarga`, atributo **capacidadToneladas** con validación semántica de tipo de vehículo por categoría.
     - Actualización de `VehiculoPasajeros`, atributo **capacidadMaxima** con validación según categoría PASAJEROS.

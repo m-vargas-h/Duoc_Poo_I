@@ -14,7 +14,7 @@ public class BoletaSimple implements GeneradorBoleta {
         if (dias >= 7) {
             if (vehiculo instanceof VehiculoCarga) {
                 descuento = subtotal * DESCUENTO_CARGA;
-            } else if (vehiculo instanceof VehiculoPasajero) {
+            } else if (vehiculo instanceof VehiculoPasajeros) {
                 descuento = subtotal * DESCUENTO_PASAJEROS;
             }
         }
