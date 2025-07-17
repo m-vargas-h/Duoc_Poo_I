@@ -17,5 +17,10 @@ public class RutaArchivo {
         return RUTA_BASE.resolve("vehiculos_pasajeros.csv");
     }
 
+    // Ruta para el archivo de historial de boletas
+    public static Path rutaBoletas() {
+        return RUTA_BASE.resolve("historial_boletas.csv");
+    }
+
     //Todo: Aquí pueden ir mas rutas según sea necesario
 }

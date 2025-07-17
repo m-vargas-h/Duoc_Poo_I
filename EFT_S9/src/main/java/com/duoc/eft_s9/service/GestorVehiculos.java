@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class GestorVehiculos {
     private final Map<String, Vehiculo> vehiculos = new HashMap<>();
-    private final Set<String> patentesEnArriendo = new HashSet<>(); // asumiendo manejo temporal
+    private final Set<String> patentesEnArriendo = new HashSet<>();
 
     /**
      * Agrega un vehículo al gestor.
@@ -18,8 +18,9 @@ public class GestorVehiculos {
      * @return true si se agregó correctamente, false si ya existe.
      */
     public boolean agregarVehiculo(Vehiculo v) {
-        if (!vehiculos.containsKey(v.getPatente())) {
-            vehiculos.put(v.getPatente(), v);
+        String clave = v.getPatente().trim().toUpperCase();
+        if (!vehiculos.containsKey(clave)) {
+            vehiculos.put(clave, v);
             return true;
         }
         return false;
@@ -30,7 +31,7 @@ public class GestorVehiculos {
         List<VehiculoPasajeros> pasajeros = ArchivoVehiculoManager.cargarVehiculosPasajeros();
 
         for (Vehiculo v : carga) {
-            agregarVehiculo(v); // usa validación de duplicados
+            agregarVehiculo(v);
         }
         for (Vehiculo v : pasajeros) {
             agregarVehiculo(v);
@@ -60,6 +61,11 @@ public class GestorVehiculos {
             .map(vehiculos::get)
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
+    }
+
+    public Vehiculo buscarVehiculoPorPatente(String patente) {
+        if (patente == null || patente.isBlank()) return null;
+        return vehiculos.get(patente.toUpperCase());
     }
 
     // Opcional: método para registrar arriendo (para mantener patentes en uso)

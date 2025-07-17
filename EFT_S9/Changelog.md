@@ -1,6 +1,16 @@
 # Historial de cambios
 
-## 16/07/2025 - Creación métodos y clases de persistencia
+## 16/07/2025 - Mejoras del sistema de boletas y registro
+- Implementación de `ValidadorFormato.validarPatente()` para admitir formatos AB-1234 y ABCD-12.
+- Centralización de la validación en clase auxiliar.
+- Actualización de métodos `agregarVehiculoCarga()` y `agregarVehiculoPasajeros()` para utilizar esta validación.
+- Estandarización de claves con `toUpperCase().trim()` al guardar y buscar patentes.
+- Ajuste de formato decimal en `guardarEnArchivo(...)` usando `Locale.US`.
+- Inclusión de columna `FechaEmisión` en archivo.
+
+---
+
+### 16/07/2025 - Creación métodos y clases de persistencia
 - Se creo la clase `ArchivoVehiculoManager` con los metodos correspondientes para poder ejecutar operaciones de lectura/escritura de archivos externos.
   - Se definió la ruta para los archivos mediante la clase auxiliar `RutaArchivo`, de esta forma es posible indicar la ruta especifica de cara archivo necesario para el funcionamiento del sistema.
   - Se definieron métodos para la creación de vehículos de carga y pasajeros en el sistema.
@@ -11,7 +21,6 @@
 - Revisión de `filtrarPorTipo()` asegurando que funcione correctamente con los vehículos cargados desde archivo.
 - Integración de método `gestor.cargarVehiculosDesdeArchivos()` al inicio del sistema para poblar la memoria automáticamente.
 - Ajuste de ingreso de datos para evitar conflictos al agregar vehículos en tiempo real.
-
 
 ### 15/07/2025 - Implementación menu principal
 - Creación de la clase `MenuPrincipal` en el paquete `ui` como punto de entrada al sistema
