@@ -3,26 +3,31 @@ package com.duoc.eft_s9.model;
 import com.duoc.eft_s9.enums.TipoVehiculo;
 
 public class VehiculoPasajeros extends Vehiculo {
-    private int capacidadMaxima;
+    private int capacidadPasajeros;
 
+    // Constructor principal con control de disponibilidad
     public VehiculoPasajeros(String patente, String marca, int anio, int precioBase,
-                             TipoVehiculo tipoVehiculo, int capacidadMaxima) {
-        super(patente, marca, anio, precioBase, tipoVehiculo);
-        if (tipoVehiculo.getCategoria() != TipoVehiculo.Categoria.PASAJEROS) {
-            throw new IllegalArgumentException("TipoVehiculo no válido para VehiculoPasajeros.");
-        }
-        this.capacidadMaxima = capacidadMaxima;
+                             TipoVehiculo tipoVehiculo, int capacidadPasajeros, boolean disponible) {
+        super(patente, marca, anio, precioBase, tipoVehiculo, disponible);
+        this.capacidadPasajeros = capacidadPasajeros;
     }
+
+    // Constructor simplificado con disponibilidad por defecto
+    public VehiculoPasajeros(String patente, String marca, int anio, int precioBase,
+                             TipoVehiculo tipoVehiculo, int capacidadPasajeros) {
+        super(patente, marca, anio, precioBase, tipoVehiculo);
+        this.capacidadPasajeros = capacidadPasajeros;
+    }
+
+    public int getCapacidadPasajeros() { return capacidadPasajeros; }
 
     @Override
     public int calcularPrecioFinal() {
-        int extra = capacidadMaxima * 8000;
-        return precioBase + extra;
+        return precioBase + (capacidadPasajeros * 200);
     }
 
-    // Getters y Setters
-    public int getCapacidadMaxima() { return capacidadMaxima; }
-    public void setCapacidadMaxima(int capacidadMaxima) {
-        this.capacidadMaxima = capacidadMaxima;
+    @Override
+    public String toString() {
+        return super.toString() + String.format(" | Capacidad: %d pasajeros", capacidadPasajeros);
     }
 }

@@ -1,27 +1,36 @@
 package com.duoc.eft_s9.ui;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
+import com.duoc.eft_s9.concurrence.CargaVehiculosConcurrente;
 import com.duoc.eft_s9.enums.TipoVehiculo;
+import com.duoc.eft_s9.exceptions.ArriendoPersistenciaException;
+import com.duoc.eft_s9.exceptions.DiasArriendoInvalidosException;
+import com.duoc.eft_s9.exceptions.HistorialLecturaException;
+import com.duoc.eft_s9.exceptions.VehiculoNoDisponibleException;
 import com.duoc.eft_s9.interfaces.GeneradorBoleta;
+import com.duoc.eft_s9.model.ArriendoInfo;
 import com.duoc.eft_s9.model.Vehiculo;
 import com.duoc.eft_s9.model.VehiculoCarga;
 import com.duoc.eft_s9.model.VehiculoPasajeros;
-import com.duoc.eft_s9.service.BoletaSimple;
-import com.duoc.eft_s9.service.GestorBoletas;
-import com.duoc.eft_s9.service.GestorVehiculos;
+import com.duoc.eft_s9.service.*;
 import com.duoc.eft_s9.utils.ArchivoVehiculoManager;
 import com.duoc.eft_s9.utils.ValidadorFormato;
 
 
 public class MenuPrincipal {
     private final Scanner scanner = new Scanner(System.in);
-    private final GestorVehiculos gestor = new GestorVehiculos();
-    //private final GeneradorBoleta generadorBoleta = new BoletaSimple();
+    private final GestorVehiculos gestor;
+
+    // Constructor que recibe el gestor desde afuera (desde main)
+    public MenuPrincipal(GestorVehiculos gestor) {
+        this.gestor = gestor;
+    }
 
     public void iniciar() {
-        gestor.cargarVehiculosDesdeArchivos(); // Carga vehículos al iniciar el menú
+        //gestor.cargarVehiculosDesdeArchivos(); // Carga vehículos al iniciar el menú
 
         //? [Debug]: Mostrar vehículos cargados al iniciar
         ////System.out.println("Vehículos cargados:");
@@ -40,6 +49,8 @@ public class MenuPrincipal {
             System.out.println("5. Generar boleta de arriendo");
             System.out.println("6. Ver cantidad de vehículos en arriendo");
             System.out.println("7. Filtrar boletas por fecha o patente");
+            System.out.println("8. Finalizar arriendo de vehículo");
+            System.out.println("9. Ver historial de arriendos");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
 
@@ -72,6 +83,14 @@ public class MenuPrincipal {
                     
                     case 7:
                         GestorBoletas.verBoletasFiltradas();
+                        break;
+
+                    case 8:
+                        finalizarArriendoVehiculo();
+                        break;
+
+                    case 9:
+                        mostrarHistorialArriendos();
                         break;
 
                     case 0:
@@ -266,33 +285,85 @@ public class MenuPrincipal {
     }
 
     private void generarBoleta() {
-        //Scanner scanner = new Scanner(System.in);
         System.out.println("\nGENERAR BOLETA DE ARRIENDO");
 
-        System.out.print("Ingrese la patente del vehículo: ");
-        String patente = scanner.nextLine().trim().toUpperCase();
-
-        Vehiculo vehiculo = gestor.buscarVehiculoPorPatente(patente);
-        if (vehiculo == null) {
-            System.out.println("Vehículo no encontrado.");
-            return;
-        }
-
-        System.out.print("Ingrese días de arriendo: ");
-        int dias;
         try {
-            dias = Integer.parseInt(scanner.nextLine());
-            if (dias <= 0) {
-                System.out.println("Los días deben ser mayores a cero.");
+            System.out.print("Ingrese RUT del cliente: ");
+            String rut = scanner.nextLine().trim();
+
+            System.out.print("Ingrese nombre del cliente: ");
+            String nombre = scanner.nextLine().trim();
+
+            System.out.print("Ingrese la patente del vehículo: ");
+            String patente = scanner.nextLine().trim().toUpperCase();
+
+            Vehiculo vehiculo = gestor.buscarVehiculoPorPatente(patente);
+            if (vehiculo == null) {
+                System.out.println("Vehículo no encontrado.");
                 return;
             }
+
+            if (!vehiculo.isDisponible()) {
+                throw new VehiculoNoDisponibleException("El vehículo ya está en arriendo. Debe ser devuelto antes de continuar.");
+            }
+
+            System.out.print("Ingrese días de arriendo: ");
+            int dias = obtenerDiasDeArriendo();
+
+            GeneradorBoleta generador = new BoletaSimple();
+            generador.generarBoleta(vehiculo, dias);
+
+            gestor.guardarTodosLosVehiculos();
+
+            String idBoleta = GestorBoletas.obtenerUltimaBoletaID();
+            ArriendoInfo arriendo = new ArriendoInfo(rut, nombre, LocalDate.now(), idBoleta);
+
+            try {
+                GestorArriendos.registrarArriendo(arriendo);
+            } catch (ArriendoPersistenciaException e) {
+                System.out.println(e.getMessage());
+            }
+
+        } catch (VehiculoNoDisponibleException | DiasArriendoInvalidosException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error inesperado al generar boleta: " + e.getMessage());
+        }
+    }
+
+    private int obtenerDiasDeArriendo() throws DiasArriendoInvalidosException {
+        try {
+            int dias = Integer.parseInt(scanner.nextLine());
+            if (dias <= 0) {
+                throw new DiasArriendoInvalidosException("Los días deben ser mayores a cero.");
+            }
+            return dias;
         } catch (NumberFormatException e) {
-            System.out.println("Entrada no válida para días.");
+            throw new DiasArriendoInvalidosException("Debe ingresar un número válido para los días.");
+        }
+    }
+
+    private void finalizarArriendoVehiculo() {
+        System.out.println("\nFINALIZAR ARRIENDO DE VEHÍCULO");
+
+        System.out.print("Ingrese la patente del vehículo a devolver: ");
+        String patente = scanner.nextLine().trim().toUpperCase();
+
+        Vehiculo v = gestor.buscarVehiculoPorPatente(patente);
+        if (v == null) {
+            System.out.println("Vehículo no encontrado en el sistema.");
             return;
         }
 
-        GeneradorBoleta generador = new BoletaSimple();
-        generador.generarBoleta(vehiculo, dias);
+        if (v.isDisponible()) {
+            System.out.println("El vehículo ya está disponible. No requiere devolución.");
+            return;
+        }
+
+        v.setDisponible(true);
+        gestor.finalizarArriendo(patente);
+        gestor.guardarTodosLosVehiculos();
+        System.out.println("Vehículo marcado como disponible. El arriendo ha sido finalizado exitosamente.");
     }
 
     private void verCantidadEnArriendo() {
@@ -300,4 +371,44 @@ public class MenuPrincipal {
         int cantidad = gestor.contarVehiculosEnArriendo();
         System.out.println("Cantidad de vehículos actualmente en arriendo: " + cantidad);
     }
+
+    private void cargarVehiculosConcurrentemente() {
+        System.out.println("\nIniciando carga concurrente de vehículos...");
+
+        Thread hiloCarga = new Thread(new CargaVehiculosConcurrente(gestor, false));
+        Thread hiloPasajeros = new Thread(new CargaVehiculosConcurrente(gestor, true));
+
+        hiloCarga.start();
+        hiloPasajeros.start();
+
+        try {
+            hiloCarga.join();
+            hiloPasajeros.join();
+        } catch (InterruptedException e) {
+            System.out.println("Error esperando hilos: " + e.getMessage());
+        }
+
+        System.out.println("Vehículos cargados: " + gestor.listarVehiculos().size());
+    }
+
+    private void mostrarHistorialArriendos() {
+    System.out.println("\n------ HISTORIAL DE ARRIENDOS ------");
+
+    try {
+        List<ArriendoInfo> historial = GestorArriendos.cargarHistorial();
+        if (historial.isEmpty()) {
+            System.out.println("No hay registros de arriendos.");
+            return;
+        }
+
+        for (ArriendoInfo info : historial) {
+            System.out.printf("- Cliente: %s (%s), Fecha: %s, Boleta ID: %s%n",
+                info.getNombreCliente(), info.getRutCliente(), info.getFecha(), info.getIdBoleta());
+        }
+
+    } catch (HistorialLecturaException e) {
+        System.out.println("No se pudo cargar el historial:");
+        System.out.println(e.getMessage());
+    }
+}
 }

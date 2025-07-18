@@ -1,14 +1,38 @@
 # Historial de cambios
 
-## 16/07/2025 - Mejoras del sistema de boletas y registro
+## 18/07/2025 - Refactorizacion y sincronización sistema
+- Concurrencia y sincronización
+  - Implementación de clase `CargaVehiculosConcurrente` para carga paralela de vehículos por tipo (Runnable)
+  - Integración de Thread y .join() en main() para ejecutar la carga al iniciar el sistema
+  - Uso de Collections.synchronizedMap para acceso seguro al mapa de vehículos
+  - División de método `cargarVehiculosDesdeArchivos()` en GestorVehiculos:
+    - `cargarVehiculosCarga()`
+    - `cargarVehiculosPasajeros()`
+  - Constructor de MenuPrincipal modificado para recibir el GestorVehiculos precargado
+- Refactorización de generarBoleta():
+  - Uso de excepciones propias: **VehiculoNoDisponibleException**, **DiasArriendoInvalidosException**
+  - Separación de la validación en `obtenerDiasDeArriendo()`
+- Refactorización de registrarArriendo(...):
+  - Creación de **ArriendoPersistenciaException**
+  - Lanzamiento de error si falla el guardado
+- Refactorización de cargarHistorial():
+  - Creación de **HistorialLecturaException**
+  - Ignora líneas mal formateadas con trazas
+  - Informa con claridad si hay fallos de lectura
+- Reorganización del main() para que todo el sistema inicie con carga concurrente
+
+
+
+
+---
+
+### 16/07/2025 - Mejoras del sistema de boletas y registro
 - Implementación de `ValidadorFormato.validarPatente()` para admitir formatos AB-1234 y ABCD-12.
 - Centralización de la validación en clase auxiliar.
 - Actualización de métodos `agregarVehiculoCarga()` y `agregarVehiculoPasajeros()` para utilizar esta validación.
 - Estandarización de claves con `toUpperCase().trim()` al guardar y buscar patentes.
 - Ajuste de formato decimal en `guardarEnArchivo(...)` usando `Locale.US`.
 - Inclusión de columna `FechaEmisión` en archivo.
-
----
 
 ### 16/07/2025 - Creación métodos y clases de persistencia
 - Se creo la clase `ArchivoVehiculoManager` con los metodos correspondientes para poder ejecutar operaciones de lectura/escritura de archivos externos.

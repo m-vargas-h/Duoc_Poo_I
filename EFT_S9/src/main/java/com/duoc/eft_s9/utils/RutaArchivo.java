@@ -22,5 +22,11 @@ public class RutaArchivo {
         return RUTA_BASE.resolve("historial_boletas.csv");
     }
 
+    // Ruta para el archivo de historial de arriendos
+    public static Path rutaHistorialArriendos() {
+        return RUTA_BASE.resolve("historial_arriendos.csv");
+
+    }
+
     //Todo: Aquí pueden ir mas rutas según sea necesario
 }

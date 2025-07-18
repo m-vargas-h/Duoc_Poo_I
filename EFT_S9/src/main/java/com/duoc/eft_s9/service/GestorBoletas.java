@@ -1,7 +1,7 @@
 package com.duoc.eft_s9.service;
 
 import com.duoc.eft_s9.model.BoletaInfo;
-import com.duoc.eft_s9.utils.RutaArchivo; // asegúrate de tener este import
+import com.duoc.eft_s9.utils.RutaArchivo;
 import java.io.*;
 import java.nio.file.*;
 import java.time.LocalDate;
@@ -142,5 +142,30 @@ public class GestorBoletas {
             }
             default -> System.out.println("⚠️ Opción no válida.");
         }
+    }
+
+    public static String obtenerUltimaBoletaID() {
+        Path archivo = RutaArchivo.rutaBoletas();
+
+        String ultimaLinea = null;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivo.toFile()))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                ultimaLinea = linea;  // Mantiene siempre la última línea
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer archivo de boletas: " + e.getMessage());
+            return "SIN-ID";
+        }
+
+        if (ultimaLinea != null) {
+            String[] partes = ultimaLinea.split(";");
+            if (partes.length > 0) {
+                return partes[0].trim();  // Asume que el ID va en la primera columna
+            }
+        }
+
+        return "SIN-ID";
     }
 }

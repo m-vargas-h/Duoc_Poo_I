@@ -8,6 +8,11 @@ public class BoletaSimple implements GeneradorBoleta {
 
     @Override
     public void generarBoleta(Vehiculo vehiculo, int dias) {
+        if (!vehiculo.isDisponible()) {
+            System.out.println("El vehículo ya está en arriendo. No se puede emitir otra boleta.");
+            return;
+        }
+
         double precioUnitario = vehiculo.calcularPrecioFinal();
         double subtotal = precioUnitario * dias;
         double descuento = 0;
@@ -40,6 +45,10 @@ public class BoletaSimple implements GeneradorBoleta {
         );
 
         GestorBoletas.registrarBoleta(info);
+        vehiculo.setDisponible(false);  // Marcar como no disponible
+
+        //? [DEBUG] Mostrar detalles de la boleta
+        ////System.out.println("Estado actual del vehículo: " + (vehiculo.isDisponible() ? "Disponible" : "NO disponible"));
 
         System.out.println("\n===== BOLETA DE ARRIENDO =====");
         System.out.println("ID Boleta: " + idBoleta);
@@ -51,5 +60,8 @@ public class BoletaSimple implements GeneradorBoleta {
         System.out.printf("IVA (%.0f%%): %.2f\n", IVA * 100, iva);
         System.out.printf("TOTAL A PAGAR: %.2f\n", total);
         System.out.println("==============================\n");
+
+        //? [DEBUG] Mostrar estado del vehículo tras la boleta
+        ////System.out.println("Nuevo estado tras boleta: " + (vehiculo.isDisponible() ? "Disponible" : "NO disponible"));
     }
 }
