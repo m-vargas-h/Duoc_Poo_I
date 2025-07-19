@@ -30,19 +30,50 @@ public abstract class Vehiculo {
     public abstract int calcularPrecioFinal();
 
     // Getters
-    public String getPatente() { return patente; }
-    public String getMarca() { return marca; }
-    public int getAnio() { return anio; }
-    public int getPrecioBase() { return precioBase; }
-    public TipoVehiculo getTipoVehiculo() { return tipoVehiculo; }
-    public boolean isDisponible() { return disponible; }
+    public String getPatente() { 
+        return patente; 
+    }
+
+    public String getMarca() { 
+        return marca; 
+    }
+
+    public int getAnio() { 
+        return anio; 
+    }
+
+    public int getPrecioBase() { 
+        return precioBase; 
+    }
+
+    public TipoVehiculo getTipoVehiculo() { 
+        return tipoVehiculo; 
+    }
+
+    public boolean isDisponible() { 
+        return disponible; 
+    }
 
     // Setters
-    public void setMarca(String marca) { this.marca = marca; }
-    public void setAnio(int anio) { this.anio = anio; }
-    public void setPrecioBase(int precioBase) { this.precioBase = precioBase; }
-    public void setTipoVehiculo(TipoVehiculo tipoVehiculo) { this.tipoVehiculo = tipoVehiculo; }
-    public void setDisponible(boolean disponible) { this.disponible = disponible; }
+    public void setMarca(String marca) { 
+        this.marca = marca; 
+    }
+
+    public void setAnio(int anio) { 
+        this.anio = anio; 
+    }
+
+    public void setPrecioBase(int precioBase) { 
+        this.precioBase = precioBase; 
+    }
+
+    public void setTipoVehiculo(TipoVehiculo tipoVehiculo) { 
+        this.tipoVehiculo = tipoVehiculo; 
+    }
+
+    public void setDisponible(boolean disponible) { 
+        this.disponible = disponible; 
+    }
 
     @Override
     public String toString() {

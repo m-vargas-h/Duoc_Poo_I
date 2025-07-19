@@ -12,7 +12,7 @@ public class BoletaSimple implements GeneradorBoleta {
     @Override
     public void generarBoleta(Vehiculo vehiculo, int dias) {
         if (!vehiculo.isDisponible()) {
-            System.out.println("El vehículo ya está en arriendo. No se puede emitir otra boleta.");
+            System.out.println("El vehículo ya está en arriendo. Por favor intente con otra patente.");
             return;
         }
 
@@ -57,7 +57,7 @@ public class BoletaSimple implements GeneradorBoleta {
         System.out.println("N° Boleta: " + idBoleta);
         System.out.println("Fecha emisión: " + fecha);
 
-        System.out.println("\n----- INFORMACIÓN DEL VEHÍCULO -----");
+        System.out.println("\n----- INFORMACION DEL VEHICULO -----");
         System.out.println("Patente: " + vehiculo.getPatente());
         System.out.println("Marca: " + vehiculo.getMarca());
         System.out.println("Año: " + vehiculo.getAnio());

@@ -42,7 +42,7 @@ public class GestorBoletas {
                 }
                 String[] partes = linea.split(";");
                 if (partes.length < 9) {
-                    System.out.println("Advertencia: línea incompleta en historial => " + linea);
+                    System.out.println("[ADVERTENCIA] línea incompleta en historial => " + linea);
                     continue;
                 }
 
@@ -126,7 +126,7 @@ public class GestorBoletas {
                     .forEach(System.out::println);
             }
             case 3 -> {
-                System.out.print("🔍 Ingrese patente a buscar: ");
+                System.out.print("Ingrese patente a buscar: ");
                 String buscada = scanner.nextLine().trim().toUpperCase();
 
                 List<BoletaInfo> resultados = historial.stream()

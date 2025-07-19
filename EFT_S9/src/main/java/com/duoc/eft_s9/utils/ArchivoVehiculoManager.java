@@ -68,7 +68,7 @@ public class ArchivoVehiculoManager {
                     );
                     lista.add(carga);
                 } else {
-                    System.out.println("Línea incompleta ignorada: " + linea);
+                    System.out.println("[ADVERTENCIA] Línea incompleta ignorada: " + linea);
                 }
             }
         } catch (IOException | IllegalArgumentException e) {
@@ -100,7 +100,7 @@ public class ArchivoVehiculoManager {
                     );
                     lista.add(pasajero);
                 } else {
-                    System.out.println("Línea incompleta ignorada: " + linea);
+                    System.out.println("[ADVERTENCIA] Línea incompleta ignorada: " + linea);
                 }
             }
         } catch (IOException | IllegalArgumentException e) {

@@ -28,5 +28,4 @@ public class RutaArchivo {
 
     }
 
-    //Todo: Aquí pueden ir mas rutas según sea necesario
 }

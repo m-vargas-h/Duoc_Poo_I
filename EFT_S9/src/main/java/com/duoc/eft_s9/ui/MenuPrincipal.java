@@ -261,8 +261,15 @@ public class MenuPrincipal {
 
     // Métodos auxiliar para capturar datos del cliente
     private String[] capturarDatosCliente() {
-        System.out.print("Ingrese RUT del cliente: ");
-        String rut = scanner.nextLine().trim();
+        String rut;
+        do {
+            System.out.print("Ingrese RUT del cliente (ej: 12345678-K): ");
+            rut = scanner.nextLine().trim();
+            if (!ValidadorFormato.validarFormatoRut(rut)) {
+                System.out.println("Formato de RUT inválido. Intente nuevamente.");
+                rut = null;
+            }
+        } while (rut == null);
 
         System.out.print("Ingrese nombre del cliente: ");
         String nombre = scanner.nextLine().trim();
@@ -340,7 +347,7 @@ public class MenuPrincipal {
     // Método para finalizar arriendo de un vehículo
     // Solicita patente, verifica si existe y si está en arriendo
     private void finalizarArriendoVehiculo() {
-        System.out.println("\nFINALIZAR ARRIENDO DE VEHÍCULO");
+        System.out.println("\nFINALIZAR ARRIENDO DE VEHICULO");
 
         System.out.print("Ingrese la patente del vehículo a devolver: ");
         String patente = scanner.nextLine().trim().toUpperCase();

@@ -27,15 +27,41 @@ public class BoletaInfo {
         this.fechaEmision = fechaEmision;
     }
 
-    public String getId() { return id; }
-    public String getPatente() { return patente; }
-    public String getTipo() { return tipo; }
-    public int getDias() { return dias; }
-    public double getSubtotal() { return subtotal; }
-    public double getDescuento() { return descuento; }
-    public double getIva() { return iva; }
-    public double getTotal() { return total; }
-    public LocalDate getFechaEmision() { return fechaEmision; }
+    public String getId() { 
+        return id; 
+    }
+
+    public String getPatente() {
+        return patente; 
+    }
+
+    public String getTipo() { 
+        return tipo; 
+    }
+
+    public int getDias() { 
+        return dias; 
+    }
+
+    public double getSubtotal() { 
+        return subtotal; 
+    }
+
+    public double getDescuento() { 
+        return descuento; 
+    }
+
+    public double getIva() { 
+        return iva; 
+    }
+
+    public double getTotal() { 
+        return total; 
+    }
+
+    public LocalDate getFechaEmision() { 
+        return fechaEmision; 
+    }
 
     @Override
     public String toString() {

@@ -15,10 +15,21 @@ public class ArriendoInfo {
         this.idBoleta = idBoleta;
     }
 
-    public String getRutCliente() { return rutCliente; }
-    public String getNombreCliente() { return nombreCliente; }
-    public LocalDate getFecha() { return fecha; }
-    public String getIdBoleta() { return idBoleta; }
+    public String getRutCliente() { 
+        return rutCliente; 
+    }
+
+    public String getNombreCliente() { 
+        return nombreCliente; 
+    }
+
+    public LocalDate getFecha() { 
+        return fecha; 
+    }
+
+    public String getIdBoleta() { 
+        return idBoleta; 
+    }
 
     @Override
     public String toString() {

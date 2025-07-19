@@ -1,6 +1,12 @@
 # Historial de cambios
 
-## 19/07/2025 - Refactorizacion Clase MenuPrincipal 
+## 19/07/2025 - Creación fichero Readme
+- Se creo el fichero **Readme.md** con la documentación correspondiente del proyecto
+- Se agrego validación del Rut y se corrigieron errores menores en textos mostrados por consola
+
+---
+
+### 19/07/2025 - Refactorizacion Clase MenuPrincipal 
 - Eliminada duplicidad entre `agregarVehiculoCarga()` y `agregarVehiculoPasajeros()`
 - Extraída lógica compartida en un único método `solicitarDatosBaseVehiculo()`:
   - Validación de patente
@@ -20,8 +26,6 @@
   - Valores monetarios alineados en columnas usando printf(...)
   - Aplicado formato de moneda local (NumberFormat con Locale("es", "CL"))
   - Restauradas líneas de debug originales:
-
----
 
 ## 18/07/2025 - Refactorizacion y sincronización sistema
 - Concurrencia y sincronización

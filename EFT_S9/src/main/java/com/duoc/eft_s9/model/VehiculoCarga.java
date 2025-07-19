@@ -23,7 +23,7 @@ public class VehiculoCarga extends Vehiculo {
 
     @Override
     public int calcularPrecioFinal() {
-        return precioBase + (capacidadToneladas * 500);
+        return precioBase + (capacidadToneladas * 7500); // Precio base más un cargo por tonelada
     }
 
     @Override

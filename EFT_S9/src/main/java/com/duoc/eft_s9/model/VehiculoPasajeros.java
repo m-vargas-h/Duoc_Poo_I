@@ -23,7 +23,7 @@ public class VehiculoPasajeros extends Vehiculo {
 
     @Override
     public int calcularPrecioFinal() {
-        return precioBase + (capacidadPasajeros * 200);
+        return precioBase + (capacidadPasajeros * 3500); // Precio base más un cargo por pasajero
     }
 
     @Override

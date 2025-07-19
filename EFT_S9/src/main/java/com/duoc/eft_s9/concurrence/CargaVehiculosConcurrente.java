@@ -15,13 +15,13 @@ public class CargaVehiculosConcurrente implements Runnable {
     public void run() {
         try {
             if (cargaPasajeros) {
-                System.out.println("🧵 Hilo de carga de vehículos de pasajeros iniciado...");
+                System.out.println("Hilo de carga de vehículos de pasajeros iniciado...");
                 Thread.sleep(500); // Simula tiempo de carga
                 gestor.cargarVehiculosPasajeros();
                 System.out.println("Hilo finalizado: pasajeros (" + gestor.obtenerVehiculosDisponibles().size() + 
                                                                 " disponibles)");
             } else {
-                System.out.println("🧵 Hilo de carga de vehículos de carga iniciado...");
+                System.out.println("Hilo de carga de vehículos de carga iniciado...");
                 Thread.sleep(500); // Simula tiempo de carga
                 gestor.cargarVehiculosCarga();
                 System.out.println("Hilo finalizado: carga (" + gestor.obtenerVehiculosDisponibles().size() + 
