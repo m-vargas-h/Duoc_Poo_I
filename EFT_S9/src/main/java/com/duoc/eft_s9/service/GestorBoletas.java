@@ -21,7 +21,7 @@ public class GestorBoletas {
     }
 
     public static void mostrarHistorial() {
-        System.out.println("\n📄 HISTORIAL DE BOLETAS");
+        System.out.println("\nHISTORIAL DE BOLETAS");
         for (BoletaInfo b : historial) {
             System.out.println(b.toString());
         }
@@ -102,7 +102,7 @@ public class GestorBoletas {
 
     public static void verBoletasFiltradas() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\n📊 FILTRAR BOLETAS");
+        System.out.println("\nFILTRAR BOLETAS");
         System.out.println("1. Ver boletas del día");
         System.out.println("2. Ver boletas del mes");
         System.out.println("3. Ver boletas por patente");
@@ -113,13 +113,13 @@ public class GestorBoletas {
 
         switch (opcion) {
             case 1 -> {
-                System.out.println("\n📅 Boletas emitidas hoy:");
+                System.out.println("\nBoletas emitidas hoy:");
                 historial.stream()
                     .filter(b -> b.getFechaEmision().isEqual(hoy))
                     .forEach(System.out::println);
             }
             case 2 -> {
-                System.out.println("\n🗓️ Boletas del mes actual:");
+                System.out.println("\nBoletas del mes actual:");
                 historial.stream()
                     .filter(b -> b.getFechaEmision().getMonth().equals(hoy.getMonth())
                             && b.getFechaEmision().getYear() == hoy.getYear())
@@ -136,11 +136,11 @@ public class GestorBoletas {
                 if (resultados.isEmpty()) {
                     System.out.println("No se encontraron boletas con la patente: " + buscada);
                 } else {
-                    System.out.println("\n📄 Boletas para la patente " + buscada + ":");
+                    System.out.println("\nBoletas para la patente " + buscada + ":");
                     resultados.forEach(System.out::println);
                 }
             }
-            default -> System.out.println("⚠️ Opción no válida.");
+            default -> System.out.println("Opción no válida.");
         }
     }
 

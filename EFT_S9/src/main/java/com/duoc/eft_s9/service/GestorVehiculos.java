@@ -1,5 +1,6 @@
 package com.duoc.eft_s9.service;
 
+import com.duoc.eft_s9.enums.TipoVehiculo;
 import com.duoc.eft_s9.model.Vehiculo;
 import com.duoc.eft_s9.model.VehiculoCarga;
 import com.duoc.eft_s9.model.VehiculoPasajeros;
@@ -87,14 +88,14 @@ public class GestorVehiculos {
         return vehiculos.get(patente.trim().toUpperCase());
     }
 
-    // Opcional: método para registrar arriendo (para mantener patentes en uso)
+    // Método para registrar arriendo (para mantener patentes en uso)
     public void registrarArriendo(String patente) {
         if (vehiculos.containsKey(patente)) {
             patentesEnArriendo.add(patente);
         }
     }
 
-    // Opcional: liberar vehículo (cuando termina el arriendo)
+    // Liberar vehículo (cuando termina el arriendo)
     public void finalizarArriendo(String patente) {
         patentesEnArriendo.remove(patente);
     }
@@ -103,6 +104,12 @@ public class GestorVehiculos {
         return vehiculos.values().stream()
             .filter(Vehiculo::isDisponible)
             .collect(Collectors.toList());
+    }
+
+    public List<Vehiculo> filtrarPorTipo(TipoVehiculo tipo) {
+        return listarVehiculos().stream()
+            .filter(v -> v.getTipoVehiculo().equals(tipo))
+            .toList();
     }
 
     // Método para guardar todos los vehículos en sus respectivos archivos, evitando disponibilidad desactualizada

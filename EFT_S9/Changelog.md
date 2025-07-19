@@ -1,5 +1,28 @@
 # Historial de cambios
 
+## 19/07/2025 - Refactorizacion Clase MenuPrincipal 
+- Eliminada duplicidad entre `agregarVehiculoCarga()` y `agregarVehiculoPasajeros()`
+- Extraída lógica compartida en un único método `solicitarDatosBaseVehiculo()`:
+  - Validación de patente
+  - Captura de marca, año, precio base y tipo
+- Simplificada implementación sin clases auxiliares
+- Garantizada compatibilidad con lógica de persistencia CSV
+- Agregado método `filtrarPorTipo(TipoVehiculo)` dentro de **GestorVehiculos**
+- MenuPrincipal ahora delega la lógica de filtrado directamente al gestor
+- Modularización del flujo `generarBoleta()`, se han separado pasos internos en métodos auxiliares:
+  - capturarDatosCliente()
+  - validarVehiculoParaArriendo(...)
+  - crearYGenerarBoleta(...)
+  - registrarArriendo(...)
+- Mejora visual y semántica de la boleta en `BoletaSimple`:
+  - Información del vehículo dividida por línea
+  - Capacidad con unidad abreviada (t o p)
+  - Valores monetarios alineados en columnas usando printf(...)
+  - Aplicado formato de moneda local (NumberFormat con Locale("es", "CL"))
+  - Restauradas líneas de debug originales:
+
+---
+
 ## 18/07/2025 - Refactorizacion y sincronización sistema
 - Concurrencia y sincronización
   - Implementación de clase `CargaVehiculosConcurrente` para carga paralela de vehículos por tipo (Runnable)
@@ -20,11 +43,6 @@
   - Ignora líneas mal formateadas con trazas
   - Informa con claridad si hay fallos de lectura
 - Reorganización del main() para que todo el sistema inicie con carga concurrente
-
-
-
-
----
 
 ### 16/07/2025 - Mejoras del sistema de boletas y registro
 - Implementación de `ValidadorFormato.validarPatente()` para admitir formatos AB-1234 y ABCD-12.

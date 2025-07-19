@@ -4,12 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-import com.duoc.eft_s9.concurrence.CargaVehiculosConcurrente;
 import com.duoc.eft_s9.enums.TipoVehiculo;
-import com.duoc.eft_s9.exceptions.ArriendoPersistenciaException;
-import com.duoc.eft_s9.exceptions.DiasArriendoInvalidosException;
-import com.duoc.eft_s9.exceptions.HistorialLecturaException;
-import com.duoc.eft_s9.exceptions.VehiculoNoDisponibleException;
+import com.duoc.eft_s9.exceptions.*;
 import com.duoc.eft_s9.interfaces.GeneradorBoleta;
 import com.duoc.eft_s9.model.ArriendoInfo;
 import com.duoc.eft_s9.model.Vehiculo;
@@ -29,8 +25,7 @@ public class MenuPrincipal {
         this.gestor = gestor;
     }
 
-    public void iniciar() {
-        //gestor.cargarVehiculosDesdeArchivos(); // Carga vehículos al iniciar el menú
+    public void mostrarMenu() {
 
         //? [Debug]: Mostrar vehículos cargados al iniciar
         ////System.out.println("Vehículos cargados:");
@@ -109,8 +104,6 @@ public class MenuPrincipal {
         } while (opcion != 0);
     }
 
-    //todo: métodos auxiliares aun en construcción, revisar como se implementaran a futuro
-
     private TipoVehiculo seleccionarTipoVehiculo() {
         TipoVehiculo[] tipos = TipoVehiculo.values();
         System.out.println("Seleccione el tipo de vehículo:");
@@ -132,40 +125,45 @@ public class MenuPrincipal {
         return TipoVehiculo.CAMION;
     }
 
+    private Object[] solicitarDatosBaseVehiculo() {
+        System.out.print("Ingrese patente (AB-1234 o ABCD-12): ");
+        String input = scanner.nextLine().trim().toUpperCase();
+        String patente = ValidadorFormato.validarPatente(input);
+        if (patente == null) return null;
+
+        if (gestor.buscarVehiculoPorPatente(patente) != null) {
+            System.out.println("Ya existe un vehículo con esa patente.");
+            return null;
+        }
+
+        System.out.print("Ingrese marca: ");
+        String marca = scanner.nextLine().trim();
+
+        System.out.print("Ingrese año: ");
+        int anio = Integer.parseInt(scanner.nextLine().trim());
+
+        System.out.print("Ingrese precio base: ");
+        int precioBase = Integer.parseInt(scanner.nextLine().trim());
+
+        TipoVehiculo tipo = seleccionarTipoVehiculo();
+
+        return new Object[] { patente, marca, anio, precioBase, tipo };
+    }
 
     private void agregarVehiculoCarga() {
         try {
-            System.out.print("Ingrese patente (AB-1234 o ABCD-12): ");
-            String input = scanner.nextLine();
-            String patenteValidada = ValidadorFormato.validarPatente(input);
-
-            if (patenteValidada == null) return; // formato inválido
-
-            if (gestor.buscarVehiculoPorPatente(patenteValidada) != null) {
-                System.out.println("Ya existe un vehículo con esa patente.");
-                return;
-            }
-
-            System.out.print("Ingrese marca: ");
-            String marca = scanner.nextLine().trim();
-
-            System.out.print("Ingrese año: ");
-            int anio = Integer.parseInt(scanner.nextLine().trim());
-
-            System.out.print("Ingrese precio base: ");
-            int precioBase = Integer.parseInt(scanner.nextLine().trim());
-
-            TipoVehiculo tipo = seleccionarTipoVehiculo();
+            Object[] datos = solicitarDatosBaseVehiculo();
+            if (datos == null) return;
 
             System.out.print("Ingrese capacidad en toneladas: ");
             int capacidadToneladas = Integer.parseInt(scanner.nextLine().trim());
 
             VehiculoCarga carga = new VehiculoCarga(
-                patenteValidada,
-                marca,
-                anio,
-                precioBase,
-                tipo,
+                (String) datos[0],
+                (String) datos[1],
+                (int)    datos[2],
+                (int)    datos[3],
+                (TipoVehiculo) datos[4],
                 capacidadToneladas
             );
 
@@ -182,40 +180,21 @@ public class MenuPrincipal {
             System.out.println("Error al ingresar vehículo de carga: " + e.getMessage());
         }
     }
-
+    
     private void agregarVehiculoPasajeros() {
         try {
-            System.out.print("Ingrese patente (AB-1234 o ABCD-12): ");
-            String input = scanner.nextLine();
-            String patenteValidada = ValidadorFormato.validarPatente(input);
-
-            if (patenteValidada == null) return;
-
-            if (gestor.buscarVehiculoPorPatente(patenteValidada) != null) {
-                System.out.println("Ya existe un vehículo con esa patente.");
-                return;
-            }
-
-            System.out.print("Ingrese marca: ");
-            String marca = scanner.nextLine().trim();
-
-            System.out.print("Ingrese año: ");
-            int anio = Integer.parseInt(scanner.nextLine().trim());
-
-            System.out.print("Ingrese precio base: ");
-            int precioBase = Integer.parseInt(scanner.nextLine().trim());
-
-            TipoVehiculo tipo = seleccionarTipoVehiculo();
+            Object[] datos = solicitarDatosBaseVehiculo();
+            if (datos == null) return;
 
             System.out.print("Ingrese capacidad máxima de pasajeros: ");
             int capacidadMaxima = Integer.parseInt(scanner.nextLine().trim());
 
             VehiculoPasajeros pasajero = new VehiculoPasajeros(
-                patenteValidada,
-                marca,
-                anio,
-                precioBase,
-                tipo,
+                (String) datos[0],
+                (String) datos[1],
+                (int)    datos[2],
+                (int)    datos[3],
+                (TipoVehiculo) datos[4],
                 capacidadMaxima
             );
 
@@ -232,7 +211,6 @@ public class MenuPrincipal {
             System.out.println("Error al ingresar vehículo de pasajeros: " + e.getMessage());
         }
     }
-
 
     private void listarVehiculos() {
         List<Vehiculo> lista = gestor.listarVehiculos();
@@ -258,79 +236,95 @@ public class MenuPrincipal {
         }
 
         try {
-            System.out.print("Opción: ");
             int opcion = Integer.parseInt(scanner.nextLine());
-            if (opcion >= 1 && opcion <= tipos.length) {
-                TipoVehiculo seleccionado = tipos[opcion - 1];
-
-                List<Vehiculo> filtrados = gestor.listarVehiculos().stream()
-                    .filter(v -> v.getTipoVehiculo().equals(seleccionado))
-                    .toList();
-
-                if (filtrados.isEmpty()) {
-                    System.out.println("No hay vehículos registrados del tipo " + seleccionado.name());
-                } else {
-                    System.out.println("------ VEHÍCULOS TIPO " + seleccionado.name() + " ------");
-                    for (Vehiculo v : filtrados) {
-                        System.out.println(v);
-                    }
-                    System.out.println("----------------------------------");
-                }
-            } else {
+            if (opcion < 1 || opcion > tipos.length) {
                 System.out.println("Opción fuera de rango.");
+                return;
             }
+
+            TipoVehiculo seleccionado = tipos[opcion - 1];
+            List<Vehiculo> filtrados = gestor.filtrarPorTipo(seleccionado);
+
+            if (filtrados.isEmpty()) {
+                System.out.println("No hay vehículos registrados del tipo " + seleccionado.name());
+                return;
+            }
+
+            System.out.println("------ VEHÍCULOS TIPO " + seleccionado.name() + " ------");
+            filtrados.forEach(System.out::println);
+            System.out.println("----------------------------------");
+
         } catch (NumberFormatException e) {
             System.out.println("Entrada inválida. Debe ingresar un número.");
         }
     }
 
+    // Métodos auxiliar para capturar datos del cliente
+    private String[] capturarDatosCliente() {
+        System.out.print("Ingrese RUT del cliente: ");
+        String rut = scanner.nextLine().trim();
+
+        System.out.print("Ingrese nombre del cliente: ");
+        String nombre = scanner.nextLine().trim();
+
+        return new String[] { rut, nombre };
+    }
+
+    // Método auxiliar para validar vehículo y lanzar excepción si no está disponible
+    private Vehiculo validarVehiculoParaArriendo(String patente) throws VehiculoNoDisponibleException {
+        Vehiculo v = gestor.buscarVehiculoPorPatente(patente);
+        if (v == null) throw new IllegalArgumentException("Vehículo no encontrado.");
+        if (!v.isDisponible()) throw new VehiculoNoDisponibleException("El vehículo está en arriendo.");
+        return v;
+    }
+
+    // Método auxiliar para crear boleta y guardar, lanzando excepción si falla
+    private void crearYGenerarBoleta(Vehiculo v, int dias) {
+        GeneradorBoleta generador = new BoletaSimple();
+        generador.generarBoleta(v, dias);
+        gestor.guardarTodosLosVehiculos();
+    }
+
+    // Método auxiliar para registrar arriendo en el gestor de arriendos
+    private void registrarArriendo(String rut, String nombre, String idBoleta) {
+        ArriendoInfo info = new ArriendoInfo(rut, nombre, LocalDate.now(), idBoleta);
+        try {
+            GestorArriendos.registrarArriendo(info);
+        } catch (ArriendoPersistenciaException e) {
+            System.out.println("Error al guardar historial: " + e.getMessage());
+        }
+    }
+
+    // Método principal para generar boleta de arriendo
+    // Captura datos del cliente, valida vehículo, obtiene días de arriendo y genera boleta
+    // Registra arriendo en el gestor de arriendos
     private void generarBoleta() {
         System.out.println("\nGENERAR BOLETA DE ARRIENDO");
 
         try {
-            System.out.print("Ingrese RUT del cliente: ");
-            String rut = scanner.nextLine().trim();
-
-            System.out.print("Ingrese nombre del cliente: ");
-            String nombre = scanner.nextLine().trim();
+            String[] cliente = capturarDatosCliente();
 
             System.out.print("Ingrese la patente del vehículo: ");
             String patente = scanner.nextLine().trim().toUpperCase();
 
-            Vehiculo vehiculo = gestor.buscarVehiculoPorPatente(patente);
-            if (vehiculo == null) {
-                System.out.println("Vehículo no encontrado.");
-                return;
-            }
-
-            if (!vehiculo.isDisponible()) {
-                throw new VehiculoNoDisponibleException("El vehículo ya está en arriendo. Debe ser devuelto antes de continuar.");
-            }
-
+            Vehiculo vehiculo = validarVehiculoParaArriendo(patente);
             System.out.print("Ingrese días de arriendo: ");
             int dias = obtenerDiasDeArriendo();
 
-            GeneradorBoleta generador = new BoletaSimple();
-            generador.generarBoleta(vehiculo, dias);
-
-            gestor.guardarTodosLosVehiculos();
+            crearYGenerarBoleta(vehiculo, dias);
 
             String idBoleta = GestorBoletas.obtenerUltimaBoletaID();
-            ArriendoInfo arriendo = new ArriendoInfo(rut, nombre, LocalDate.now(), idBoleta);
+            registrarArriendo(cliente[0], cliente[1], idBoleta);
 
-            try {
-                GestorArriendos.registrarArriendo(arriendo);
-            } catch (ArriendoPersistenciaException e) {
-                System.out.println(e.getMessage());
-            }
-
-        } catch (VehiculoNoDisponibleException | DiasArriendoInvalidosException e) {
-            System.out.println(e.getMessage());
+        } catch (VehiculoNoDisponibleException | DiasArriendoInvalidosException | IllegalArgumentException e) {
+            System.out.println("[ADVERTENCIA] " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("Error inesperado al generar boleta: " + e.getMessage());
+            System.out.println(" Error inesperado al generar boleta: " + e.getMessage());
         }
     }
 
+    // Método auxiliar para capturar y validar los días de arriendo
+    // Lanza excepción si el número es inválido o menor a 1
     private int obtenerDiasDeArriendo() throws DiasArriendoInvalidosException {
         try {
             int dias = Integer.parseInt(scanner.nextLine());
@@ -343,6 +337,8 @@ public class MenuPrincipal {
         }
     }
 
+    // Método para finalizar arriendo de un vehículo
+    // Solicita patente, verifica si existe y si está en arriendo
     private void finalizarArriendoVehiculo() {
         System.out.println("\nFINALIZAR ARRIENDO DE VEHÍCULO");
 
@@ -366,29 +362,12 @@ public class MenuPrincipal {
         System.out.println("Vehículo marcado como disponible. El arriendo ha sido finalizado exitosamente.");
     }
 
+    // Método para ver la cantidad de vehículos actualmente en arriendo
+    // Muestra la cantidad total de vehículos en arriendo
     private void verCantidadEnArriendo() {
         //todo: Lógica futura para aplicar filtro por duración de arriendo
         int cantidad = gestor.contarVehiculosEnArriendo();
         System.out.println("Cantidad de vehículos actualmente en arriendo: " + cantidad);
-    }
-
-    private void cargarVehiculosConcurrentemente() {
-        System.out.println("\nIniciando carga concurrente de vehículos...");
-
-        Thread hiloCarga = new Thread(new CargaVehiculosConcurrente(gestor, false));
-        Thread hiloPasajeros = new Thread(new CargaVehiculosConcurrente(gestor, true));
-
-        hiloCarga.start();
-        hiloPasajeros.start();
-
-        try {
-            hiloCarga.join();
-            hiloPasajeros.join();
-        } catch (InterruptedException e) {
-            System.out.println("Error esperando hilos: " + e.getMessage());
-        }
-
-        System.out.println("Vehículos cargados: " + gestor.listarVehiculos().size());
     }
 
     private void mostrarHistorialArriendos() {

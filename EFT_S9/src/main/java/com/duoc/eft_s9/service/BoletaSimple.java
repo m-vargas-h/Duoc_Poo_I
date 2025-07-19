@@ -2,7 +2,10 @@ package com.duoc.eft_s9.service;
 
 import com.duoc.eft_s9.interfaces.GeneradorBoleta;
 import com.duoc.eft_s9.model.*;
+
+import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.util.Locale;
 
 public class BoletaSimple implements GeneradorBoleta {
 
@@ -45,23 +48,37 @@ public class BoletaSimple implements GeneradorBoleta {
         );
 
         GestorBoletas.registrarBoleta(info);
-        vehiculo.setDisponible(false);  // Marcar como no disponible
+        vehiculo.setDisponible(false); // Marcar como no disponible
 
-        //? [DEBUG] Mostrar detalles de la boleta
-        ////System.out.println("Estado actual del vehículo: " + (vehiculo.isDisponible() ? "Disponible" : "NO disponible"));
+        // Formato de moneda
+        NumberFormat moneda = NumberFormat.getCurrencyInstance(new Locale("es", "CL"));
 
-        System.out.println("\n===== BOLETA DE ARRIENDO =====");
-        System.out.println("ID Boleta: " + idBoleta);
+        System.out.println("\n-------- BOLETA DE ARRIENDO --------");
+        System.out.println("N° Boleta: " + idBoleta);
         System.out.println("Fecha emisión: " + fecha);
-        System.out.println(vehiculo.toString());
-        System.out.println("Días de arriendo: " + dias);
-        System.out.printf("Subtotal: %.2f\n", subtotal);
-        System.out.printf("Descuento aplicado: %.2f\n", descuento);
-        System.out.printf("IVA (%.0f%%): %.2f\n", IVA * 100, iva);
-        System.out.printf("TOTAL A PAGAR: %.2f\n", total);
-        System.out.println("==============================\n");
 
-        //? [DEBUG] Mostrar estado del vehículo tras la boleta
-        ////System.out.println("Nuevo estado tras boleta: " + (vehiculo.isDisponible() ? "Disponible" : "NO disponible"));
+        System.out.println("\n----- INFORMACIÓN DEL VEHÍCULO -----");
+        System.out.println("Patente: " + vehiculo.getPatente());
+        System.out.println("Marca: " + vehiculo.getMarca());
+        System.out.println("Año: " + vehiculo.getAnio());
+        System.out.println("Tipo: " + vehiculo.getTipoVehiculo().name());
+
+        if (vehiculo instanceof VehiculoCarga carga) {
+            System.out.println("Capacidad: " + carga.getCapacidadToneladas() + "t");
+        } else if (vehiculo instanceof VehiculoPasajeros pasajeros) {
+            System.out.println("Capacidad: " + pasajeros.getCapacidadPasajeros() + "p");
+        }
+
+        System.out.println("Días de arriendo: " + dias);
+
+        System.out.println("\n-------------- DETALLE -------------");
+        System.out.printf("%-22s %13s%n", "Subtotal:", moneda.format(subtotal));
+        System.out.printf("%-22s %13s%n", "Descuento aplicado:", moneda.format(descuento));
+        System.out.printf("%-22s %13s%n", "IVA (19%):", moneda.format(iva));
+        System.out.printf("%-22s %13s%n", "TOTAL A PAGAR:", moneda.format(total));
+        System.out.println("------------------------------------\n");
+
+        //? [DEBUG] verificar estado del vehículo tras emisión de boleta
+        ////System.out.println("[DEBUG] Nuevo estado tras boleta: " + (!vehiculo.isDisponible() ? "NO disponible" : "Disponible"));
     }
 }

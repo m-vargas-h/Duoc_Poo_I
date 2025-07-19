@@ -9,7 +9,7 @@ public class EFT_S9 {
     public static void main(String[] args) {
         GestorVehiculos gestor = new GestorVehiculos();
 
-        // 🔄 Lanzar hilos de carga en paralelo
+        // Lanzar hilos de carga en paralelo
         Thread hiloCarga = new Thread(new CargaVehiculosConcurrente(gestor, false));
         Thread hiloPasajeros = new Thread(new CargaVehiculosConcurrente(gestor, true));
 
@@ -26,6 +26,6 @@ public class EFT_S9 {
         // Iniciar menú con gestor ya cargado
         MenuPrincipal menu = new MenuPrincipal(gestor);
         GestorBoletas.cargarHistorial();
-        menu.iniciar();
+        menu.mostrarMenu();
     }
 }
