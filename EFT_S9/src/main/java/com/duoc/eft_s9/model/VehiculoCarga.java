@@ -19,7 +19,9 @@ public class VehiculoCarga extends Vehiculo {
         this.capacidadToneladas = capacidadToneladas;
     }
 
-    public int getCapacidadToneladas() { return capacidadToneladas; }
+    public int getCapacidadToneladas() { 
+        return capacidadToneladas; 
+    }
 
     @Override
     public int calcularPrecioFinal() {

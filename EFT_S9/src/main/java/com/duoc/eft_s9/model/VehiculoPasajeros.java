@@ -19,7 +19,9 @@ public class VehiculoPasajeros extends Vehiculo {
         this.capacidadPasajeros = capacidadPasajeros;
     }
 
-    public int getCapacidadPasajeros() { return capacidadPasajeros; }
+    public int getCapacidadPasajeros() { 
+        return capacidadPasajeros; 
+    }
 
     @Override
     public int calcularPrecioFinal() {

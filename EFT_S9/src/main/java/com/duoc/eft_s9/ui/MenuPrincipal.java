@@ -36,7 +36,7 @@ public class MenuPrincipal {
         int opcion;
 
         do {
-            System.out.println("\n-------------- MENÚ PRINCIPAL --------------");
+            System.out.println("\n-------------- MENU PRINCIPAL --------------");
             System.out.println("1. Agregar vehículo de carga");
             System.out.println("2. Agregar vehículo de pasajeros");
             System.out.println("3. Listar todos los vehículos");
